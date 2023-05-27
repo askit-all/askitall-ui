@@ -14,7 +14,7 @@ const Aboutus = React.lazy(() => import("pages/Aboutus"));
 const Newprofilementpr = React.lazy(() => import("pages/Newprofilementpr"));
 const Bookingpage = React.lazy(() => import("pages/Bookingpage"));
 const Homepagementee = React.lazy(() => import("pages/Homepagementee"));
-const Videocallapi = React.lazy(() => import("pages/Videocallapi"));
+const VideoCall = React.lazy(() => import("pages/videoCall"));
 const HomepagementeeOne = React.lazy(() => import("pages/HomepagementeeOne"));
 const Superadmindashboard = React.lazy(() =>
   import("pages/Superadmindashboard")
@@ -28,18 +28,18 @@ const ProjectRoutes = () => {
     <React.Suspense fallback={<>Loading...</>}>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Homepagenewuser />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/homepagenewuserone" element={<HomepagenewuserOne />} />
+          {/* <Route path="/homepagenewuserone" element={<HomepagenewuserOne />} /> */}
           <Route path="/loginpage" element={<Loginpage />} />
-          <Route path="/homepagenewuser" element={<Homepagenewuser />} />
+          {/* <Route path="/homepagenewuser" element={<Homepagenewuser />} /> */}
           <Route path="/loginpageone" element={<LoginpageOne />} />
           <Route
             path="/superadmindashboard"
             element={<Superadmindashboard />}
           />
           <Route path="/homepagementeeone" element={<HomepagementeeOne />} />
-          <Route path="/videocallapi" element={<Videocallapi />} />
+          <Route path="/videocall" element={<VideoCall />} />
           <Route path="/homepagementee" element={<Homepagementee />} />
           <Route path="/bookingpage" element={<Bookingpage />} />
           <Route path="/newprofilementpr" element={<Newprofilementpr />} />
