@@ -1,0 +1,131 @@
+.agora-vc-frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 5px;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+  height: 100%;
+  transition-property: all;
+  transition-duration: 400ms;
+}
+.agora-vc-frame.minimized {
+  left: initial;
+  top: initial;
+  right: 20px;
+  bottom: 80px;
+  width: 150px;
+  height: 80px;
+  padding: 0px;
+  cursor: pointer;
+  box-shadow: 0px 5px 12px rgb(90, 90, 90);
+}
+.agora-vc-frame .full-screen {
+  width: 100%;
+  height: 85%;
+  display: flex;
+  background-color: rgb(40, 40, 40);
+}
+.agora-vc-frame .full-screen.minimized {
+  width: 100%;
+  height: 80px;
+}
+.agora-vc-frame .small-screen {
+  width: 150px;
+  height: 80px;
+  background-color: rgb(120, 120, 120);
+  float: right;
+  position: relative;
+  bottom: 80px;
+}
+.agora-vc-frame .small-screen.minimized {
+  width: 0px;
+  height: 0px;
+}
+.agora-vc-frame .button-container {
+  padding: 10px 0px 0px 10px;
+}
+.agora-vc-frame .button-container.minimized {
+  display: none;
+}
+.agora-vc-frame .maximize-icon {
+  display: none;
+  color: white;
+  opacity: 0.3;
+  padding: 15px;
+  position: fixed;
+  bottom: 80px;
+  right: 55px;
+}
+.agora-vc-frame.minimized:hover .maximize-icon {
+  display: block;
+}
+.agora-vc-frame .vc-action-button {
+  outline: none !important;
+}
+
+.agora-vc-frame .button-label-wrapper {
+  width: 0px;
+  height: 0px;
+  display: none;
+  position: relative;
+  top: 27px;
+  z-index: 2;
+}
+.agora-vc-frame .button-label {
+  width: max-content;
+  padding: 0px 5px;
+  border-radius: 3px;
+  background-color: #282828;
+  color: white;
+  font-size: 12px;
+}
+.agora-vc-frame .button-label-arrow {
+  background-color: transparent;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #282828;
+  position: relative;
+  left: 10px;
+}
+.vc-action-button:hover .button-label-wrapper {
+  display: unset;
+}
+
+.agora-vc-frame .vc-rejected-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.agora-vc-frame .vc-rejected-message .middle {
+  border-radius: 15px;
+  background-color: rgb(200, 0, 0);
+  padding: 10px;
+}
+.agora-vc-frame .vc-rejected-message .inner {
+  border-radius: 15px;
+  border: 1px dashed white;
+  color: white;
+  display: flex;
+  padding: 10px 20px 10px 20px;
+  align-items: center;
+}
+.agora-vc-frame .vc-rejected-message .close-button {
+  border: none;
+  outline: none;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 6px;
+  color: rgb(200, 0, 0);
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 12px;
+  font-weight: bolder;
+  margin-left: 20px;
+}
