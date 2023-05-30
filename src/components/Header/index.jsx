@@ -1,12 +1,11 @@
-import React from "react";
-
 import { Button, Img } from "components";
+import React from "react";
 
 const Header = (props) => {
   return (
     <>
       <header className={props.className}>
-        <Button
+        {/* <Button
           className="cursor-pointer flex items-center justify-center min-w-[147px] sm:ml-[0] ml-[30px] sm:mt-0 my-2.5"
           rightIcon={
             <Img
@@ -39,7 +38,7 @@ const Header = (props) => {
           <div className="font-nunitosans font-semibold text-left text-white_A700 text-xl">
             Mentor
           </div>
-        </Button>
+        </Button> */}
         <Img
           src="images/img_notification.svg"
           className="h-[26px] sm:ml-[0] ml-[955px] sm:mt-0 my-4"
