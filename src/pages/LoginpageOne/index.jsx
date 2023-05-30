@@ -1,11 +1,57 @@
-import React from "react";
-
+import { opened } from "api/interceptors";
+import { Button, Img, Input, Line, Text } from "components";
+import useValidator from "hooks/useValidator";
+import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Img, Input, Line, Text } from "components";
+const _initialFields = {
+  name: "",
+  email: "",
+  password: "",
+  password2: "",
+};
 
 const LoginpageOnePage = () => {
   const navigate = useNavigate();
+
+  const [formFields, setFormFields] = useState({ ..._initialFields });
+
+  const [validator, forceUpdate] = useValidator({
+    autoForceUpdate: true,
+    validators: {},
+  });
+
+  const handleChange = (event) => {
+    setFormFields((prevState) => {
+      const obj = {
+        ...prevState,
+        [event.target.name]: event.target.value,
+      };
+      return obj;
+    });
+  };
+
+  const handleSubmit = () => {
+    if (validator.allValid()) {
+      const payload = {
+        ...formFields,
+      };
+      opened.post("/users/register", payload).then((response) => {
+        setFormFields({ ..._initialFields });
+        validator.visibleFields = [];
+        forceUpdate();
+
+        toast.success("Joined! You may now login in");
+
+        navigate("/loginpage");
+      });
+    } else {
+      validator.showMessages();
+    }
+  };
+
+  validator.purgeFields();
 
   return (
     <>
@@ -16,7 +62,7 @@ const LoginpageOnePage = () => {
             className="h-[727px] mx-auto object-cover w-full"
             alt="gradient"
           />
-          <div className="absolute flex flex-row gap-[15px] items-center justify-center left-[2%] top-[1%] w-[6%]">
+          {/* <div className="absolute flex flex-row gap-[15px] items-center justify-center left-[2%] top-[1%] w-[6%]">
             <Img
               src="images/img_arrowleft.svg"
               className="common-pointer h-6 w-6"
@@ -26,13 +72,13 @@ const LoginpageOnePage = () => {
             <Text className="font-bold text-white_A700" variant="body10">
               Back
             </Text>
-          </div>
+          </div> */}
           <div
-            className="absolute bg-cover bg-no-repeat flex flex-col h-[541px] items-center justify-start right-[10%] top-[4%] w-[33%]"
+            className="absolute bg-cover bg-no-repeat flex flex-col items-center justify-start right-[10%] top-[4%] w-[40%]"
             style={{ backgroundImage: "url('images/img_group6.png')" }}
           >
             <div
-              className="bg-cover bg-no-repeat flex flex-col h-[541px] items-center justify-start p-7 sm:px-5 w-full"
+              className="bg-cover bg-no-repeat flex flex-col items-center justify-start p-7 sm:px-5 w-full"
               style={{ backgroundImage: "url('images/img_group6.png')" }}
             >
               <div className="flex flex-col items-center justify-start w-[90%] md:w-full">
@@ -46,10 +92,29 @@ const LoginpageOnePage = () => {
                   >
                     <>
                       Connect with our community of mentors <br />
-                      and mentee
+                      and mentee{" "}
+                      <a style={{ color: "#F48020" }} href="/loginpage">
+                        Already a member? Login
+                      </a>
                     </>
                   </Text>
                 </div>
+                <Input
+                  wrapClassName="mt-[25px] w-full"
+                  className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  shape="RoundedBorder10"
+                  size="sm"
+                  variant="OutlineGray70033"
+                  value={formFields.name}
+                  onChange={handleChange}
+                  onBlur={() => validator.showMessageFor("name")}
+                  errors={[
+                    validator.message("name", formFields.name, "required"),
+                  ]}
+                ></Input>
                 <Input
                   wrapClassName="mt-[25px] w-full"
                   className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
@@ -59,6 +124,16 @@ const LoginpageOnePage = () => {
                   shape="RoundedBorder10"
                   size="sm"
                   variant="OutlineGray70033"
+                  value={formFields.email}
+                  onChange={handleChange}
+                  onBlur={() => validator.showMessageFor("email")}
+                  errors={[
+                    validator.message(
+                      "email",
+                      formFields.email,
+                      "required|email"
+                    ),
+                  ]}
                 ></Input>
                 <Input
                   wrapClassName="mt-5 w-full"
@@ -69,14 +144,46 @@ const LoginpageOnePage = () => {
                   shape="RoundedBorder10"
                   size="sm"
                   variant="OutlineGray70033"
+                  value={formFields.password}
+                  onChange={handleChange}
+                  onBlur={() => validator.showMessageFor("password")}
+                  errors={[
+                    validator.message(
+                      "password",
+                      formFields.password,
+                      "required"
+                    ),
+                  ]}
+                ></Input>
+                <Input
+                  wrapClassName="mt-5 w-full"
+                  className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
+                  type="password"
+                  name="password2"
+                  placeholder="Confirm Password"
+                  shape="RoundedBorder10"
+                  size="sm"
+                  variant="OutlineGray70033"
+                  value={formFields.password2}
+                  onChange={handleChange}
+                  onBlur={() => validator.showMessageFor("confirm_password")}
+                  errors={[
+                    validator.message(
+                      "confirm_password",
+                      formFields.password2,
+                      `required|in:${formFields.password}`,
+                      { messages: { in: "Passwords need to match!" } }
+                    ),
+                  ]}
                 ></Input>
                 <Button
                   className="cursor-pointer font-bold min-w-[370px] mt-5 text-center text-white_A700_01 text-xl"
                   shape="CircleBorder20"
                   size="md"
                   variant="OutlineIndigo100"
+                  onClick={handleSubmit}
                 >
-                  Become a mentor
+                  Join
                 </Button>
                 <div className="flex flex-row gap-2.5 items-start justify-between mt-[26px] w-full">
                   <Line className="bg-black_900 h-px mb-2.5 mt-4 w-[44%]" />
