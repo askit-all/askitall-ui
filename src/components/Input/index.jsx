@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { ErrorMessage } from "../../components/ErrorMessage";
+import PropTypes from "prop-types";
+import React from "react";
 
 const variants = {
   OutlineGray70033: "bg-white_A700_01 shadow-bs2",
@@ -45,7 +45,7 @@ const Input = React.forwardRef(
     ref
   ) => {
     const handleChange = (e) => {
-      if (onChange) onChange(e?.target?.value);
+      if (onChange) onChange(e);
     };
 
     return (
