@@ -1,8 +1,7 @@
-import React from "react";
-
 import { Img, Line, Text } from "components";
 import Header from "components/Header";
 import HomePageMenteeOneCard3 from "components/HomePageMenteeOneCard3";
+import React from "react";
 
 const HomepagementeeOnePage = () => {
   return (
