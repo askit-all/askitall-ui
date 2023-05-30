@@ -1,11 +1,64 @@
-import React from "react";
-
+import { secured } from "api/interceptors";
+import { Button, Img, Input, Line, Text } from "components";
+import useValidator from "hooks/useValidator";
+import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Img, Input, Line, Text } from "components";
+const _initialFields = {
+  email: "",
+  password: "",
+};
 
 const LoginpagePage = () => {
   const navigate = useNavigate();
+
+  const [formFields, setFormFields] = useState({ ..._initialFields });
+
+  const [validator, forceUpdate] = useValidator({
+    autoForceUpdate: true,
+    validators: {},
+  });
+
+  const handleChange = (event) => {
+    setFormFields((prevState) => {
+      const obj = {
+        ...prevState,
+        [event.target.name]: event.target.value,
+      };
+      return obj;
+    });
+  };
+
+  const handleSubmit = () => {
+    if (validator.allValid()) {
+      const payload = {
+        ...formFields,
+      };
+      secured.post("/users/login", payload).then((response) => {
+        setFormFields({ ..._initialFields });
+        validator.visibleFields = [];
+        forceUpdate();
+        console.log(response);
+
+        if (response.data?.success) {
+          localStorage.setItem("token", response.data.token);
+        }
+
+        toast("Welcome", {
+          icon: "👏",
+        });
+
+        navigate("/homepagementeeone");
+        // write token to cookie
+        // redirect to questions page (private route)
+      });
+    } else {
+      validator.showMessages();
+    }
+  };
+
+  validator.purgeFields();
 
   return (
     <>
@@ -16,7 +69,7 @@ const LoginpagePage = () => {
             className="h-[727px] mx-auto object-cover w-full"
             alt="gradient"
           />
-          <div className="absolute flex flex-row gap-[15px] items-center justify-center left-[2%] top-[1%] w-[6%]">
+          {/* <div className="absolute flex flex-row gap-[15px] items-center justify-center left-[2%] top-[1%] w-[6%]">
             <Img
               src="images/img_arrowleft.svg"
               className="common-pointer h-6 w-6"
@@ -26,7 +79,7 @@ const LoginpagePage = () => {
             <Text className="font-bold text-white_A700" variant="body10">
               Back
             </Text>
-          </div>
+          </div> */}
           <div
             className="absolute bg-cover bg-no-repeat flex flex-col h-[541px] items-center justify-start right-[10%] top-[4%] w-[33%]"
             style={{ backgroundImage: "url('images/img_group6.png')" }}
@@ -46,7 +99,10 @@ const LoginpagePage = () => {
                   >
                     <>
                       Connect with our community of mentors <br />
-                      and mentee
+                      and mentee{" "}
+                      <a style={{ color: "#F48020" }} href="/loginpageone">
+                        New to AskItAll? Signup
+                      </a>
                     </>
                   </Text>
                 </div>
@@ -59,6 +115,16 @@ const LoginpagePage = () => {
                   shape="RoundedBorder10"
                   size="sm"
                   variant="OutlineGray70033"
+                  value={formFields.email}
+                  onChange={handleChange}
+                  onBlur={() => validator.showMessageFor("email")}
+                  errors={[
+                    validator.message(
+                      "email",
+                      formFields.email,
+                      "required|email"
+                    ),
+                  ]}
                 ></Input>
                 <Input
                   wrapClassName="mt-5 w-full"
@@ -69,14 +135,25 @@ const LoginpagePage = () => {
                   shape="RoundedBorder10"
                   size="sm"
                   variant="OutlineGray70033"
+                  value={formFields.password}
+                  onChange={handleChange}
+                  onBlur={() => validator.showMessageFor("password")}
+                  errors={[
+                    validator.message(
+                      "password",
+                      formFields.password,
+                      "required"
+                    ),
+                  ]}
                 ></Input>
                 <Button
                   className="cursor-pointer font-bold min-w-[370px] mt-5 text-center text-white_A700_01 text-xl"
                   shape="CircleBorder20"
                   size="md"
                   variant="OutlineIndigo100"
+                  onClick={handleSubmit}
                 >
-                  Post a question
+                  Login
                 </Button>
                 <div className="flex flex-row gap-2.5 items-start justify-between mt-[26px] w-full">
                   <Line className="bg-black_900 h-px mb-2.5 mt-4 w-[44%]" />
