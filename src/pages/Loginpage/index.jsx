@@ -100,7 +100,7 @@ const LoginpagePage = () => {
                     <>
                       Connect with our community of mentors <br />
                       and mentee{" "}
-                      <a style={{ color: "#F48020" }} href="/loginpageone">
+                      <a style={{ color: "#F48020" }} href="/signup">
                         New to AskItAll? Signup
                       </a>
                     </>

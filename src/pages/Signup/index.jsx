@@ -44,7 +44,7 @@ const LoginpageOnePage = () => {
 
         toast.success("Joined! You may now login in");
 
-        navigate("/loginpage");
+        navigate("/login");
       });
     } else {
       validator.showMessages();
@@ -93,7 +93,7 @@ const LoginpageOnePage = () => {
                     <>
                       Connect with our community of mentors <br />
                       and mentee{" "}
-                      <a style={{ color: "#F48020" }} href="/loginpage">
+                      <a style={{ color: "#F48020" }} href="/login">
                         Already a member? Login
                       </a>
                     </>
