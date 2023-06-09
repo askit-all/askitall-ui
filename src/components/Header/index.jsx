@@ -5,7 +5,7 @@ const Header = (props) => {
   return (
     <>
       <header className={props.className}>
-        {/* <Button
+        <Button
           className="cursor-pointer flex items-center justify-center min-w-[147px] sm:ml-[0] ml-[30px] sm:mt-0 my-2.5"
           rightIcon={
             <Img
@@ -19,10 +19,11 @@ const Header = (props) => {
           variant="OutlineWhiteA700"
         >
           <div className="font-nunitosans font-semibold text-amber_A700 text-left text-xl">
-            Mentee
+          <a href="/mentee"> Mentee</a> 
           </div>
         </Button>
         <Button
+          href="/mentor"
           className="cursor-pointer flex items-center justify-center min-w-[145px] sm:ml-[0] ml-[30px] sm:mt-0 my-2.5"
           rightIcon={
             <Img
@@ -36,9 +37,9 @@ const Header = (props) => {
           variant="OutlineWhiteA700_1"
         >
           <div className="font-nunitosans font-semibold text-left text-white_A700 text-xl">
-            Mentor
+          <a href="/mentor"> Mentor</a> 
           </div>
-        </Button> */}
+        </Button>
         <Img
           src="images/img_notification.svg"
           className="h-[26px] sm:ml-[0] ml-[955px] sm:mt-0 my-4"

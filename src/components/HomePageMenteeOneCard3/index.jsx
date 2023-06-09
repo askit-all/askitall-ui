@@ -53,17 +53,17 @@ const HomePageMenteeOneCard3 = (props) => {
             alt="ellipseTwo"
           />
           <Input
-            wrapClassName="flex w-[71%] md:w-full"
+            wrapClassName="flex w-full"
             className="font-nunitosans font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-xl w-full"
             name="language"
-            placeholder="|   Ask a Question"
-            prefix={
-              <Img
-                src="images/img_location.svg"
-                className="mt-auto mb-px mr-[13px]"
-                alt="location"
-              />
-            }
+            placeholder="   Ask a Question"
+            // prefix={
+            //   <Img
+            //     src="images/img_location.svg"
+            //     className="mt-auto mb-px mr-[13px]"
+            //     alt="location"
+            //   />
+            // }
             shape="CircleBorder23"
             size="sm"
             variant="OutlineGray70033"

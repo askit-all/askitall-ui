@@ -5,9 +5,13 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "./styles/index.css";
 import "./styles/tailwind.css";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <GoogleOAuthProvider clientId="764117096804-9i1le9ok02l6in3oshr54omg5qisk40o.apps.googleusercontent.com">
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </GoogleOAuthProvider>,
   document.getElementById("root")
 );

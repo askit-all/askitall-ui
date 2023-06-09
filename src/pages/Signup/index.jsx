@@ -1,10 +1,13 @@
 import { opened } from "api/interceptors";
 import { Button, Img, Input, Line, Text } from "components";
 import useValidator from "hooks/useValidator";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 const _initialFields = {
   name: "",
   email: "",
@@ -21,6 +24,10 @@ const LoginpageOnePage = () => {
     autoForceUpdate: true,
     validators: {},
   });
+
+  const responseFacebook = (response) => {
+    console.log(response);
+  }
 
   const handleChange = (event) => {
     setFormFields((prevState) => {
@@ -53,13 +60,47 @@ const LoginpageOnePage = () => {
 
   validator.purgeFields();
 
+  const [user, setUser] = useState([]);
+  const [profile, setProfile] = useState(null);
+
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log('Login Failed:', error)
+  });
+
+  useEffect(
+    () => {
+      if (user) {
+        axios
+          .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: 'application/json'
+            }
+          })
+          .then((res) => {
+            console.log(res.data);
+            setProfile(res.data);
+          })
+          .catch((err) => console.log(err));
+      }
+    },
+    [user]
+  );
+
+  // log out function to log the user out of google and set the profile array to null
+  const logOut = () => {
+    googleLogout();
+    setProfile(null);
+  };
+
   return (
     <>
-      <div className="bg-white_A700 flex font-nunitosans h-[727px] justify-end mx-auto relative w-full">
-        <div className="h-[2455px] md:h-[727px] mt-auto mx-auto pb-[1728px] md:px-5 w-full">
+      <div className="bg-white_A700 flex font-nunitosans justify-end mx-auto relative w-full">
+        <div className="w-full">
           <Img
             src="images/img_gradient.png"
-            className="h-[727px] mx-auto object-cover w-full"
+            className="mx-auto object-cover w-full h-[100vh]"
             alt="gradient"
           />
           {/* <div className="absolute flex flex-row gap-[15px] items-center justify-center left-[2%] top-[1%] w-[6%]">
@@ -100,7 +141,7 @@ const LoginpageOnePage = () => {
                   </Text>
                 </div>
                 <Input
-                  wrapClassName="mt-[25px] w-full"
+                  wrapClassName="mt-[10px] w-full"
                   className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
                   type="text"
                   name="name"
@@ -116,7 +157,7 @@ const LoginpageOnePage = () => {
                   ]}
                 ></Input>
                 <Input
-                  wrapClassName="mt-[25px] w-full"
+                  wrapClassName="mt-[10px] w-full"
                   className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
                   type="email"
                   name="email"
@@ -136,7 +177,7 @@ const LoginpageOnePage = () => {
                   ]}
                 ></Input>
                 <Input
-                  wrapClassName="mt-5 w-full"
+                  wrapClassName="mt-[10px] w-full"
                   className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
                   type="password"
                   name="password"
@@ -156,7 +197,7 @@ const LoginpageOnePage = () => {
                   ]}
                 ></Input>
                 <Input
-                  wrapClassName="mt-5 w-full"
+                  wrapClassName="mt-[10px] w-full"
                   className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
                   type="password"
                   name="password2"
@@ -195,7 +236,7 @@ const LoginpageOnePage = () => {
                   </Text>
                   <Line className="bg-black_900 h-px mb-2.5 mt-4 w-[44%]" />
                 </div>
-                <Input
+                {/* <Input
                   wrapClassName="flex mt-[27px] w-full"
                   className="font-semibold p-0 placeholder:text-black_900_02 text-black_900_02 text-left text-xl w-full"
                   name="google"
@@ -212,7 +253,7 @@ const LoginpageOnePage = () => {
                   variant="OutlineBlueA20001"
                 ></Input>
                 <Input
-                  wrapClassName="flex mt-5 w-full"
+                  wrapClassName="flex mt-[10px] w-full"
                   className="font-semibold p-0 placeholder:text-black_900_02 text-black_900_02 text-left text-xl w-full"
                   name="facebook"
                   placeholder="Continue with facebook"
@@ -228,22 +269,87 @@ const LoginpageOnePage = () => {
                   shape="RoundedBorder18"
                   size="sm"
                   variant="OutlineIndigo600"
-                ></Input>
+                ></Input> */}
+
+                <FacebookLogin
+                  appId="1590730038099961"
+                  autoLoad={false}
+                  callback={responseFacebook}
+                  render={renderProps => (
+                    // <button onClick={renderProps.onClick}>This is my custom FB button</button>
+                    <Input
+                      wrapClassName="flex mt-5 w-full"
+                      className="font-semibold p-0 placeholder:text-black_900_02 text-black_900_02 text-left text-xl w-full cursor-pointer text-center"
+                      name="facebook"
+                      placeholder="Continue with facebook"
+                      readOnly={true}
+                      onClick={renderProps.onClick}
+                      prefix={
+                        <div className="h-[26px] mr-7 w-[26px] bg-indigo_600 rounded-[50%] my-px py-1.5 px-[9px] flex justify-center items-center">
+                          <Img
+                            src="images/img_facebook.svg"
+                            className="my-auto"
+                            alt="facebook"
+                          />
+                        </div>
+                      }
+                      shape="RoundedBorder18"
+                      size="sm"
+                      variant="OutlineIndigo600"
+                    ></Input>
+                  )}
+                />
+
+                <br />
+
+                <GoogleOAuthProvider clientId="764117096804-9i1le9ok02l6in3oshr54omg5qisk40o.apps.googleusercontent.com">
+                  {profile ? (
+                    <div>
+                      <img src={profile.picture} alt="user image" />
+                      <h3>User Logged in</h3>
+                      <p>Name: {profile.name}</p>
+                      <p>Email Address: {profile.email}</p>
+                      <br />
+                      <br />
+                      <button onClick={logOut}>Log out</button>
+                    </div>
+                  ) : (
+                    // <button onClick={() => login()}>Sign in with Google 🚀 </button>
+                    <Input
+                      wrapClassName="flex w-full"
+                      className="font-semibold p-0 placeholder:text-black_900_02 text-black_900_02 text-left text-xl w-full cursor-pointer text-center"
+                      name="google"
+                      placeholder="Continue with google"
+                      readOnly={true}
+                      onClick={() => login()}
+                      prefix={
+                        <Img
+                          src="images/img_google.svg"
+                          className="mt-px mb-0.5 mr-[30px]"
+                          alt="google"
+                        />
+                      }
+                      shape="RoundedBorder18"
+                      size="sm"
+                      variant="OutlineBlueA20001"
+                    ></Input>
+                  )}
+                </GoogleOAuthProvider>
               </div>
             </div>
           </div>
         </div>
-        <div className="absolute bottom-[0] md:h-[727px] h-[861px] left-[14%] pb-[134px] md:px-5 w-[26%]">
+        <div className="absolute bottom-[0] left-[14%] md:px-5" style={{ height: "calc(100vh - 1rem)" }}>
           <Img
-            src="images/img_asset11.png"
+            src="images/Asset 1 1.png"
             className="h-[727px] mx-auto object-cover"
             alt="assetEleven"
           />
-          <Img
+          {/* <Img
             src="images/img_easytouse1.svg"
             className="absolute bottom-[11%] h-[369px] left-[26%]"
             alt="assetEleven_One"
-          />
+          /> */}
         </div>
       </div>
     </>

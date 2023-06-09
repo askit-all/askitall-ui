@@ -7,7 +7,7 @@ import HomePageMenteeOneCard3 from "components/HomePageMenteeOneCard3";
 const HomepagementeePage = () => {
   return (
     <>
-      <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto pb-[970px] w-full">
+      <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto pb-[1rem] w-full">
         <Header className="bg-orange_500 flex flex-row items-center justify-center md:px-5 w-full" />
         <HomePageMenteeOneCard3 className="h-[86px] mt-[30px] md:px-5 relative w-full" />
         <div className="bg-white_A700 flex flex-col items-start justify-end max-w-[900px] mt-10 mx-auto p-[18px] md:px-5 rounded-[30px] shadow-bs2 w-full">
