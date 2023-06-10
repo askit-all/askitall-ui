@@ -8,7 +8,7 @@ const FAQTwoPage = () => {
     <>
       <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto pb-[57px] w-full">
         <div className="flex flex-col gap-[57px] justify-start w-full">
-          <Header className="bg-orange_500 flex flex-row items-center justify-center md:px-5 shadow-bs14 w-full" />
+          <Header className="bg-orange_500 w-full" />
           <div className="flex md:flex-col flex-row md:gap-10 gap-[71px] items-start justify-start md:ml-[0] ml-[157px] md:px-5 w-[73%] md:w-full">
             <Img
               src="images/img_completd1.png"

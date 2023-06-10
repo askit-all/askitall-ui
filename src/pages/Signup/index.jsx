@@ -8,6 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import "../../styles/signup.css"; // Import the CSS file
 const _initialFields = {
   name: "",
   email: "",
@@ -115,7 +116,7 @@ const LoginpageOnePage = () => {
             </Text>
           </div> */}
           <div
-            className="absolute bg-cover bg-no-repeat flex flex-col items-center justify-start right-[10%] top-[4%] w-[40%]"
+            className="absolute bg-cover bg-no-repeat flex flex-col items-center justify-start top-[4%] responsive-right responsive-form-width"
             style={{ backgroundImage: "url('images/img_group6.png')" }}
           >
             <div
@@ -124,12 +125,11 @@ const LoginpageOnePage = () => {
             >
               <div className="flex flex-col items-center justify-start w-[90%] md:w-full">
                 <div className="flex flex-col gap-[5px] justify-start w-full">
-                  <Text className="text-black_900_02" as="h6" variant="h6">
+                  <Text className="text-black_900_02 responsive-title">
                     Welcome to AskItAll
                   </Text>
                   <Text
-                    className="font-normal leading-[24.00px] md:ml-[0] ml-[7px] text-black_900_02"
-                    variant="body12"
+                    className="font-normal leading-[24.00px] md:ml-[0] ml-[7px] text-black_900_02 responsive-sub-title"
                   >
                     <>
                       Connect with our community of mentors <br />
@@ -141,7 +141,7 @@ const LoginpageOnePage = () => {
                   </Text>
                 </div>
                 <Input
-                  wrapClassName="mt-[10px] w-full"
+                  wrapClassName="mt-[10px] w-full responsive-input-height"
                   className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
                   type="text"
                   name="name"
@@ -157,7 +157,7 @@ const LoginpageOnePage = () => {
                   ]}
                 ></Input>
                 <Input
-                  wrapClassName="mt-[10px] w-full"
+                  wrapClassName="mt-[10px] w-full responsive-input-height"
                   className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
                   type="email"
                   name="email"
@@ -177,7 +177,7 @@ const LoginpageOnePage = () => {
                   ]}
                 ></Input>
                 <Input
-                  wrapClassName="mt-[10px] w-full"
+                  wrapClassName="mt-[10px] w-full responsive-input-height"
                   className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
                   type="password"
                   name="password"
@@ -197,7 +197,7 @@ const LoginpageOnePage = () => {
                   ]}
                 ></Input>
                 <Input
-                  wrapClassName="mt-[10px] w-full"
+                  wrapClassName="mt-[10px] w-full responsive-input-height"
                   className="font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-lg w-full"
                   type="password"
                   name="password2"
@@ -218,7 +218,7 @@ const LoginpageOnePage = () => {
                   ]}
                 ></Input>
                 <Button
-                  className="cursor-pointer font-bold min-w-[370px] mt-5 text-center text-white_A700_01 text-xl"
+                  className="cursor-pointer font-bold responsive-join-btn mt-5 text-center text-white_A700_01 text-xl"
                   shape="CircleBorder20"
                   size="md"
                   variant="OutlineIndigo100"
@@ -226,7 +226,7 @@ const LoginpageOnePage = () => {
                 >
                   Join
                 </Button>
-                <div className="flex flex-row gap-2.5 items-start justify-between mt-[26px] w-full">
+                <div className="flex flex-row gap-2.5 items-start justify-between responsve-margin-top w-full">
                   <Line className="bg-black_900 h-px mb-2.5 mt-4 w-[44%]" />
                   <Text
                     className="font-semibold text-black_900"
@@ -279,7 +279,7 @@ const LoginpageOnePage = () => {
                     // <button onClick={renderProps.onClick}>This is my custom FB button</button>
                     <Input
                       wrapClassName="flex mt-5 w-full"
-                      className="font-semibold p-0 placeholder:text-black_900_02 text-black_900_02 text-left text-xl w-full cursor-pointer text-center"
+                      className="font-semibold p-0 placeholder:text-black_900_02 text-black_900_02 text-left text-xl w-full cursor-pointer text-center responsive-cred-size"
                       name="facebook"
                       placeholder="Continue with facebook"
                       readOnly={true}
@@ -317,7 +317,7 @@ const LoginpageOnePage = () => {
                     // <button onClick={() => login()}>Sign in with Google 🚀 </button>
                     <Input
                       wrapClassName="flex w-full"
-                      className="font-semibold p-0 placeholder:text-black_900_02 text-black_900_02 text-left text-xl w-full cursor-pointer text-center"
+                      className="font-semibold p-0 placeholder:text-black_900_02 text-black_900_02 text-left text-xl w-full cursor-pointer text-center responsive-cred-size"
                       name="google"
                       placeholder="Continue with google"
                       readOnly={true}
@@ -342,7 +342,7 @@ const LoginpageOnePage = () => {
         <div className="absolute bottom-[0] left-[14%] md:px-5" style={{ height: "calc(100vh - 1rem)" }}>
           <Img
             src="images/Asset 1 1.png"
-            className="h-[727px] mx-auto object-cover"
+            className="responsive-image mx-auto object-cover"
             alt="assetEleven"
           />
           {/* <Img

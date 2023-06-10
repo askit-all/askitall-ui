@@ -8,7 +8,7 @@ const BookingpagePage = () => {
     <>
       <div className="bg-white_A700 flex flex-col font-nunitosans gap-[30px] justify-start mx-auto pb-[1564px] w-full">
         <div className="flex flex-col items-center w-full">
-          <Header className="bg-orange_500 flex flex-row items-center justify-center md:px-5 w-full" />
+          <Header className="bg-orange_500 w-full" />
         </div>
         <div className="flex flex-col items-start justify-start md:ml-[0] ml-[203px] md:px-5 w-[26%] md:w-full">
           <Text className="font-bold text-black_900" as="h5" variant="h5">

@@ -1,14 +1,7 @@
 import { secured } from "api/interceptors";
-import { Button, Img, Input, Line, Text } from "components";
+import { Button, Img, Input } from "components";
 import useValidator from "hooks/useValidator";
-import React, { useState } from "react";
-import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-
-const _initialFields = {
-  email: "",
-  password: "",
-};
+import { useState } from "react";
 
 const HomePageMenteeOneCard3 = (props) => {
   const [question, setQuestion] = useState("");
@@ -18,18 +11,25 @@ const HomePageMenteeOneCard3 = (props) => {
     validators: {},
   });
 
+  const [type, settype] = useState(null);
+  const handleChange = (type) => {
+    settype(type.target.value);
+  };
+
   const handleAdd = () => {
     if (validator.allValid()) {
       const payload = {
-        type: "engineering",
+        type,
         question,
       };
 
       secured.post("/questions", payload).then((response) => {
         setQuestion("");
+        settype(null);
         validator.visibleFields = [];
         forceUpdate();
 
+        props.onChange();
         // TODO:
         // call fetch questions api
         // store it into context/reducer
@@ -42,11 +42,13 @@ const HomePageMenteeOneCard3 = (props) => {
 
   validator.purgeFields();
 
+ 
+
   return (
     <>
       <div className={props.className}>
         <div className="absolute bg-gradient2  p-px rounded-[20px] w-full "></div>
-        <div className="absolute bg-white_A700 flex md:flex-col flex-row gap-5 h-full inset-[0] items-center justify-center m-auto p-5 rounded-[14px] shadow-bs2 w-[63%]">
+        <div className="absolute bg-white_A700 flex md:flex-col flex-row gap-5 h-full inset-[0] items-center justify-center m-auto p-5 rounded-[14px] shadow-bs2">
           <Img
             src="images/img_ellipse2.png"
             className="h-[46px] md:h-auto rounded-[50%] w-[46px]"
@@ -76,6 +78,25 @@ const HomePageMenteeOneCard3 = (props) => {
                 : []
             }
           ></Input>
+          <select
+          className="rounded-[30px]"
+            value={type}
+            onChange={handleChange}
+            onBlur={() => validator.showMessageFor("type")}
+            errors={
+              validator.message("type", type, "required")
+                ? [validator.message("type", type, "required")]
+                : []
+            }
+          >
+            <option value="null">Select Category</option>
+            {props.categoryList.map((option) => (
+              <option key={option.category_id} value={option.category_id}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+
           <Button
             className="cursor-pointer font-bold font-nunitosans min-w-[167px] text-center text-white_A700_01 text-xl"
             shape="CircleBorder20"

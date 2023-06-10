@@ -7,7 +7,7 @@ const FAQPage = () => {
   return (
     <>
       <div className="bg-white_A700 flex flex-col font-nunitosans gap-[57px] items-center justify-start mx-auto pb-[57px] w-full">
-        <Header className="bg-orange_500 flex flex-row items-center justify-center md:px-5 shadow-bs14 w-full" />
+        <Header className="bg-orange_500 w-full" />
         <div className="bg-white_A700_01 md:h-[479px] sm:h-[511px] h-[552px] pt-3 md:px-5 relative rounded-[20px] shadow-bs9 w-[35%] sm:w-full">
           <Text
             className="absolute font-extrabold inset-x-[0] mx-auto text-blue_gray_900_04 text-center top-[2%] w-max"

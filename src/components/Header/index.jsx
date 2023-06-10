@@ -1,55 +1,63 @@
 import { Button, Img } from "components";
 import React from "react";
+import "../../styles/header.css";
 
 const Header = (props) => {
   return (
     <>
       <header className={props.className}>
-        <Button
-          className="cursor-pointer flex items-center justify-center min-w-[147px] sm:ml-[0] ml-[30px] sm:mt-0 my-2.5"
-          rightIcon={
-            <Img
-              src="images/img_question.svg"
-              className="mt-px ml-[15px]"
-              alt="question"
-            />
-          }
-          shape="CircleBorder20"
-          size="md"
-          variant="OutlineWhiteA700"
-        >
-          <div className="font-nunitosans font-semibold text-amber_A700 text-left text-xl">
-          <a href="/mentee"> Mentee</a> 
+        <div className="flex justify-between p-3 m-2">
+          <div className="flex items-center head-men-width justify-between">
+            <Button
+              className="cursor-pointer flex items-center"
+              rightIcon={
+                <Img
+                  src="images/img_question.svg"
+                  className="mt-px ml-[15px]"
+                  alt="question"
+                />
+              }
+              shape="CircleBorder20"
+              size="sm"
+              variant="OutlineWhiteA700"
+            >
+              <div className="font-nunitosans font-semibold text-amber_A700 text-left">
+                <a href="/mentee"> Mentee</a>
+              </div>
+            </Button>
+            <Button
+              href="/mentor"
+              className="cursor-pointer flex items-center"
+              rightIcon={
+                <Img
+                  src="images/img_volume.svg"
+                  className="mt-px ml-[15px] mr-[5px]"
+                  alt="volume"
+                />
+              }
+              shape="CircleBorder20"
+              size="sm"
+              variant="OutlineWhiteA700_1"
+            >
+              <div className="font-nunitosans font-semibold text-left text-white_A700">
+                <a href="/mentor"> Mentor</a>
+              </div>
+            </Button>
           </div>
-        </Button>
-        <Button
-          href="/mentor"
-          className="cursor-pointer flex items-center justify-center min-w-[145px] sm:ml-[0] ml-[30px] sm:mt-0 my-2.5"
-          rightIcon={
+
+          <div className="flex items-center head-btn-width justify-between">
             <Img
-              src="images/img_volume.svg"
-              className="mt-px ml-[15px]"
-              alt="volume"
+            className="head-img-width"
+              src="images/img_notification.svg"
+              alt="notification"
             />
-          }
-          shape="CircleBorder20"
-          size="md"
-          variant="OutlineWhiteA700_1"
-        >
-          <div className="font-nunitosans font-semibold text-left text-white_A700 text-xl">
-          <a href="/mentor"> Mentor</a> 
+            <Img
+              src="images/img_user.svg"
+              alt="user"
+              className="head-img-width"
+            />
           </div>
-        </Button>
-        <Img
-          src="images/img_notification.svg"
-          className="h-[26px] sm:ml-[0] ml-[955px] sm:mt-0 my-4"
-          alt="notification"
-        />
-        <Img
-          src="images/img_user.svg"
-          className="h-[26px] ml-10 sm:ml-[0] mr-[50px] sm:mt-0 my-4"
-          alt="user"
-        />
+        </div>
       </header>
     </>
   );

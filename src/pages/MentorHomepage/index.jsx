@@ -9,7 +9,7 @@ const HomepagementorPage = () => {
     <>
       <div className="bg-white_A700_01 flex flex-col font-nunitosans items-center justify-start mx-auto pb-[84px] w-full">
         <div className="flex flex-col gap-[30px] items-center justify-start w-full">
-          <Header className="bg-orange_500 flex flex-row items-center justify-center md:px-5 shadow-bs9 w-full" />
+          <Header className="bg-orange_500 w-full" />
           <div className="flex md:flex-col flex-row gap-[47px] items-center justify-start max-w-[1197px] mx-auto md:px-5 w-full">
             <div className="bg-white_A700 flex md:flex-1 flex-col gap-[21px] items-center justify-start p-[9px] rounded-[16px] shadow-bs2 w-[21%] md:w-full">
               <Text className="text-black_900" variant="body7">

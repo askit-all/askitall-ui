@@ -1,0 +1,61 @@
+/* Extra Small (XS) */
+
+@media (min-width: 320px) and (max-width: 374px) {
+    .responsive-questionaire{
+        height: calc(40vh - 1rem);
+        width: calc(97vw - 1rem);
+        margin-top: 1rem;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 575px) {
+    .responsive-questionaire{
+        height: calc(40vh - 1rem);
+        width: calc(97vw - 1rem);
+        margin-top: 1rem;
+    }
+}
+
+/* Small (SM) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .responsive-questionaire{
+        height: calc(40vh - 1rem);
+        width: calc(97vw - 1rem);
+        margin-top: 1rem;
+    }
+}
+
+/* Medium (MD) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .responsive-questionaire{
+        height: calc(40vh - 1rem);
+        width: calc(97vw - 1rem);
+        margin-top: 1rem;
+    }
+
+    .res-margin-top-thumbs{
+
+    }
+}
+
+/* Large (LG) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .responsive-questionaire{
+        height: calc(40vh - 1rem);
+        width: calc(97vw - 1rem);
+        margin-top: 1rem;
+    }
+}
+
+/* Extra Large (XL) */
+@media (min-width: 1200px) {
+    .responsive-questionaire{
+        height: calc(16vh - 1rem);
+        width: calc(97vw - 1rem);
+        margin-top: 1rem;
+    }
+
+    .res-margin-top-thumbs{
+        margin-top: 0.7rem;
+    }
+}
