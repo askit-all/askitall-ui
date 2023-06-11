@@ -12,7 +12,7 @@ export const VideoPlayer = ({ user }) => {
       Uid: {user.uid}
       <div
         ref={ref}
-        style={{ width: '200px', height: '200px' }}
+        style={{ width: '600px', height: '400px' }}
       ></div>
     </div>
   );

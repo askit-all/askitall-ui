@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import { VideoPlayer } from './videoPlayer';
+import { FaMicrophone, FaMicrophoneSlash, FaVideo, FaVideoSlash } from 'react-icons/fa';
+import './videoRoom.css';
 
-const APP_ID = 'e27fafd3d0c24c3da5fc2a25d546c40f';
+const APP_ID = '9302e851b7b2426aacf43a39088a832c';
 const TOKEN =
-  '007eJxTYMhiMbpVyF520mhvVkrHtvIYxi2Gvw05lxj4Ly5SLQr3YFNgSDUyT0tMSzFOMUg2Mkk2Tkk0TUs2SjQyTTE1MUs2MUhb8KkwpSGQkaEz8gYDIxSC+OwMJanFJZl56QwMAPKoHw8=';
-const CHANNEL = 'testing';
+  '007eJxTYLh47qYyo34g81ypa0e0kpTW7v2hEfJXUIwzP2yaWeeD+wwKDJbGBkapFqaGSeZJRiZGZomJyWkmxonGlgYWFokWxkbJT9a3pjQEMjJE7exiYIRCEJ+FIcQ1OISBAQDF5x2i';
+const CHANNEL = 'TEST';
 
 const client = AgoraRTC.createClient({
   mode: 'rtc',
@@ -15,16 +17,24 @@ const client = AgoraRTC.createClient({
 export const VideoRoom = () => {
   const [users, setUsers] = useState([]);
   const [localTracks, setLocalTracks] = useState([]);
+  const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
+  const [videoEnabled, setVideoEnabled] = useState(true);
 
-  const handleUserJoined = async (user, mediaType) => {
+  const handleUserJoined = async (user, mediaType, track) => {
     await client.subscribe(user, mediaType);
 
     if (mediaType === 'video') {
-      setUsers((previousUsers) => [...previousUsers, user]);
+      setUsers((previousUsers) => [
+        ...previousUsers,
+        { ...user, videoTrack: track },
+      ]);
     }
 
     if (mediaType === 'audio') {
-      // user.audioTrack.play()
+      setUsers((previousUsers) => [
+        ...previousUsers,
+        { ...user, audioTrack: track },
+      ]);
     }
   };
 
@@ -32,6 +42,22 @@ export const VideoRoom = () => {
     setUsers((previousUsers) =>
       previousUsers.filter((u) => u.uid !== user.uid)
     );
+  };
+
+  const toggleMicrophone = () => {
+    if (localTracks[0]) {
+      const enabled = !microphoneEnabled;
+      localTracks[0].setEnabled(enabled);
+      setMicrophoneEnabled(enabled);
+    }
+  };
+
+  const toggleVideo = () => {
+    if (localTracks[1]) {
+      const enabled = !videoEnabled;
+      localTracks[1].setEnabled(enabled);
+      setVideoEnabled(enabled);
+    }
   };
 
   useEffect(() => {
@@ -61,29 +87,40 @@ export const VideoRoom = () => {
       });
 
     return () => {
-      for (let localTrack of localTracks) {
-        localTrack.stop();
-        localTrack.close();
-      }
+      localTracks.forEach((track) => {
+        track.stop();
+        track.close();
+      });
       client.off('user-published', handleUserJoined);
       client.off('user-left', handleUserLeft);
-      // client.unpublish(tracks).then(() => client.leave());
+      client.unpublish(localTracks).then(() => client.leave());
     };
   }, []);
 
   return (
-    <div
-      style={{ display: 'flex', justifyContent: 'center' }}
-    >
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 200px)',
-        }}
-      >
+    <div className="video-room-container">
+      <div className="video-grid">
         {users.map((user) => (
           <VideoPlayer key={user.uid} user={user} />
         ))}
+      </div>
+      <div className="controls-container">
+        <button
+          className={`control-button ${microphoneEnabled ? 'active' : ''}`}
+          onClick={toggleMicrophone}
+        >
+          {microphoneEnabled ? (
+            <FaMicrophone />
+          ) : (
+            <FaMicrophoneSlash />
+          )}
+        </button>
+        <button
+          className={`control-button ${videoEnabled ? 'active' : ''}`}
+          onClick={toggleVideo}
+        >
+          {videoEnabled ? <FaVideo /> : <FaVideoSlash />}
+        </button>
       </div>
     </div>
   );
