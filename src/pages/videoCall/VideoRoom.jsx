@@ -4,10 +4,15 @@ import { VideoPlayer } from './videoPlayer';
 import { FaMicrophone, FaMicrophoneSlash, FaVideo, FaVideoSlash } from 'react-icons/fa';
 import './videoRoom.css';
 
-const APP_ID = '9302e851b7b2426aacf43a39088a832c';
+// const APP_ID = '9302e851b7b2426aacf43a39088a832c';
+// const TOKEN =
+//   '007eJxTYLh47qYyo34g81ypa0e0kpTW7v2hEfJXUIwzP2yaWeeD+wwKDJbGBkapFqaGSeZJRiZGZomJyWkmxonGlgYWFokWxkbJT9a3pjQEMjJE7exiYIRCEJ+FIcQ1OISBAQDF5x2i';
+// const CHANNEL = 'TEST';
+
+const APP_ID = 'e27fafd3d0c24c3da5fc2a25d546c40f';
 const TOKEN =
-  '007eJxTYLh47qYyo34g81ypa0e0kpTW7v2hEfJXUIwzP2yaWeeD+wwKDJbGBkapFqaGSeZJRiZGZomJyWkmxonGlgYWFokWxkbJT9a3pjQEMjJE7exiYIRCEJ+FIcQ1OISBAQDF5x2i';
-const CHANNEL = 'TEST';
+  '007eJxTYMhiMbpVyF520mhvVkrHtvIYxi2Gvw05lxj4Ly5SLQr3YFNgSDUyT0tMSzFOMUg2Mkk2Tkk0TUs2SjQyTTE1MUs2MUhb8KkwpSGQkaEz8gYDIxSC+OwMJanFJZl56QwMAPKoHw8=';
+const CHANNEL = 'testing';
 
 const client = AgoraRTC.createClient({
   mode: 'rtc',
