@@ -17,10 +17,13 @@ const HomePageMenteeOneCard3 = (props) => {
   };
 
   const handleAdd = () => {
+
+    const userDetails = JSON.parse(localStorage.getItem('userData'));
     if (validator.allValid()) {
       const payload = {
         type,
         question,
+        postedBy: userDetails.userid
       };
 
       secured.post("/questions", payload).then((response) => {

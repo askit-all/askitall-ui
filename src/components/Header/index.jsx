@@ -1,6 +1,8 @@
 import { Button, Img } from "components";
 import React from "react";
 import "../../styles/header.css";
+import Popover from "../Popover";
+import NotificationModal from "components/Notification";
 
 const Header = (props) => {
   return (
@@ -46,16 +48,20 @@ const Header = (props) => {
           </div>
 
           <div className="flex items-center head-btn-width justify-between">
-            <Img
-            className="head-img-width"
-              src="images/img_notification.svg"
-              alt="notification"
-            />
-            <Img
-              src="images/img_user.svg"
-              alt="user"
-              className="head-img-width"
-            />
+            <NotificationModal>
+              <Img
+                className="head-img-width"
+                src="images/img_notification.svg"
+                alt="notification"
+              />
+            </NotificationModal>
+            <Popover>
+              <Img
+                src="images/img_user.svg"
+                alt="user"
+                className="head-img-width"
+              />
+            </Popover>
           </div>
         </div>
       </header>
