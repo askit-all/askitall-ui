@@ -59,6 +59,7 @@ const LoginPage = () => {
 
         if (response.data?.success) {
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("userData", JSON.stringify(response.data.userData));
         }
 
         toast("Welcome", {

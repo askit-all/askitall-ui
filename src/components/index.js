@@ -7,3 +7,4 @@ export { RatingBar } from "./RatingBar";
 export { SeekBar } from "./SeekBar";
 export { SelectBox } from "./SelectBox";
 export { Text } from "./Text";
+export { ModalForUpvoteError } from "./ModalForUpvoteError";

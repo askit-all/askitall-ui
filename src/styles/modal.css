@@ -1,0 +1,69 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 16px;
+    border-radius: 4px;
+}
+
+/* Extra Small (XS) */
+
+@media (min-width: 320px) and (max-width: 374px) {
+    .responsive-width-height {
+        width: 75vw;
+        height: 25vh;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 575px) {
+    .responsive-width-height {
+        width: 75vw;
+        height: 25vh;
+    }
+}
+
+/* Small (SM) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .responsive-width-height {
+        width: 75vw;
+        height: 25vh;
+    }
+}
+
+/* Medium (MD) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .responsive-width-height {
+        width: 50vw;
+        height: 30vh;
+    }
+}
+
+/* Large (LG) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .responsive-width-height {
+        width: 50vw;
+        height: 30vh;
+    }
+}
+
+/* Extra Large (XL) */
+@media (min-width: 1200px) {
+    .responsive-width-height {
+        width: 25vw;
+        height: 25vh;
+    }
+
+    .title-height{
+        font-size: 2rem;
+    }
+}
