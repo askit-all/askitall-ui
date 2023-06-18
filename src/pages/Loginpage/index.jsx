@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import FacebookLogin from 'react-facebook-login'
+// import FacebookLogin from 'react-facebook-login'
 import "../../styles/login.css"; // Import the CSS file
 import linkedInLoginImage from '../../assets/images/linkedinimage.png';
 
