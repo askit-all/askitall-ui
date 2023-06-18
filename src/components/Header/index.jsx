@@ -3,13 +3,30 @@ import React from "react";
 import "../../styles/header.css";
 import Popover from "../Popover";
 import NotificationModal from "components/Notification";
+import { useState } from "react";
+import { useEffect } from "react";
+import { secured } from "api/interceptors";
 
 const Header = (props) => {
+
+  const [notifications, setNotifications] = useState([]);
+
+  const fetchNotifications = () => {
+    let url = `/notifications`;
+    secured.get(url).then((response) => {
+      console.log(response.data);
+      setNotifications(response.data);
+    });
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  },[])
   return (
     <>
       <header className={props.className}>
-        <div className="flex justify-between p-3 m-2">
-          <div className="flex items-center head-men-width justify-between">
+        <div className="flex justify-end p-3 m-2">
+          {/* <div className="flex items-center head-men-width justify-between">
             <Button
               className="cursor-pointer flex items-center"
               rightIcon={
@@ -45,10 +62,10 @@ const Header = (props) => {
                 <a href="/mentor"> Mentor</a>
               </div>
             </Button>
-          </div>
+          </div> */}
 
           <div className="flex items-center head-btn-width justify-between">
-            <NotificationModal>
+            <NotificationModal notifications={notifications}>
               <Img
                 className="head-img-width"
                 src="images/img_notification.svg"

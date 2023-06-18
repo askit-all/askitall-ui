@@ -30,11 +30,11 @@ const ProfilementeePage = () => {
     <>
       <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto w-full responsive-view">
         <Header className="bg-orange_500 w-full" />
-        <div className="bg-gradient3 font-segoeui w-full">
+        <div className="font-segoeui w-full">
           <div className="bg-white_A700_01 my-7 flex flex-col items-end justify-start max-w-[1055px] mx-auto pr-3.5 md:px-5 py-3.5 w-full">
-            <div className="sm:h-[218px] h-[301px] md:h-[562px] mt-[22px] relative w-full">
-              <div className="flex flex-row md:gap-5 inset-x-[0] items-start justify-start mx-auto md:pr-10 sm:pr-5 pr-[58px] top-[0] w-full">
-                <div className="flex flex-col relative w-[33%] md:w-full">
+            <div className=" mt-[22px] relative w-full">
+              <div className="custom-flex md:gap-5 inset-x-[0] items-start justify-start mx-auto md:pr-10 sm:pr-5 pr-[58px] top-[0] w-full">
+                <div className="flex flex-col relative custom-image">
                   <div className="md:h-[149px] h-[173px] mx-auto pb-6 sm:px-5 px-6 w-full">
                     <Img
                       src="images/img_images.png"
@@ -49,14 +49,6 @@ const ProfilementeePage = () => {
                       Change Photo
                     </Button>
                   </div>
-                  <Button
-                    className="cursor-pointer font-semibold w-[61%] mt-[-7.8px] mx-auto text-base text-center text-gray_900_04 z-[1]"
-                    shape="RoundedBorder4"
-                    size="md"
-                    variant="OutlineAmberA70001"
-                  >
-                    Chat Now
-                  </Button>
                 </div>
                 <div className="flex md:flex-1 flex-col items-start justify-start md:ml-[0] ml-[30px] w-[51%] md:w-full">
                   <Text
@@ -95,6 +87,55 @@ const ProfilementeePage = () => {
                       About
                     </Button>
                   </div>
+
+                  <div className=" set-bot flex flex-col items-center justify-start">
+                    <div className="flex flex-row sm:gap-10 items-start w-full">
+                      <Text
+                        className="font-semibold ml-[13px] text-gray_900_04"
+                        variant="body14"
+                        style={{ alignSelf: "center" }}
+                      >
+                        Name
+                      </Text>
+                      <input
+                        type="text"
+                        className="font-normal  ml-[40px] text-gray-600-01 w-auto input-style"
+                        variant="body14"
+                        value={userDetails.name}
+                        // onChange={handleInputChange("name")}
+                      />
+                      {/* <Text
+                      className="font-semibold mb-[15px] ml-[40px] text-amber_A700"
+                      variant="body14"
+                    >
+                      {userDetails.name}
+                    </Text> */}
+                    </div>
+                    <div className="h-10 sm:h-28 relative w-full">
+                      <div className="flex flex-row sm:gap-10 items-start ml-[15px] w-[76%]">
+                        <Text
+                          className="font-semibold text-gray_900_040 "
+                          variant="body14"
+                          style={{ alignSelf: "center" }}
+                        >
+                          Email
+                        </Text>
+                        <input
+                          type="text"
+                          className="font-normal  ml-[40px] text-gray-600-01 w-auto input-style"
+                          variant="body14"
+                          value={userDetails.email}
+                          // onChange={handleInputChange("email")}
+                        />
+                        {/* <Text
+                        className="font-semibold text-amber_A700 ml-[40px]"
+                        variant="body14"
+                      >
+                        {userDetails.email}
+                      </Text> */}
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <Button
                   className="cursor-pointer font-semibold mb-[166px] min-w-[102px] md:ml-[0] ml-[29px] text-base text-center text-white_A700_01"
@@ -102,44 +143,12 @@ const ProfilementeePage = () => {
                   size="sm"
                   variant="FillAmberA70001"
                 >
-                  Edit Profile
+                  Update
                 </Button>
-                <div className="absolute bottom-[11%] flex flex-col items-center justify-start right-[0] w-[68%]">
-                  <div className="flex flex-row sm:gap-10 items-start justify-between w-full">
-                    <Text
-                      className="font-semibold mb-[15px] ml-[13px] text-gray_900_04"
-                      variant="body14"
-                    >
-                      Name
-                    </Text>
-                    <Text
-                      className="font-semibold mb-[15px] mr-[271px] text-amber_A700"
-                      variant="body14"
-                    >
-                      {userDetails.name}
-                    </Text>
-                  </div>
-                  <div className="h-10 sm:h-28 relative w-full">
-                    <div className="flex flex-row sm:gap-10 h-full items-start justify-between ml-[15px] w-[76%]">
-                      <Text
-                        className="font-semibold text-gray_900_04"
-                        variant="body14"
-                      >
-                        Email
-                      </Text>
-                      <Text
-                        className="font-semibold text-amber_A700"
-                        variant="body14"
-                      >
-                        {userDetails.email}
-                      </Text>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
-            <div className="bg-white_A700_01 flex flex-col font-nunitosans items-center justify-start mb-2.5 mr-[49px] mt-[22px] pb-5 rounded-[16px] shadow-bs10 w-[90%] md:w-full">
+            <div className="bg-white_A700_01 flex flex-col font-nunitosans items-center justify-start mb-2.5 mt-[22px] pb-5 rounded-[16px] shadow-bs10 w-[100%] ">
               <div className="flex flex-col gap-5 items-center justify-start w-full">
                 <div className="bg-amber_A700_01 flex flex-col items-start justify-end p-2.5 w-full">
                   <Text

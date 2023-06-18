@@ -1,13 +1,105 @@
-import React from "react";
-import Header from "components/Header";
+import { secured } from "api/interceptors";
 import { Button, Img, Line, RatingBar, Text } from "components";
+import Header from "components/Header";
+import { useEffect, useState } from "react";
 import "./mentorProfile.css";
 
 const NewprofilementprPage = () => {
-  const userDetails = JSON.parse(localStorage.getItem("userData"));
+  const [questionsList, setQuestionsList] = useState([]);
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const [userDetails, setUserDetails] = useState({
+    ...JSON.parse(localStorage.getItem("userData")),
+    gender: userData.userinfo ? userData.userinfo.gender : "",
+    occupation: userData.userinfo ? userData.userinfo.occupation : "",
+    aboutyourself: userData.userinfo ? userData.userinfo.aboutyourself : "",
+  });
+
+  const [categorySelected, setCategorySelecteed] = useState(null);
+  const [categoryList, setCategoryList] = useState(null);
+
+  const [showAddDropdown, setShowAddDropdown] = useState(false);
+
+  const handleInputChange = (fieldName) => (event) => {
+    console.log("FIN : ", userDetails);
+    setUserDetails({ ...userDetails, [fieldName]: event.target.value });
+  };
+
+  const fetchCategories = () => {
+    secured.get("/categories").then((response) => {
+      setCategoryList(response.data.data);
+    });
+  };
+
+  const fetchQuestions = () => {
+    let url = `/questions/user/${userDetails.userid}`;
+    secured.get(url).then((response) => {
+      console.log(response.data);
+      setQuestionsList(response.data);
+    });
+  };
+
+  const handleViewAllQues = () => {
+    // history("/mentee");
+  };
+
+  const fetchUserData = () => {
+    secured.get("/users").then((response) => {
+      setUserDetails(response.data.data);
+    });
+  };
+
+  const handleCategoryChange = (type) => {
+    setCategorySelecteed(type.target.value);
+  };
+
+  const handleAddChange = () => {
+    setShowAddDropdown(!showAddDropdown);
+  };
+
+  const handleCloseDropdown = () => {
+    setShowAddDropdown(!showAddDropdown);
+    setCategorySelecteed(null);
+  };
+
+  const removeCategory = (index) => {
+    const updatedCategories = [...userDetails.categories];
+    updatedCategories.splice(index, 1);
+    setUserDetails({ ...userDetails, categories: updatedCategories });
+  };
+
+  const handleUpdate = () => {
+    console.log("ISER : ", userDetails);
+    let payload = {
+      name: userDetails.name,
+      email: userDetails.email,
+      categories: userDetails.categories.map((el) => el.category_id),
+      active: userDetails.active,
+      type: userDetails.type,
+      userid: userDetails.userid,
+      notifications: userDetails.notifications,
+    };
+
+    if (userData.userinfo) {
+      payload["userinfo"] = {
+        gender: userDetails.userinfo.gender,
+        occupation: userDetails.userinfo.occupation,
+        aboutyourself: userDetails.userinfo.aboutyourself,
+      };
+    }
+
+    secured.put("/users", payload).then((response) => {
+      fetchUserData();
+    });
+  };
+
+  useEffect(() => {
+    fetchUserData();
+    fetchCategories();
+    fetchQuestions();
+  }, []);
   return (
     <>
-      <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto pb-[1rem] w-full responsive-view">
+      <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto w-full responsive-view">
         <Header className="bg-orange_500 w-full" />
         <div className="bg-gradient3  flex flex-col font-segoeui items-center justify-end mx-auto p-[23px] sm:px-5 w-full">
           <div className="flex md:flex-col flex-row gap-2 items-center justify-start max-w-[1087px] mx-auto md:px-5 w-full">
@@ -25,74 +117,73 @@ const NewprofilementprPage = () => {
                         className="font-semibold mb-[18px] text-gray_900"
                         variant="body10"
                       >
-                        Interests
+                        Categories
                       </Text>
                     </div>
-
                   </div>
 
-                  <div className=" flex flex-col items-center justify-start  w-[45%]">
-                    <div className="bg-white_A700_01 flex flex-row items-center justify-between p-1 rounded shadow-bs12 w-full">
-                      <Text
-                        className="font-normal ml-[7px] text-gray_900"
-                        variant="body12"
-                      >
-                        Interest 1
-                      </Text>
-                      <Img
-                        src="images/img_close.svg"
-                        className="h-[18px] mr-2.5 w-[18px]"
-                        alt="close"
-                      />
-                    </div>
-                  </div>
-                  <div className=" bg-white_A700_01 flex flex-row items-center justify-between  p-1 rounded shadow-bs12 w-[45%]">
-                    <Text
-                      className="font-normal ml-[7px] text-gray_900"
-                      variant="body12"
-                    >
-                      Interest 1
-                    </Text>
-                    <Img
-                      src="images/img_close.svg"
-                      className="h-[18px] mr-2.5 w-[18px]"
-                      alt="close_One"
-                    />
-                  </div>
-                  <div className=" bg-white_A700_01 flex flex-row items-center justify-between p-1  rounded shadow-bs12 w-[45%]">
-                    <Text
-                      className="font-normal ml-[7px] text-gray_900"
-                      variant="body12"
-                    >
-                      Interest 1
-                    </Text>
-                    <Img
-                      src="images/img_close.svg"
-                      className="h-[18px] mr-2.5 w-[18px]"
-                      alt="close_Two"
-                    />
-                  </div>
-                  <div className=" bg-white_A700_01 flex flex-row items-center justify-between p-1  rounded shadow-bs12 w-[45%]">
-                    <Text
-                      className="font-normal ml-[7px] text-gray_900"
-                      variant="body12"
-                    >
-                      Interest 1
-                    </Text>
-                    <Img
-                      src="images/img_close.svg"
-                      className="h-[18px] mr-2.5 w-[18px]"
-                      alt="close_Three"
-                    />
+                  <div className="grid grid-cols-2 w-full">
+                    {userDetails.categories &&
+                      userDetails.categories.length &&
+                      userDetails.categories.map((category, index) => (
+                        <>
+                          <div className=" bg-white_A700_01 flex flex-row items-center justify-between p-1 my-2 rounded">
+                            <Text
+                              className="font-normal ml-[7px] text-gray_900"
+                              variant="body12"
+                            >
+                              {category.name}
+                            </Text>
+                            <Img
+                              src="images/img_close.svg"
+                              className="h-[18px] mr-2.5 w-[18px]"
+                              alt="close"
+                              name={{ index }}
+                              onClick={() => removeCategory(index)}
+                            />
+                          </div>
+                        </>
+                      ))}
+
+                    {showAddDropdown && (
+                      <>
+                        <div className=" bg-white_A700_01 flex flex-row items-center justify-between p-1 my-2 rounded">
+                          <select
+                            className="rounded-[30px]"
+                            value={categorySelected}
+                            onChange={handleCategoryChange}
+                          >
+                            <option value="null">Select Category</option>
+                            {categoryList &&
+                              categoryList.map((option) => (
+                                <option
+                                  key={option.category_id}
+                                  value={option.category_id}
+                                >
+                                  {option.name}
+                                </option>
+                              ))}
+                          </select>
+                          <Img
+                            src="images/img_close.svg"
+                            className="h-[18px] mr-2.5 w-[18px]"
+                            alt="close"
+                            onClick={handleCloseDropdown}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
 
-                  
-                  <Text
+                  {!showAddDropdown && (
+                    <Text
                       className="font-bold mt-[15px] text-orange_500"
                       variant="body12"
+                      onClick={handleAddChange}
                     >
-                      Add Interets
+                      Add Categories
                     </Text>
+                  )}
 
                   <Text
                     className="font-nunitosans font-semibold italic mt-[30px] text-gray_900"
@@ -109,14 +200,14 @@ const NewprofilementprPage = () => {
                       size={22}
                     ></RatingBar>
                   </div>
-                  <Button
+                  {/* <Button
                     className="cursor-pointer font-normal font-segoeui min-w-[117px] mt-[20px] text-base text-center text-white_A700_01"
                     shape="RoundedBorder4"
                     size="md"
                     variant="OutlineAmberA700"
                   >
                     schedule call
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>
@@ -130,12 +221,13 @@ const NewprofilementprPage = () => {
                     >
                       Full Name
                     </Text>
-                    <Text
-                      className="font-normal text-gray_600_01 w-auto"
+                    <input
+                      type="text"
+                      className="font-normal text-gray-600-01 w-auto input-style"
                       variant="body14"
-                    >
-                      {userDetails.name}
-                    </Text>
+                      value={userDetails.name}
+                      onChange={handleInputChange("name")}
+                    />
                   </div>
                   <Line className="bg-black_900_19 h-px w-[96%]" />
                   <div className="flex flex-row sm:gap-10 gap-[140.15px] items-start justify-start pl-[15px] md:pr-10 sm:pr-5 w-auto md:w-full">
@@ -145,12 +237,13 @@ const NewprofilementprPage = () => {
                     >
                       Email
                     </Text>
-                    <Text
-                      className="font-normal text-gray_600_01 w-auto"
-                      variant="body16"
-                    >
-                      {userDetails.email}
-                    </Text>
+                    <input
+                      type="text"
+                      className="font-normal text-gray-600-01 w-auto input-style"
+                      variant="body14"
+                      value={userDetails.email}
+                      onChange={handleInputChange("email")}
+                    />
                   </div>
                   <Line className="bg-black_900_19 h-px w-[96%]" />
                   <div className="flex flex-row gap-[98px] pl-[15px] items-start justify-start md:w-full">
@@ -160,12 +253,13 @@ const NewprofilementprPage = () => {
                     >
                       Occupation
                     </Text>
-                    <Text
-                      className="font-normal mt-0.5 text-gray_600_01"
+                    <input
+                      type="text"
+                      className="font-normal text-gray-600-01 w-auto input-style"
                       variant="body14"
-                    >
-                      Graphics and Web development
-                    </Text>
+                      value={userDetails.occupation}
+                      onChange={handleInputChange("occupation")}
+                    />
                   </div>
                   <Line className="bg-black_900_19 h-px w-[96%]" />
                   <div className="flex flex-row sm:gap-10 gap-[131.15px] items-start justify-start pl-[15px] md:pr-10 sm:pr-5 pr-[412.51px] w-auto md:w-full">
@@ -175,34 +269,34 @@ const NewprofilementprPage = () => {
                     >
                       Gender
                     </Text>
-                    <Text
-                      className="font-normal text-gray_600_01 w-auto"
+                    <input
+                      type="text"
+                      className="font-normal text-gray-600-01 w-auto input-style"
                       variant="body14"
-                    >
-                      Male
-                    </Text>
+                      value={userDetails?.gender}
+                      onChange={handleInputChange("gender")}
+                    />
                   </div>
                   <Line className="bg-black_900_19 h-px w-[96%]" />
 
                   <div className="flex flex-row sm:gap-10 gap-[100.15px] items-start justify-start pl-[15px] md:pr-10 sm:pr-5 w-auto md:w-full">
                     <Text
-                      className="font-normal w-[25%] ml-1 md:ml-[0] text-gray-900"
+                      className="font-normal w-[10%] ml-1 md:ml-[0] text-gray-900"
                       variant="body14"
                     >
                       about me
                     </Text>
 
-                    <div className="outer-white">
-                      <Text
-                        className="leading-[15.00px] ml-3 md:ml-[0] text-gray_600_01 w-[98%] sm:w-full"
-                        variant="body22"
-                      >
-                        Norem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nunc vulputate libero et velit interdum, ac aliquet odio
-                        mattis. Class aptent taciti sociosqu ad litora torquent
-                        per conubia nostra,{" "}
-                      </Text>
-                    </div>
+                    {/* <div className="outer-white"> */}
+                    <textarea
+                      rows={3}
+                      cols={50}
+                      className="font-normal text-gray-600-01 w-auto input-style"
+                      variant="body14"
+                      value={userDetails?.aboutyourself}
+                      onChange={handleInputChange("aboutyourself")}
+                    />
+                    {/* </div> */}
                   </div>
                   <div className="flex sm:flex-col pl-[15px] flex-row sm:gap-10 gap-[108px] items-start justify-start w-[90%] md:w-full">
                     <Button
@@ -210,206 +304,46 @@ const NewprofilementprPage = () => {
                       shape="RoundedBorder4"
                       size="md"
                       variant="OutlineGray900"
+                      onClick={handleUpdate}
                     >
-                      Edit
+                      Update
                     </Button>
                   </div>
                 </div>
               </div>
-              {/* <div className="flex md:flex-col flex-row gap-4 items-start justify-start pb-4 px-2 w-auto md:w-full">
-                <div className="bg-white_A700_01 flex flex-col items-start justify-start rounded shadow-bs12 w-auto">
-                  <div className="flex flex-col items-center justify-end p-2.5 rounded w-full">
-                    <div className="flex flex-col items-start justify-start mt-[5px] w-[97%] md:w-full">
-                      <div className="flex flex-col items-start justify-start md:pr-10 sm:pr-5 pr-[130.5px] w-auto">
-                        <Text
-                          className="font-normal italic text-gray_900 w-auto"
-                          variant="body14"
-                        >
-                          Experties
-                        </Text>
-                      </div>
-                      <Text
-                        className="mt-[18px] text-gray-900"
-                        variant="body19"
-                      >
-                        Web Design
-                      </Text>
-                      <div className="h-[5px] overflow-hidden md:pr-10 sm:pr-5 pr-[63.47px] relative w-auto">
-                        <div className="w-full h-full absolute bg-blue_gray_50_01 rounded-[2px]"></div>
-                        <div
-                          className="h-full absolute bg-amber_A700"
-                          style={{ width: "80%" }}
-                        ></div>
-                      </div>
-                      <div className="flex flex-row items-start justify-between mt-1 w-full">
-                        <Text
-                          className="mt-[17px] text-gray-900"
-                          variant="body19"
-                        >
-                          Website Markup
-                        </Text>
-                        <Text
-                          className="font-semibold mb-[17px] text-blue_gray_900_05"
-                          variant="body18"
-                        >
-                          80%
-                        </Text>
-                      </div>
-                      <div className="h-[5px] overflow-hidden md:pr-10 sm:pr-5 pr-[88.86px] relative w-auto">
-                        <div className="w-full h-full absolute bg-blue_gray_50_01 rounded-[2px]"></div>
-                        <div
-                          className="h-full absolute bg-amber_A700"
-                          style={{ width: "72%" }}
-                        ></div>
-                      </div>
-                      <div className="flex flex-row items-start justify-between mt-1 w-full">
-                        <Text
-                          className="mt-[17px] text-gray-900"
-                          variant="body19"
-                        >
-                          One Page
-                        </Text>
-                        <Text
-                          className="font-semibold mb-[17px] text-blue_gray_900_05"
-                          variant="body18"
-                        >
-                          80%
-                        </Text>
-                      </div>
-                      <div className="h-[5px] overflow-hidden sm:pr-5 pr-[34.91px] relative w-auto">
-                        <div className="w-full h-full absolute bg-blue_gray_50_01 rounded-[2px]"></div>
-                        <div
-                          className="h-full absolute bg-amber_A700"
-                          style={{ width: "89%" }}
-                        ></div>
-                      </div>
-                      <Text
-                        className="font-semibold md:ml-[0] ml-[291px] mt-[3px] text-blue_gray_900_05"
-                        variant="body18"
-                      >
-                        80%
-                      </Text>
-                      <Text className="text-gray-900" variant="body23">
-                        Mobile Template
-                      </Text>
-                      <div className="h-[5px] mt-0.5 overflow-hidden md:pr-10 sm:pr-5 pr-[142.81px] relative w-auto">
-                        <div className="w-full h-full absolute bg-blue_gray_50_01 rounded-[2px]"></div>
-                        <div
-                          className="h-full absolute bg-amber_A700"
-                          style={{ width: "55%" }}
-                        ></div>
-                      </div>
-                      <div className="flex flex-row items-start justify-between mt-[3px] w-full">
-                        <Text
-                          className="mt-[17px] text-gray-900"
-                          variant="body19"
-                        >
-                          Backend API
-                        </Text>
-                        <Text
-                          className="font-semibold mb-[17px] text-blue_gray_900_05"
-                          variant="body18"
-                        >
-                          80%
-                        </Text>
-                      </div>
-                      <div className="h-[5px] overflow-hidden md:pr-10 sm:pr-5 pr-[107.91px] relative w-auto">
-                        <div className="w-full h-full absolute bg-blue_gray_50_01 rounded-[2px]"></div>
-                        <div
-                          className="h-full absolute bg-amber_A700"
-                          style={{ width: "66%" }}
-                        ></div>
-                      </div>
-                      <Text
-                        className="font-semibold md:ml-[0] ml-[291px] mt-[3px] text-blue_gray_900_05"
-                        variant="body18"
-                      >
-                        80%
-                      </Text>
-                    </div>
-                  </div>
-                </div>
-                <div className="font-nunitosans h-[292px] relative w-[349px]">
-                  <div className="bg-white_A700_01 h-[292px] m-auto rounded shadow-bs12 w-full"></div>
-                  <div className="absolute flex flex-col h-full inset-[0] items-start justify-center m-auto p-3 w-full">
-                    <div className="flex flex-col items-start justify-start md:ml-[0] ml-[3px] md:pr-10 sm:pr-5 pr-[130.51px] w-auto">
-                      <Text
-                        className="font-semibold text-blue_gray_900_05 w-auto"
-                        variant="body10"
-                      >
-                        Analytics
-                      </Text>
-                    </div>
-                    <div className="h-[50px] md:h-[76px] mt-7 relative w-[99%]">
-                      <div className="bg-white_A700_01 flex flex-col h-full items-start justify-end m-auto p-1.5 rounded-[5px] shadow-bs2 w-full">
-                        <Img
-                          src="images/img_home.svg"
-                          className="h-9"
-                          alt="home"
-                        />
-                      </div>
-                      <div className="absolute flex flex-row h-max inset-y-[0] items-start justify-between my-auto right-[3%] w-[76%]">
-                        <Text
-                          className="font-semibold text-blue_gray_900_05"
-                          variant="body10"
-                        >
-                          Total learning time
-                        </Text>
-                        <Text
-                          className="font-semibold text-orange_500"
-                          variant="body10"
-                        >
-                          0
-                        </Text>
-                      </div>
-                    </div>
-                    <div className="h-[50px] md:h-[68px] mt-5 relative w-[99%]">
-                      <div className="bg-white_A700_01 flex flex-col h-full items-start justify-end m-auto p-1.5 rounded-[5px] shadow-bs2 w-full">
-                        <Img
-                          src="images/img_calendar.svg"
-                          className="h-9 ml-1.5 md:ml-[0] w-[37px]"
-                          alt="calendar"
-                        />
-                      </div>
-                      <div className="absolute flex flex-row h-max inset-y-[0] items-center justify-between my-auto right-[3%] w-[76%]">
-                        <Text
-                          className="font-semibold text-blue_gray_900_05"
-                          variant="body10"
-                        >
-                          Average Attendance
-                        </Text>
-                        <Text
-                          className="font-semibold text-orange_500"
-                          variant="body10"
-                        >
-                          0
-                        </Text>
-                      </div>
-                    </div>
-                    <div
-                      className="bg-cover bg-no-repeat flex flex-col h-[50px] items-end justify-start my-5 p-[9px] w-[99%] md:w-full"
-                      style={{
-                        backgroundImage: "url('images/img_group36.svg')",
-                      }}
+              <div className="bg-white_A700_01 flex flex-col font-nunitosans items-center justify-start mb-2.5 mt-[22px] pb-5 rounded-[16px] shadow-bs10 w-[100%] ">
+                <div className="flex flex-col gap-5 items-center justify-start w-full" style={{height:'30vh',overflowY:'auto'}}>
+                  <div className="bg-amber_A700_01 flex flex-col items-start justify-end p-2.5 w-full">
+                    <Text
+                      className="font-bold md:ml-[0] ml-[9px] text-white_A700_01"
+                      variant="body10"
                     >
-                      <div className="flex flex-row gap-[55px] items-start justify-end w-[81%] md:w-full">
-                        <Text
-                          className="font-semibold text-blue_gray_900_05"
-                          variant="body10"
-                        >
-                          Sessions Complted
-                        </Text>
-                        <Text
-                          className="font-semibold text-orange_500"
-                          variant="body10"
-                        >
-                          0
-                        </Text>
-                      </div>
+                      Questions posted{" "}
+                    </Text>
+                  </div>
+                  <div className="flex md:flex-col flex-row gap-[35px] items-start justify-between w-[96%] md:w-full">
+                    <div className="flex flex-col items-center justify-start">
+                      {questionsList && questionsList.length ? (
+                        questionsList.map((ques) => (
+                          <span className="ques-data">{ques.question}</span>
+                        ))
+                      ) : (
+                        <></>
+                      )}
+
+                      {/* <Button
+                        className="cursor-pointer font-semibold min-w-[102px] mt-[29px] text-base text-center text-white_A700_01"
+                        shape="RoundedBorder4"
+                        size="sm"
+                        variant="FillAmberA70001"
+                        onClick={handleViewAllQues}
+                      >
+                        View all
+                      </Button> */}
                     </div>
                   </div>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

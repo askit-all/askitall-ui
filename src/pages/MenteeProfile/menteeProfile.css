@@ -1,53 +1,89 @@
+
+.input-style {
+    border: none;
+    border-bottom: 1px solid lightgray;
+}
+
+
 /* Extra Small (XS) */
 
 @media (min-width: 320px) and (max-width: 374px) {
-    .responsive-questionaire {
-        height: calc(40vh - 1rem);
-        width: calc(97vw - 1rem);
-        margin-top: 1rem;
+    .change-pic {
+        width: 71%;
+        margin-left: 32px;
+        bottom: 40px;
+        position: relative;
     }
+
+    .ques-data {
+        font-family: "Nunito Sans";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 19px;
+        /* identical to box height, or 96% */
+
+        display: flex;
+        align-items: center;
+
+        color: #000000;
+    }
+
+    .main-h{
+        height: calc(90vh - 12px);
+    }
+
+    .custom-flex{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .custom-image{
+        width: 100%;
+        justify-content: center;
+    }
+
 }
 
 @media (min-width: 375px) and (max-width: 575px) {
-    .responsive-questionaire {
-        height: calc(40vh - 1rem);
-        width: calc(97vw - 1rem);
-        margin-top: 1rem;
+    .change-pic {
+        width: 71%;
+        margin-left: 48px;
+        bottom: 40px;
+        position: relative;
+    }
+
+    .ques-data {
+        font-family: "Nunito Sans";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 19px;
+        /* identical to box height, or 96% */
+
+        display: flex;
+        align-items: center;
+
+        color: #000000;
+    }
+
+    .main-h{
+        height: calc(90vh - 12px);
+    }
+
+    .custom-flex{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .custom-image{
+        width: 100%;
+        justify-content: center;
     }
 }
 
 /* Small (SM) */
 @media (min-width: 576px) and (max-width: 767px) {
-    .responsive-questionaire {
-        height: calc(40vh - 1rem);
-        width: calc(97vw - 1rem);
-        margin-top: 1rem;
-    }
-}
-
-/* Medium (MD) */
-@media (min-width: 768px) and (max-width: 991px) {
-    .responsive-questionaire {
-        height: calc(40vh - 1rem);
-        width: calc(97vw - 1rem);
-        margin-top: 1rem;
-    }
-
-    .res-margin-top-thumbs {
-    }
-}
-
-/* Large (LG) */
-@media (min-width: 992px) and (max-width: 1199px) {
-    .responsive-questionaire {
-        height: calc(40vh - 1rem);
-        width: calc(97vw - 1rem);
-        margin-top: 1rem;
-    }
-}
-
-/* Extra Large (XL) */
-@media (min-width: 1200px) {
     .change-pic {
         width: 71%;
         margin-left: 40px;
@@ -71,5 +107,121 @@
 
     .main-h{
         height: calc(90vh - 12px);
+    }
+
+    .custom-flex{
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+/* Medium (MD) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .change-pic {
+        width: 71%;
+        margin-left: 40px;
+        bottom: 40px;
+        position: relative;
+    }
+
+    .ques-data {
+        font-family: "Nunito Sans";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 19px;
+        /* identical to box height, or 96% */
+
+        display: flex;
+        align-items: center;
+
+        color: #000000;
+    }
+
+    .main-h{
+        height: calc(90vh - 12px);
+    }
+
+    .set-bot{
+        margin: 1rem 0rem;
+     }
+
+     .custom-flex{
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+/* Large (LG) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .change-pic {
+        width: 71%;
+        margin-left: 40px;
+        bottom: 40px;
+        position: relative;
+    }
+
+    .ques-data {
+        font-family: "Nunito Sans";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 19px;
+        /* identical to box height, or 96% */
+
+        display: flex;
+        align-items: center;
+
+        color: #000000;
+    }
+
+    .main-h{
+        height: calc(90vh - 12px);
+    }
+
+    .set-bot{
+        margin: 1rem 0rem;
+     }
+
+     .custom-flex{
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+/* Extra Large (XL) */
+@media (min-width: 1200px) {
+    .change-pic {
+        width: 71%;
+        margin-left: 32px;
+        bottom: 40px;
+        position: relative;
+    }
+
+    .ques-data {
+        font-family: "Nunito Sans";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 19px;
+        /* identical to box height, or 96% */
+
+        display: flex;
+        align-items: center;
+
+        color: #000000;
+    }
+
+    .main-h{
+        height: calc(90vh - 12px);
+    }
+
+    .set-bot{
+       margin: 1rem 0rem;
+    }
+
+    .custom-flex{
+        display: flex;
+        flex-direction: row;
     }
 }

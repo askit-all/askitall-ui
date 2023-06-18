@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import "./NotificationModal.css";
 
-const NotificationModal = ({ content, children }) => {
+const NotificationModal = ({ notifications, children }) => {
   const [showPopover, setShowPopover] = useState(false);
   const popoverRef = useRef(null);
   const handleModalToggle = () => {
@@ -16,11 +16,11 @@ const NotificationModal = ({ content, children }) => {
     };
 
     if (showPopover) {
-      window.addEventListener('click', handleOutsideClick);
+      window.addEventListener("click", handleOutsideClick);
     }
 
     return () => {
-      window.removeEventListener('click', handleOutsideClick);
+      window.removeEventListener("click", handleOutsideClick);
     };
   }, [showPopover]);
 
@@ -34,9 +34,11 @@ const NotificationModal = ({ content, children }) => {
           <div className="modal-content">
             <h2>Notifications</h2>
             <ul className="notification-list">
-              <li>Notification 1</li>
-              <li>Notification 2</li>
-              <li>Notification 3</li>
+              {notifications && notifications.length ? (
+                notifications.map((notification) => <><li>{notification.desc}</li><hr /></>)
+              ) : (
+                <></>
+              )}
             </ul>
           </div>
         </div>

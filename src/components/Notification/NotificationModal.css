@@ -16,6 +16,7 @@
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    width: 15rem;
   }
   
   .popover-content p {
@@ -36,3 +37,13 @@
     background-color: #0056b3;
   }
   
+
+  h2{
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  li{
+    padding: 1rem;
+  }
