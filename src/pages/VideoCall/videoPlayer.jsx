@@ -4,8 +4,10 @@ export const VideoPlayer = ({ user }) => {
   const ref = useRef();
 
   useEffect(() => {
-    user.videoTrack.play(ref.current);
-  }, []);
+    if(user.videoTrack){
+      user.videoTrack.play(ref.current);
+    }
+  }, [user.videoTrack]);
 
   return (
     <div>
