@@ -143,12 +143,12 @@ export const VideoRoom = () => {
 
   return (
     <div className="video-room-container">
-      <div className="video-grid">
+      <div className="custom-flex w-full">
         {users.map((user) => (
           <VideoPlayer key={user.uid} user={user} />
         ))}
       </div>
-      <div className="controls-container">
+      <div className="controls-container mt-2">
         <button
           className={`control-button ${microphoneEnabled ? 'active' : ''}`}
           onClick={toggleMicrophone}

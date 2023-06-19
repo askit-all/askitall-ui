@@ -42,3 +42,105 @@
   width: 24px;
   height: 24px;
 }
+
+.input-style {
+  border: none;
+  border-bottom: 1px solid lightgray;
+}
+
+/* Extra Small (XS) */
+
+@media (min-width: 320px) and (max-width: 374px) {
+
+  .custom-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem 2rem;
+  }
+
+  .custom-size{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    left: 10%;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 575px) {
+  .custom-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem 2rem;
+  }
+
+  .custom-size{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    left: 20%;
+  }
+}
+
+/* Small (SM) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .custom-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0rem 2rem;
+  }
+
+  .custom-size{
+    width: 200px;
+    height: 200px;
+  }
+}
+
+/* Medium (MD) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .custom-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0rem 2rem;
+  }
+
+  .custom-size{
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* Large (LG) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .custom-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0rem 2rem;
+  }
+
+  .custom-size{
+    width: 400px;
+    height: 300px;
+  }
+}
+
+/* Extra Large (XL) */
+@media (min-width: 1200px) {
+  .custom-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0rem 2rem;
+  }
+
+  .custom-size{
+    width: 600px;
+    height: 400px;
+  }
+}
