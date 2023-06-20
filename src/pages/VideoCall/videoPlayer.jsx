@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-
+import './videoRoom.css';
 export const VideoPlayer = ({ user }) => {
   const ref = useRef();
 
@@ -14,7 +14,7 @@ export const VideoPlayer = ({ user }) => {
       Uid: {user.uid}
       <div
         ref={ref}
-        style={{ width: '600px', height: '400px' }}
+        className='custom-size'
       ></div>
     </div>
   );
