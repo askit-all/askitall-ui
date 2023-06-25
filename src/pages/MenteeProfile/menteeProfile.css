@@ -9,8 +9,7 @@
 
 @media (min-width: 320px) and (max-width: 374px) {
     .change-pic {
-        width: 71%;
-        margin-left: 32px;
+        width: 100%;
         bottom: 40px;
         position: relative;
     }
@@ -47,8 +46,7 @@
 
 @media (min-width: 375px) and (max-width: 575px) {
     .change-pic {
-        width: 71%;
-        margin-left: 48px;
+        width: 100%;
         bottom: 40px;
         position: relative;
     }
@@ -85,8 +83,7 @@
 /* Small (SM) */
 @media (min-width: 576px) and (max-width: 767px) {
     .change-pic {
-        width: 71%;
-        margin-left: 40px;
+        width: 100%;
         bottom: 40px;
         position: relative;
     }
@@ -111,15 +108,14 @@
 
     .custom-flex{
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
     }
 }
 
 /* Medium (MD) */
 @media (min-width: 768px) and (max-width: 991px) {
     .change-pic {
-        width: 71%;
-        margin-left: 40px;
+        width: 100%;
         bottom: 40px;
         position: relative;
     }
@@ -155,8 +151,7 @@
 /* Large (LG) */
 @media (min-width: 992px) and (max-width: 1199px) {
     .change-pic {
-        width: 71%;
-        margin-left: 40px;
+        width: 100%;
         bottom: 40px;
         position: relative;
     }
@@ -192,8 +187,7 @@
 /* Extra Large (XL) */
 @media (min-width: 1200px) {
     .change-pic {
-        width: 71%;
-        margin-left: 32px;
+        width: 100%;
         bottom: 40px;
         position: relative;
     }
