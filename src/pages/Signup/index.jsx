@@ -85,7 +85,8 @@ const SignupPage = () => {
 
       if (response?.data?.data?.success) {
         localStorage.setItem("token", response.data.data.token);
-        navigate("/mentee");
+        localStorage.setItem("userData", JSON.stringify(response?.data?.data?.userData));
+        navigate("/questionnaire");
       }
     });
   }
@@ -177,7 +178,8 @@ const getUserCredentials = code => {
 
       if (response?.data?.data?.success) {
         localStorage.setItem("token", response.data.data.token);
-        navigate("/mentee");
+        localStorage.setItem("userData", JSON.stringify(response?.data?.data?.userData));
+        navigate("/questionnaire");
       }
 
     });

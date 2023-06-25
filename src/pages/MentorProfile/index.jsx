@@ -1,6 +1,7 @@
 import { secured } from "api/interceptors";
 import { Button, Img, Line, RatingBar, Text } from "components";
 import Header from "components/Header";
+import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import "./mentorProfile.css";
 
@@ -20,7 +21,7 @@ const NewprofilementprPage = () => {
   const [showAddDropdown, setShowAddDropdown] = useState(false);
 
   const handleInputChange = (fieldName) => (event) => {
-    console.log("FIN : ", userDetails);
+    console.log("FIN : ", fieldName);
     setUserDetails({ ...userDetails, [fieldName]: event.target.value });
   };
 
@@ -31,10 +32,12 @@ const NewprofilementprPage = () => {
   };
 
   const fetchQuestions = () => {
-    let url = `/questions/user/${userDetails.userid}`;
+    let url = `/questions/users`;
     secured.get(url).then((response) => {
-      console.log(response.data);
-      setQuestionsList(response.data);
+      if(response?.data?.status){
+        setQuestionsList(response.data.data);
+      }
+      
     });
   };
 
@@ -72,23 +75,24 @@ const NewprofilementprPage = () => {
     let payload = {
       name: userDetails.name,
       email: userDetails.email,
-      categories: userDetails.categories.map((el) => el.category_id),
-      active: userDetails.active,
-      type: userDetails.type,
-      userid: userDetails.userid,
-      notifications: userDetails.notifications,
-    };
-
-    if (userData.userinfo) {
-      payload["userinfo"] = {
+      type : "mentor",
+      userinfo : {
         gender: userDetails.userinfo.gender,
         occupation: userDetails.userinfo.occupation,
         aboutyourself: userDetails.userinfo.aboutyourself,
-      };
-    }
-
-    secured.put("/users", payload).then((response) => {
-      fetchUserData();
+      }
+    };
+    
+    secured.post("/users", payload).then((response) => {
+      if(response?.data?.status){
+        toast.success("Profile Updated!", {
+          icon: "👏",
+        });
+        fetchUserData();
+      }else{
+        toast.error("Something went wrong!");
+      }
+      
     });
   };
 

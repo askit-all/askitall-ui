@@ -11,10 +11,12 @@ const ProfilementeePage = () => {
   const [questionsList, setQuestionsList] = useState([]);
   const userDetails = JSON.parse(localStorage.getItem("userData"));
   const fetchQuestions = () => {
-    let url = `/questions/user/${userDetails.userid}`;
+    let url = `/questions/users`;
     secured.get(url).then((response) => {
       console.log(response.data);
-      setQuestionsList(response.data);
+      if(response?.data?.status){
+        setQuestionsList(response.data.data);
+      }
     });
   };
 

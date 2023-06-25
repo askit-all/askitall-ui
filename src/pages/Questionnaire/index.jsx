@@ -4,8 +4,9 @@ import Header from "components/Header";
 import HomePageMenteeOneCard3 from "components/HomePageMenteeOneCard3";
 import React, { useState, useEffect } from "react";
 import "../../styles/questionaire.css"; // Import the CSS file
+import { toast } from "react-hot-toast";
 
-const HomepagementeeOnePage = () => {
+const Questionnaire = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [questionsList, setQuestionsList] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -39,10 +40,13 @@ const HomepagementeeOnePage = () => {
 
   const fetchQuestions = () => {
     secured
-      .get("/questions/148d7f85-39b4-482d-aa07-8c20eaefd64d")
+      .get("/questions")
       .then((response) => {
-        console.log(response.data);
-        setQuestionsList(response.data);
+        if(response?.data?.status){
+          setQuestionsList(response?.data?.data);
+        }else{
+          toast.error("Something went wrong!");
+        }
       });
   };
 
@@ -139,4 +143,4 @@ const HomepagementeeOnePage = () => {
   );
 };
 
-export default HomepagementeeOnePage;
+export default Questionnaire;

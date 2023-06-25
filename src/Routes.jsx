@@ -10,11 +10,13 @@ const Aboutus = React.lazy(() => import("pages/Aboutus"));
 const MentorProfile = React.lazy(() => import("pages/MentorProfile"));
 const Scheduling = React.lazy(() => import("pages/Scheduling"));
 const VideoCall = React.lazy(() => import("pages/VideoCall"));
-const MenteeHomepage = React.lazy(() => import("pages/MenteeHomepage"));
+const Questionnaire = React.lazy(() => import("pages/Questionnaire"));
 const Signup = React.lazy(() => import("pages/Signup"));
 const LandingPage2 = React.lazy(() => import("pages/LandingPage2"));
 const Loginpage = React.lazy(() => import("pages/Loginpage"));
 const Landingpage = React.lazy(() => import("pages/Landingpage"));
+// const LandingPageNew = React.lazy(() => import("pages/LandingPageNew"));
+
 
 // const Superadmindashboard = React.lazy(() =>
 //   import("pages/Superadmindashboard")
@@ -34,8 +36,8 @@ const ProjectRoutes = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/landingpage2" element={<LandingPage2 />} />
          
-          <Route path="/mentee" element={<MenteeHomepage />} />
-          <Route path="/mentor" element={<MentorHomepage />} />
+          <Route path="/questionnaire" element={<Questionnaire />} />
+          {/* <Route path="/mentor" element={<MentorHomepage />} /> */}
           <Route path="/call" element={<VideoCall />} />
           <Route path="/schedule" element={<Scheduling />} />
           <Route path="/mentor-profile" element={<MentorProfile />} />

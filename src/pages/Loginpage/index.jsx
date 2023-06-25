@@ -66,7 +66,7 @@ const LoginPage = () => {
           icon: "👏",
         });
 
-        navigate("/mentee");
+        navigate("/questionnaire");
         // write token to cookie
         // redirect to questions page (private route)
       });
@@ -92,8 +92,9 @@ const LoginPage = () => {
       });
 
       if (response?.data?.data?.success) {
-        localStorage.setItem("token", response.data.data.token);
-        navigate("/mentee");
+        localStorage.setItem("token", response?.data?.data?.token);
+        localStorage.setItem("userData", JSON.stringify(response?.data?.data?.userData));
+        navigate("/questionnaire");
       }
     });
     
@@ -185,8 +186,9 @@ const getUserCredentials = code => {
       });
 
       if (response?.data?.data?.success) {
-        localStorage.setItem("token", response.data.data.token);
-        navigate("/mentee");
+        localStorage.setItem("token", response?.data?.data?.token);
+        localStorage.setItem("userData", JSON.stringify(response?.data?.data?.userData));
+        navigate("/questionnaire");
       }
 
     });
