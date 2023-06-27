@@ -1,0 +1,41 @@
+/* Extra Small (XS) */
+
+@media (min-width: 320px) and (max-width: 374px) {
+    .custom-text {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 375px) and (max-width: 575px) {
+    .custom-text {
+        font-size: 1.5rem;
+    }
+}
+
+/* Small (SM) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .custom-text {
+        font-size: 2rem;
+    }
+}
+
+/* Medium (MD) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .custom-text {
+        font-size: 2.5rem;
+    }
+}
+
+/* Large (LG) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .custom-text {
+        font-size: 2.5rem;
+    }
+}
+
+/* Extra Large (XL) */
+@media (min-width: 1200px) {
+    .custom-text {
+        font-size: 3rem;
+    }
+}

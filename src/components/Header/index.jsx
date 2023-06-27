@@ -1,27 +1,11 @@
-import { Button, Img } from "components";
-import React from "react";
+import { Img } from "components";
+import NotificationModal from "components/Notification";
 import "../../styles/header.css";
 import Popover from "../Popover";
-import NotificationModal from "components/Notification";
-import { useState } from "react";
-import { useEffect } from "react";
-import { secured } from "api/interceptors";
 
 const Header = (props) => {
 
-  const [notifications, setNotifications] = useState([]);
-
-  const fetchNotifications = () => {
-    let url = `/notifications`;
-    secured.get(url).then((response) => {
-      console.log(response.data);
-      setNotifications(response.data);
-    });
-  };
-
-  useEffect(() => {
-    fetchNotifications();
-  },[])
+  
   return (
     <>
       <header className={props.className}>
@@ -65,7 +49,7 @@ const Header = (props) => {
           </div> */}
 
           <div className="flex items-center head-btn-width justify-between">
-            <NotificationModal notifications={notifications}>
+            <NotificationModal>
               <Img
                 className="head-img-width"
                 src="images/img_notification.svg"

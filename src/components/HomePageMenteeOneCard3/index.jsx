@@ -11,7 +11,7 @@ const HomePageMenteeOneCard3 = (props) => {
     validators: {},
   });
 
-  const [type, settype] = useState(null);
+  const [type, settype] = useState('');
   const handleChange = (type) => {
     settype(type.target.value);
   };
@@ -28,7 +28,7 @@ const HomePageMenteeOneCard3 = (props) => {
 
       secured.post("/questions", payload).then((response) => {
         setQuestion("");
-        settype(null);
+        settype('');
         validator.visibleFields = [];
         forceUpdate();
 
@@ -92,7 +92,7 @@ const HomePageMenteeOneCard3 = (props) => {
                 : []
             }
           >
-            <option value="null">Select Category</option>
+            <option value=''>Select Category</option>
             {props.categoryList.map((option) => (
               <option key={option.category_id} value={option.category_id}>
                 {option.name}

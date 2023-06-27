@@ -1,0 +1,55 @@
+/* Extra Small (XS) */
+
+@media (min-width: 320px) and (max-width: 374px) {
+
+    .custom-flex{
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
+@media (min-width: 375px) and (max-width: 575px) {
+
+    .custom-flex{
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
+/* Small (SM) */
+@media (min-width: 576px) and (max-width: 767px) {
+
+    .custom-flex{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* Medium (MD) */
+@media (min-width: 768px) and (max-width: 991px) {
+
+     .custom-flex{
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+/* Large (LG) */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+     .custom-flex{
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+/* Extra Large (XL) */
+@media (min-width: 1200px) {
+   
+    .custom-flex{
+        display: flex;
+        flex-direction: row;
+    }
+}
