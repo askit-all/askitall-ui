@@ -11,24 +11,23 @@ const HomePageMenteeOneCard3 = (props) => {
     validators: {},
   });
 
-  const [type, settype] = useState('');
+  const [type, settype] = useState("");
   const handleChange = (type) => {
     settype(type.target.value);
   };
 
   const handleAdd = () => {
-
-    const userDetails = JSON.parse(localStorage.getItem('userData'));
+    const userDetails = JSON.parse(localStorage.getItem("userData"));
     if (validator.allValid()) {
       const payload = {
         type,
         question,
-        postedBy: userDetails.userid
+        postedBy: userDetails.userid,
       };
 
       secured.post("/questions", payload).then((response) => {
         setQuestion("");
-        settype('');
+        settype("");
         validator.visibleFields = [];
         forceUpdate();
 
@@ -45,15 +44,19 @@ const HomePageMenteeOneCard3 = (props) => {
 
   validator.purgeFields();
 
- 
-
   return (
     <>
       <div className={props.className}>
         <div className="absolute bg-gradient2  p-px rounded-[20px] w-full "></div>
         <div className="absolute bg-white_A700 flex md:flex-col flex-row gap-5 h-full inset-[0] items-center justify-center m-auto p-5 rounded-[14px] shadow-bs2">
           <Img
-            src="images/img_ellipse2.png"
+            src={
+              props.userDetails
+                ? props.userDetails.profileImageUrl
+                  ? props.userDetails.profileImageUrl
+                  : "images/img_ellipse1_150x150.png"
+                : "images/img_ellipse1_150x150.png"
+            }
             className="h-[46px] md:h-auto rounded-[50%] w-[46px]"
             alt="ellipseTwo"
           />
@@ -82,7 +85,7 @@ const HomePageMenteeOneCard3 = (props) => {
             }
           ></Input>
           <select
-          className="rounded-[30px]"
+            className="rounded-[30px]"
             value={type}
             onChange={handleChange}
             onBlur={() => validator.showMessageFor("type")}
@@ -92,7 +95,7 @@ const HomePageMenteeOneCard3 = (props) => {
                 : []
             }
           >
-            <option value=''>Select Category</option>
+            <option value="">Select Category</option>
             {props.categoryList.map((option) => (
               <option key={option.category_id} value={option.category_id}>
                 {option.name}

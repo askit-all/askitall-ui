@@ -90,9 +90,9 @@ const ProfilementeePage = () => {
     let url = `/users/upload`;
     setLoading(true);
     const formData = new FormData();
-    console.log(file);
+   
     formData.append("image", file);
-    console.log(formData);
+   
     secured.post(url, formData).then((response) => {
       console.log(response.data);
       if (response?.data?.status) {
@@ -148,7 +148,11 @@ const ProfilementeePage = () => {
                   <div className="flex flex-col relative custom-image">
                     <div className="md:h-[149px] h-[173px] mx-auto pb-6 sm:px-5 px-6 w-full">
                       <Img
-                        src={userDetails ? userDetails.profileImageUrl : ""}
+                        src={
+                          userDetails
+                            ? userDetails.profileImageUrl
+                            : "images/img_ellipse1_150x150.png"
+                        }
                         className="h-[149px] mx-auto object-cover"
                         style={{ width: "100%" }}
                         alt="images"
@@ -316,7 +320,11 @@ const ProfilementeePage = () => {
                               <div className="flex flex-col items-start justify-start mb-0.5 w-[47%] md:w-full">
                                 <div className="flex flex-row sm:flex-col sm:justify-center gap-[15px] items-center justify-start md:w-full">
                                   <Img
-                                    src="images/img_ellipse2.png"
+                                    src={
+                                      item.profileImageUrl
+                                        ? item.profileImageUrl
+                                        : "images/img_ellipse2.png"
+                                    }
                                     className="h-[46px] md:h-auto rounded-[50%] w-[46px]"
                                     alt="ellipseTwo_One"
                                   />

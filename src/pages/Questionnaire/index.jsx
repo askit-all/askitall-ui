@@ -23,6 +23,7 @@ const Questionnaire = () => {
   const [questionsList, setQuestionsList] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
   const handleButtonClick = () => {
     navigate("/mentor-profile");
   };
@@ -37,7 +38,9 @@ const Questionnaire = () => {
     if (userData.type == "mentor") {
       setLoading(true);
       secured
-        .put("/questions/" + question.questionId + "/upvote", { userId: userData._id })
+        .put("/questions/" + question.questionId + "/upvote", {
+          userId: userData._id,
+        })
         .then((response) => {
           if (response?.data?.status) {
             toast.success(response?.data?.message, {
@@ -78,9 +81,20 @@ const Questionnaire = () => {
     fetchQuestions();
   };
 
+  const fetchUserData = () => {
+    setLoading(true);
+    secured.get("/users").then((response) => {
+      setUserDetails({
+        ...response.data.data,
+      });
+      setLoading(false);
+    });
+  };
+
   useEffect(() => {
     fetchCategories();
     fetchQuestions();
+    fetchUserData();
   }, []);
 
   return (
@@ -110,10 +124,11 @@ const Questionnaire = () => {
       )}
       <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto pb-[1rem] w-full responsive-view">
         <Header className="bg-orange_500 w-full" />
-        {categoryList && categoryList.length && (
+        {userDetails && categoryList && categoryList.length && (
           <HomePageMenteeOneCard3
             onChange={reloadQuestions}
             categoryList={categoryList}
+            userDetails={userDetails}
             className="responsive-questionaire md:px-5 relative w-full"
           />
         )}
@@ -129,7 +144,11 @@ const Questionnaire = () => {
                 <div className="flex flex-col items-start justify-start mb-0.5 w-[47%] md:w-full">
                   <div className="flex flex-row sm:flex-col sm:justify-center gap-[15px] items-center justify-start md:w-full">
                     <Img
-                      src="images/img_ellipse2.png"
+                      src={
+                        item.profileImageUrl
+                          ? item.profileImageUrl
+                          : "images/img_ellipse2.png"
+                      }
                       className="h-[46px] md:h-auto rounded-[50%] w-[46px]"
                       alt="ellipseTwo_One"
                     />

@@ -35,7 +35,7 @@ const ModalForUpvoteError = ({
             <h3 className="flex items-center justify-center font-bold title-height">
               Error
             </h3>
-            <p className="flex justify-center w-full items-center">An error occurred. Please fill in the details.</p>
+            <p className="flex justify-center w-full items-center">To upvote , profile needs to be mentor profile.</p>
             <div className="flex w-full justify-center items-center mt-5">
               <button className="bg-orange-500 rounded-[30px]" style={{color:'white' , fontWeight:'600',padding:'1rem'}} onClick={onButtonClick}>Fill Details</button>
             </div>
