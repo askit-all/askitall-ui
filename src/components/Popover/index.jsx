@@ -22,6 +22,10 @@ const Popover = ({ content, children }) => {
 
   };
 
+  const handleHomePage = () => {
+    history("/questionnaire");
+  }
+
   const handleLogout = () => {
     localStorage.clear();
     setShowPopover(false); // Hide the popover after logout
@@ -53,6 +57,7 @@ const Popover = ({ content, children }) => {
       {showPopover && (
         <div className="popover-content">
             <ul>
+                <li className="pop-inner" onClick={handleHomePage}>Home</li>
                 <li className="pop-inner" onClick={handleEditProfile}>Edit Profile</li>
                 <li className="pop-inner" onClick={handleLogout}>Logout</li>
             </ul>
