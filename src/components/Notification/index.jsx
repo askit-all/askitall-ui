@@ -26,7 +26,7 @@ const NotificationModal = ({ children }) => {
     setLoading(true);
     let url = `/notifications`;
     secured.get(url).then((response) => {
-      setNotifications(response.data);
+      setNotifications(response.data.data);
       setLoading(false);
     });
   };
@@ -81,14 +81,14 @@ const NotificationModal = ({ children }) => {
           {children}
         </div>
         {showPopover && (
-          <div className="popover-content">
+          <div className="popover-content-noti">
             <div className="modal-content">
               <h2>Notifications List</h2>
               <ul className="notification-list">
                 {notifications && notifications.length ? (
-                  notifications.map((notification) => (
+                  notifications.map((notification,index) => (
                     <>
-                      <li>{notification.desc}</li>
+                      <li key={index}>{notification.desc}</li>
                       <hr />
                     </>
                   ))
