@@ -22,8 +22,8 @@ const Landingpage = React.lazy(() => import("pages/Landingpage"));
 //   import("pages/Superadmindashboard")
 // );
 // const DesktopThree = React.lazy(() => import("pages/DesktopThree"));
-// const DesktopTwo = React.lazy(() => import("pages/DesktopTwo"));
-// const DesktopOne = React.lazy(() => import("pages/DesktopOne"));
+const BookingTab = React.lazy(() => import("pages/DesktopTwo"));
+const DesktopOne = React.lazy(() => import("pages/DesktopOne"));
 const ProjectRoutes = () => {
   return (
     <React.Suspense fallback={<>Loading...</>}>
@@ -45,6 +45,11 @@ const ProjectRoutes = () => {
           <Route path="/about-us" element={<Aboutus />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/tc" element={<Termsandcondition />} />
+
+          <Route path="/mentor-profile-new" element={<DesktopOne />} />
+          <Route path="/booking-tab" element={<BookingTab />} />
+
+          
 
            {/* <Route
             path="/superadmindashboard"

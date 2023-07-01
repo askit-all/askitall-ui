@@ -8,7 +8,7 @@ const egJobSearchCareerTransitionEtcOptionsList = [
   { label: "Option3", value: "option3" },
 ];
 
-const DesktopOnePage = () => {
+const ProfleHome = () => {
   return (
     <>
       <div className="bg-white_A700_01 flex sm:flex-col md:flex-col flex-row font-nunitosans sm:gap-5 md:gap-5 items-start justify-start mx-auto md:px-10 sm:px-5 px-[100px] w-full">
@@ -274,4 +274,4 @@ const DesktopOnePage = () => {
   );
 };
 
-export default DesktopOnePage;
+export default ProfleHome;
