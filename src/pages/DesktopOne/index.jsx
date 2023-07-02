@@ -1,6 +1,11 @@
-import React from "react";
+import { useState } from "react";
 
-import { Button, Img, Line, SeekBar, SelectBox, Text } from "components";
+import { Img, Text } from "components";
+import Header from "components/Header";
+import DesktopTwoPage from "pages/DesktopTwo";
+import ProfilementeePage from "pages/MenteeProfile";
+import NewprofilementprPage from "pages/MentorProfile";
+import { useNavigate } from "react-router-dom";
 
 const egJobSearchCareerTransitionEtcOptionsList = [
   { label: "Option1", value: "option1" },
@@ -9,116 +14,134 @@ const egJobSearchCareerTransitionEtcOptionsList = [
 ];
 
 const ProfleHome = () => {
+
+  const history = useNavigate();
+
+  const [tabSelected, setTabSelected] = useState("home");
+  const userDetails = JSON.parse(localStorage.getItem("userData"));
+  const handleTabChange = (type) => {
+    setTabSelected(type);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    history("/login");
+  };
+
   return (
     <>
-      <div className="bg-white_A700_01 flex sm:flex-col md:flex-col flex-row font-nunitosans sm:gap-5 md:gap-5 items-start justify-start mx-auto md:px-10 sm:px-5 px-[100px] w-full">
-        <div className="flex flex-col items-center justify-start md:mt-0 mt-[57px] w-[21%] md:w-full">
-          <div className="flex flex-col gap-[31px] items-start justify-start w-full">
-            <div className="flex flex-row gap-[21px] items-center justify-between w-full">
+      <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto w-full responsive-view">
+        <Header className="bg-orange_500 w-full" />
+        <div className="bg-white_A700_01 flex sm:flex-col w-full">
+          <div className="w-[30%] sm:w-full border-r-2 border-gray-300 p-[1rem]">
+            <div className="flex flex-col items-center mb-5">
               <Img
-                src="images/img_ellipse7.png"
+                src={
+                  userDetails
+                    ? userDetails.profileImageUrl
+                      ? userDetails.profileImageUrl
+                      : "images/img_ellipse1_150x150.png"
+                    : "images/img_ellipse1_150x150.png"
+                }
                 className="h-20 md:h-auto rounded-[50%] w-20"
                 alt="ellipseSeven"
               />
-              <div className="md:h-[35px] h-[62px] relative w-[61%]">
+              <div className="my-4">
                 <Text
-                  className="absolute font-bold inset-x-[0] mx-auto text-blue_gray_900_06 top-[0] w-max"
+                  className="font-bold my-3 inset-x-[0] mx-auto text-blue_gray_900_06 top-[0] w-max"
                   variant="body6"
                 >
-                  Anand Singh
-                </Text>
-                <Text
-                  className="absolute bottom-[0] font-normal left-[0] text-blue_gray_500"
-                  variant="body10"
-                >
-                  View Profile
+                  {userDetails.name}
                 </Text>
               </div>
             </div>
-            <div className="flex flex-row gap-[26px] items-center justify-start ml-0.5 md:ml-[0] w-[73%] md:w-full">
-              <div className="flex flex-col gap-10 items-start justify-start w-auto">
-                <Img
-                  src="images/img_home_orange_500.svg"
-                  className="h-5 w-5"
-                  alt="home"
-                />
-                <div className="flex flex-col gap-10 items-start justify-start w-auto">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-evenly sm:w-100">
+              <div
+                className={`flex justify-evenly items-center my-3 ${
+                  tabSelected === "home" ? "tab-selected" : ""
+                }`}
+                onClick={() => handleTabChange("home")}
+              >
+                <div className="flex justify-end w-[30%]">
                   <Img
-                    src="images/img_contrast.svg"
+                    src="images/img_home.svg"
                     className="h-5 w-5"
-                    alt="contrast"
+                    alt="home"
                   />
+                </div>
+                <div className="ml-10 sm:ml-3 w-[70%]">
+                  <Text className="font-semibold" variant="body10">
+                    Home{" "}
+                  </Text>
+                </div>
+              </div>
+              <div
+                className={`flex justify-evenly items-center my-3 ${
+                  tabSelected === "booking" ? "tab-selected" : ""
+                }`}
+                onClick={() => handleTabChange("booking")}
+              >
+                <div className="flex justify-end w-[30%]">
                   <Img
                     src="images/img_clock_blue_gray_900_07.svg"
                     className="h-5 w-5"
                     alt="clock"
                   />
-                  <Img
-                    src="images/img_trophy.svg"
-                    className="h-5 w-5"
-                    alt="trophy"
-                  />
-                  <Img
-                    src="images/img_user_blue_gray_900_07.svg"
-                    className="h-5 w-5"
-                    alt="user"
-                  />
-                  <Img src="images/img_map.svg" className="h-5 w-5" alt="map" />
+                </div>
+                <div className="ml-10 sm:ml-3 w-[70%]">
+                  <Text
+                    className="font-semibold text-blue_gray_900_07"
+                    variant="body10"
+                  >
+                    Bookings
+                  </Text>
+                </div>
+              </div>
+
+              <div
+                className="flex justify-evenly items-center my-3"
+                onClick={() => handleLogout()}
+              >
+                <div className="flex justify-end w-[30%]">
                   <Img
                     src="images/img_arrowright.svg"
                     className="h-5 w-5"
                     alt="arrowright"
                   />
                 </div>
-              </div>
-              <div className="flex flex-col gap-[33px] items-start justify-start">
-                <Text
-                  className="font-semibold text-orange_500"
-                  variant="body10"
-                >
-                  Home{" "}
-                </Text>
-                <Text
-                  className="font-semibold text-blue_gray_900_07"
-                  variant="body10"
-                >
-                  Messages
-                </Text>
-                <Text
-                  className="font-semibold text-blue_gray_900_07"
-                  variant="body10"
-                >
-                  Bookings
-                </Text>
-                <Text
-                  className="font-semibold text-blue_gray_900_07"
-                  variant="body10"
-                >
-                  Achievements
-                </Text>
-                <Text
-                  className="font-semibold text-blue_gray_900_07"
-                  variant="body10"
-                >
-                  Connections
-                </Text>
-                <Text
-                  className="font-semibold text-blue_gray_900_07"
-                  variant="body10"
-                >
-                  Group Sessions
-                </Text>
-                <a
-                  href="javascript:"
-                  className="font-semibold text-blue_gray_900_07"
-                >
-                  <Text variant="body10">Logout</Text>
-                </a>
+                <div className="ml-10 sm:ml-3 w-[70%]">
+                  <a
+                    href="javascript:"
+                    className="font-semibold text-blue_gray_900_07"
+                  >
+                    <Text variant="body10">Logout</Text>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <Line className="bg-blue_gray_100_01 h-[786px] md:h-px md:ml-[0] ml-[69px] md:w-full w-px" />
+
+          <div className="w-[70%] sm:w-full md:w-[70%]">
+            {tabSelected == "home" &&
+            userDetails &&
+            userDetails.type == "mentor" ? (
+              <NewprofilementprPage showHeader={false} />
+            ) : (
+              <></>
+            )}
+
+            {tabSelected == "home" &&
+            userDetails &&
+            userDetails.type == "mentee" ? (
+              <ProfilementeePage showHeader={false} />
+            ) : (
+              <></>
+            )}
+
+            {tabSelected == "booking" ? <DesktopTwoPage /> : <></>}
+          </div>
+
+          {/* <Line className="bg-blue_gray_100_01 h-[786px] md:h-px md:ml-[0] ml-[69px] md:w-full w-px" />
         <div className="flex flex-col gap-[11px] justify-start md:ml-[0] ml-[46px] md:mt-0 mt-[47px] w-[64%] md:w-full">
           <div className="flex flex-col items-center justify-start ml-2.5 md:ml-[0] w-[46%] md:w-full">
             <div className="flex flex-col gap-[11px] items-start justify-start w-full">
@@ -256,8 +279,8 @@ const ProfleHome = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="bg-gray_400_02 flex flex-col md:gap-10 gap-[598px] items-center justify-start ml-14 md:ml-[0] md:px-5 w-[2%] md:w-full">
+        </div> */}
+          {/* <div className="bg-gray_400_02 flex flex-col md:gap-10 gap-[598px] items-center justify-start ml-14 md:ml-[0] md:px-5 w-[2%] md:w-full">
           <div className="bg-gray_300_04 flex flex-col items-center justify-start p-0.5 w-full">
             <Img src="images/img_vector.svg" className="h-1" alt="vector" />
           </div>
@@ -268,6 +291,7 @@ const ProfleHome = () => {
               alt="vector_One"
             />
           </div>
+        </div> */}
         </div>
       </div>
     </>

@@ -1,12 +1,18 @@
-import React from "react";
-
+import React, { useState } from "react";
+import "./tabs.css";
 import { Button, Img, Input, Line, Text } from "components";
 
 const DesktopTwoPage = () => {
+  const [activeTab, setActiveTab] = useState("Upcoming");
+
+  const handleTabClick = (label) => {
+    setActiveTab(label);
+  };
+
   return (
     <>
       <div className="bg-white_A700_01 flex sm:flex-col md:flex-col flex-row font-nunitosans sm:gap-5 md:gap-5 items-start justify-start mx-auto md:px-10 sm:px-5 px-[100px] w-full">
-        <div className="flex flex-col gap-[34px] items-start justify-start md:mt-0 mt-[57px] w-[21%] md:w-full">
+        {/* <div className="flex flex-col gap-[34px] items-start justify-start md:mt-0 mt-[57px] w-[21%] md:w-full">
           <div className="flex flex-row gap-[21px] items-center justify-between w-full">
             <Img
               src="images/img_ellipse7.png"
@@ -107,107 +113,61 @@ const DesktopTwoPage = () => {
             </div>
           </div>
         </div>
-        <Line className="bg-blue_gray_100_01 h-[786px] md:h-px md:ml-[0] ml-[69px] md:w-full w-px" />
+        <Line className="bg-blue_gray_100_01 h-[786px] md:h-px md:ml-[0] ml-[69px] md:w-full w-px" /> */}
         <div className="flex flex-col items-center justify-start md:ml-[0] ml-[63px] md:mt-0 mt-[72px] w-[68%] md:w-full">
           <div className="flex flex-col gap-8 items-start justify-start w-full">
             <div className="flex flex-col items-start justify-start w-full">
               <Text className="font-bold text-gray_900" as="h5" variant="h5">
                 Bookings
               </Text>
-              <div className="flex md:flex-col flex-row md:gap-5 items-center justify-start mt-[18px] w-[91%] md:w-full">
-                <Text className="font-normal text-black_900" variant="body6">
-                  <span className="md:text-[23px] sm:text-[21px] text-blue_gray_900_07 text-[25px] font-nunitosans text-left">
-                    This session sre following your local timezone
-                  </span>
-                  <span className="md:text-[23px] sm:text-[21px] text-black_900 text-[25px] font-nunitosans text-left">
-                    {" "}
-                  </span>
-                  <span className="md:text-[23px] sm:text-[21px] text-black_900 text-[25px] font-nunitosans text-left font-semibold">
-                    Asia/Calcutta
-                  </span>
-                  <span className="md:text-[23px] sm:text-[21px] text-black_900 text-[25px] font-nunitosans text-left">
-                    {" "}
-                  </span>
-                </Text>
-                <Text
-                  className="font-normal md:ml-[0] ml-[5px] text-amber_A700_01"
-                  variant="body6"
-                >
-                  Update
-                </Text>
+
+              <div className="tabs-container">
+                <Tab
+                  label="Upcoming"
+                  activeTab={activeTab}
+                  onClick={handleTabClick}
+                />
+                <Tab
+                  label="Pending"
+                  activeTab={activeTab}
+                  onClick={handleTabClick}
+                />
+
+                <Tab
+                  label="Past"
+                  activeTab={activeTab}
+                  onClick={handleTabClick}
+                />
+
+                <Tab
+                  label="Cancelled"
+                  activeTab={activeTab}
+                  onClick={handleTabClick}
+                />
               </div>
-              <Input
-                wrapClassName="flex mt-[22px] w-[93%]"
-                className="font-normal md:text-[21px] p-0 placeholder:text-black_900 sm:text-[19px] text-[23px] text-black_900 text-left w-full"
-                name="language_Three"
-                placeholder="Keep track of the quality of sessions as you go. View Quality "
-                prefix={
-                  <div className="mt-px mb-1.5 mr-[11px] sm:w-full sm:mx-0 w-[3%] bg-orange_500">
-                    <Img
-                      src="images/img_airplane.svg"
-                      className="my-auto"
-                      alt="airplane"
-                    />
-                  </div>
-                }
-                shape="RoundedBorder10"
-                size="lg"
-                variant="FillYellow50"
-              ></Input>
-              <div className="flex flex-col items-center justify-start mt-10 w-full">
-                <div className="flex flex-col items-start justify-start w-full">
-                  <div className="flex sm:flex-col flex-row sm:gap-5 items-start justify-start w-3/5 md:w-full">
-                    <Text
-                      className="font-semibold text-black_900"
-                      variant="body10"
-                    >
-                      Upcoming{" "}
-                    </Text>
-                    <Text
-                      className="font-semibold sm:ml-[0] ml-[69px] text-black_900"
-                      variant="body10"
-                    >
-                      Pending
-                    </Text>
-                    <Text
-                      className="font-semibold sm:ml-[0] ml-[77px] text-black_900"
-                      variant="body10"
-                    >
-                      Past{" "}
-                    </Text>
-                    <Text
-                      className="font-semibold sm:ml-[0] ml-[57px] text-black_900"
-                      variant="body10"
-                    >
-                      Cancelled
-                    </Text>
-                  </div>
-                  <div className="h-0.5 md:h-1 mt-0.5 relative w-full">
-                    <Line className="absolute bg-blue_gray_100_01 bottom-[0] h-px inset-x-[0] mx-auto w-full" />
-                    <Line className="absolute bg-orange_500 h-0.5 inset-y-[0] left-[0] my-auto w-[12%]" />
-                  </div>
-                </div>
+
+              <div className="tab-content">
+                {activeTab === "Upcoming" ? "No Upcoming booking" : <></>}
+                {activeTab === "Pending" ? "No Pending booking" : <></>}
+                {activeTab === "Past" ? "No Past booking" : <></>}
+                {activeTab === "Cancelled" ? "No Cancelled booking" : <></>}
               </div>
-              <Text
-                className="font-semibold mt-[35px] text-blue_gray_500"
-                variant="body10"
-              >
-                You have no upcoming booking - start sharing a conversation with
-                a mentor.
-              </Text>
             </div>
-            <Button
-              className="cursor-pointer font-semibold leading-[normal] min-w-[243px] text-center text-white_A700_01 text-xl"
-              shape="CircleBorder25"
-              size="lg"
-              variant="OutlineGray40001"
-            >
-              Explore mentors
-            </Button>
           </div>
         </div>
       </div>
     </>
+  );
+};
+
+const Tab = ({ label, content, activeTab, onClick }) => {
+  return (
+    <div
+      className={`tab ${activeTab === label ? "active" : ""}`}
+      onClick={() => onClick(label)}
+    >
+      {label}
+    </div>
   );
 };
 

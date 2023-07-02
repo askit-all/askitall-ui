@@ -3,11 +3,13 @@ import { Button, Img, Line, RatingBar, Text } from "components";
 import Header from "components/Header";
 import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import "./mentorProfile.css";
 
 import { css } from "@emotion/react";
 import { BeatLoader } from "react-spinners";
 import { useRef } from "react";
+import ProgressBar from "components/ProgressBar";
 
 // CSS styles for the loader
 const override = css`
@@ -16,7 +18,9 @@ const override = css`
   border-color: red;
 `;
 
-const NewprofilementprPage = () => {
+const NewprofilementprPage = (props) => {
+  const history = useLocation();
+
   const [questionsList, setQuestionsList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
@@ -30,9 +34,17 @@ const NewprofilementprPage = () => {
     setUserDetails({ ...userDetails, [fieldName]: event.target.value });
   };
 
+  const { id } = useParams();
+
+  useEffect(() => {
+    fetchCategories();
+    fetchUserData();
+    fetchQuestions();
+  }, [history]);
+
   const fetchQuestions = () => {
     setLoading(true);
-    let url = `/questions/users`;
+    let url = id ? `/questions/users/${id}` : "/questions/users";
     secured.get(url).then((response) => {
       if (response?.data?.status) {
         setQuestionsList(response.data.data);
@@ -43,7 +55,9 @@ const NewprofilementprPage = () => {
 
   const fetchUserData = () => {
     setLoading(true);
-    secured.get("/users").then((response) => {
+
+    let url = id ? `/users/${id}` : "/users";
+    secured.get(url).then((response) => {
       setUserDetails({
         ...response.data.data,
         gender: response.data.data.userinfo
@@ -192,7 +206,7 @@ const NewprofilementprPage = () => {
     const formData = new FormData();
 
     formData.append("image", file);
-  
+
     secured.post(url, formData).then((response) => {
       console.log(response.data);
       if (response?.data?.status) {
@@ -205,11 +219,11 @@ const NewprofilementprPage = () => {
     });
   };
 
-  useEffect(() => {
-    fetchCategories();
-    fetchUserData();
-    fetchQuestions();
-  }, []);
+  // useEffect(() => {
+  //   fetchCategories();
+  //   fetchUserData();
+  //   fetchQuestions();
+  // }, []);
   return (
     <>
       {loading && (
@@ -236,13 +250,17 @@ const NewprofilementprPage = () => {
         </div>
       )}
       <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto w-full responsive-view">
-        <Header className="bg-orange_500 w-full" />
+        {props.showHeader == false ? (
+          <></>
+        ) : (
+          <Header className="bg-orange_500 w-full" />
+        )}
         {userDetails && (
           <div className="bg-gradient3  flex flex-col font-segoeui items-center justify-end mx-auto p-[23px] sm:px-5 w-full">
-            <div className="flex md:flex-col flex-row gap-2 justify-evenly w-full">
+            <div className="flex md:flex-col flex-row gap-2 w-full">
               <div
                 className="bg-white_A700_01 md:mt-0 p-2.5 rounded shadow-bs12 w-[33%] md:w-full"
-                style={{ height: "calc(100vh - 13rem)" }}
+                // style={{ maxHeight: "calc(100vh - 13rem)" }}
               >
                 <div className="flex justify-end m-auto w-[91%]">
                   <div className="flex flex-col h-full inset-[0] items-center m-auto w-full">
@@ -252,6 +270,8 @@ const NewprofilementprPage = () => {
                           src={
                             userDetails
                               ? userDetails.profileImageUrl
+                                ? userDetails.profileImageUrl
+                                : "images/img_ellipse1_150x150.png"
                               : "images/img_ellipse1_150x150.png"
                           }
                           className="h-[150px] md:h-auto rounded-[50%] w-[150px]"
@@ -263,6 +283,7 @@ const NewprofilementprPage = () => {
                           id="fileInput"
                           type="file"
                           ref={fileInputRef}
+                          disabled={id}
                           onChange={handleFileChange}
                           style={{ display: "none" }}
                         />
@@ -277,26 +298,34 @@ const NewprofilementprPage = () => {
 
                     <div className="grid grid-cols-2 w-full">
                       {userDetails.categories &&
-                        userDetails.categories.length ?
+                      userDetails.categories.length ? (
                         userDetails.categories.map((category, index) => (
                           <>
-                            <div className=" bg-white_A700_01 flex flex-row items-center justify-between p-1 my-2 rounded">
+                            <div className=" bg-white_A700_01 flex flex-row items-center justify-evenly p-1 my-2 rounded">
                               <Text
                                 className="font-normal ml-[7px] text-gray_900"
                                 variant="body12"
                               >
                                 {category.name}
                               </Text>
-                              <Img
-                                src="images/img_close.svg"
-                                className="h-[18px] mr-2.5 w-[18px]"
-                                alt="close"
-                                name={{ index }}
-                                onClick={() => removeCategory(index)}
-                              />
+
+                              {id ? (
+                                <></>
+                              ) : (
+                                <Img
+                                  src="images/img_close.svg"
+                                  className="h-[18px] mr-2.5 w-[18px]"
+                                  alt="close"
+                                  name={{ index }}
+                                  onClick={() => removeCategory(index)}
+                                />
+                              )}
                             </div>
                           </>
-                        )) : <></>}
+                        ))
+                      ) : (
+                        <></>
+                      )}
 
                       {showAddDropdown && (
                         <>
@@ -328,13 +357,17 @@ const NewprofilementprPage = () => {
                       )}
                     </div>
 
-                    <Text
-                      className="font-bold mt-[15px] text-orange_500"
-                      variant="body12"
-                      onClick={handleAddChange}
-                    >
-                      Add Categories
-                    </Text>
+                    {id ? (
+                      <></>
+                    ) : (
+                      <Text
+                        className="font-bold mt-[15px] text-orange_500"
+                        variant="body12"
+                        onClick={handleAddChange}
+                      >
+                        Add Categories
+                      </Text>
+                    )}
 
                     <Text
                       className="font-nunitosans font-semibold italic mt-[30px] text-gray_900"
@@ -362,7 +395,10 @@ const NewprofilementprPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex md:flex-1 flex-col gap-3 items-center justify-start md:w-full">
+              <div
+                className="flex md:flex-1 flex-col gap-3 items-center w-[66%] justify-start md:w-full"
+                // style={{ maxHeight: "calc(100vh - 13rem)" }}
+              >
                 <div className="bg-white_A700_01 flex flex-col items-center justify-start pl-1 py-1 rounded w-[99%] md:w-full">
                   <div className="flex flex-col gap-[15px] justify-start my-[9px] w-full">
                     <div className="flex flex-row items-center px-[15px] w-auto">
@@ -376,11 +412,12 @@ const NewprofilementprPage = () => {
                         type="text"
                         className="font-normal text-gray-600-01 input-style w-[70%]"
                         variant="body14"
+                        readOnly={id}
                         value={userDetails.name}
                         onChange={handleInputChange("name")}
                       />
                     </div>
-                    <Line className="bg-black_900_19 h-px w-[96%]" />
+                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
                     <div className="flex flex-row items-center px-[15px] w-auto">
                       <Text
                         className="font-normal text-gray-900 w-[30%]"
@@ -390,14 +427,14 @@ const NewprofilementprPage = () => {
                       </Text>
                       <input
                         type="text"
-                        className="font-normal text-gray-600-01 w-auto input-style w-[70%]"
+                        className="font-normal text-gray-600-01 input-style w-[70%]"
                         variant="body14"
                         readOnly={true}
                         value={userDetails.email}
                         onChange={handleInputChange("email")}
                       />
                     </div>
-                    <Line className="bg-black_900_19 h-px w-[96%]" />
+                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
                     <div className="flex flex-row items-center px-[15px] w-auto">
                       <Text
                         className="font-normal mb-0.5 text-gray-900 w-[30%]"
@@ -409,11 +446,12 @@ const NewprofilementprPage = () => {
                         type="text"
                         className="font-normal text-gray-600-01 input-style w-[70%]"
                         variant="body14"
+                        readOnly={id}
                         value={userDetails.occupation}
                         onChange={handleInputChange("occupation")}
                       />
                     </div>
-                    <Line className="bg-black_900_19 h-px w-[96%]" />
+                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
                     <div className="flex flex-row items-center px-[15px] w-auto">
                       <Text
                         className="font-normal text-gray-900 w-[30%]"
@@ -421,40 +459,52 @@ const NewprofilementprPage = () => {
                       >
                         Gender
                       </Text>
-                      <div className=" w-[70%]">
-                        <label className="ml-5">
-                          <input
-                            type="radio"
-                            name="gender"
-                            value="male"
-                            checked={userDetails.gender === "male"}
-                            onChange={handleInputChange("gender")}
-                          />
-                          Male
-                        </label>
-                        <label className="ml-5">
-                          <input
-                            type="radio"
-                            name="gender"
-                            value="female"
-                            checked={userDetails.gender === "female"}
-                            onChange={handleInputChange("gender")}
-                          />
-                          Female
-                        </label>
-                        <label className="ml-5">
-                          <input
-                            type="radio"
-                            name="gender"
-                            value="other"
-                            checked={userDetails.gender === "other"}
-                            onChange={handleInputChange("gender")}
-                          />
-                          Other
-                        </label>
-                      </div>
+
+                      {id ? (
+                        <div className="w-70%">
+                          <Text
+                            className="font-normal ml-5 text-gray-900 w-[30%]"
+                            variant="body16"
+                          >
+                            {userDetails.gender}
+                          </Text>
+                        </div>
+                      ) : (
+                        <div className=" w-[70%]">
+                          <label className="ml-5">
+                            <input
+                              type="radio"
+                              name="gender"
+                              value="male"
+                              checked={userDetails.gender === "male"}
+                              onChange={handleInputChange("gender")}
+                            />
+                            Male
+                          </label>
+                          <label className="ml-5">
+                            <input
+                              type="radio"
+                              name="gender"
+                              value="female"
+                              checked={userDetails.gender === "female"}
+                              onChange={handleInputChange("gender")}
+                            />
+                            Female
+                          </label>
+                          <label className="ml-5">
+                            <input
+                              type="radio"
+                              name="gender"
+                              value="other"
+                              checked={userDetails.gender === "other"}
+                              onChange={handleInputChange("gender")}
+                            />
+                            Other
+                          </label>
+                        </div>
+                      )}
                     </div>
-                    <Line className="bg-black_900_19 h-px w-[96%]" />
+                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
 
                     <div className="flex flex-row items-center px-[15px] w-auto">
                       <Text
@@ -468,6 +518,7 @@ const NewprofilementprPage = () => {
                       <textarea
                         rows={3}
                         cols={50}
+                        readOnly={id}
                         className="font-normal text-gray-600-01 w-[70%] input-style"
                         variant="body14"
                         value={userDetails?.aboutyourself}
@@ -475,16 +526,112 @@ const NewprofilementprPage = () => {
                       />
                       {/* </div> */}
                     </div>
-                    <div className="flex sm:flex-col px-[15px] flex-row sm:gap-10 gap-[108px] items-start justify-start w-[90%] md:w-full">
-                      <Button
-                        className="cursor-pointer font-normal min-w-[53px] text-base text-center text-white_A700_01"
-                        shape="RoundedBorder4"
-                        size="md"
-                        variant="OutlineGray900"
-                        onClick={handleUpdate}
-                      >
-                        Update
-                      </Button>
+
+                    {id ? (
+                      <></>
+                    ) : (
+                      <div className="flex sm:flex-col px-[15px] flex-row sm:gap-10 gap-[108px] items-start justify-start w-[90%] md:w-full">
+                        <Button
+                          className="cursor-pointer font-normal min-w-[53px] text-base text-center text-white_A700_01"
+                          shape="RoundedBorder4"
+                          size="md"
+                          variant="OutlineGray900"
+                          onClick={handleUpdate}
+                        >
+                          Update
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex md:flex-col justify-between w-full">
+                  <div className="bg-white_A700_01 w-[49%] mb-3 md:w-full p-[1rem] flex flex-col">
+                    <div className="flex justify-between items-center">
+                      <span className="my-3 font-semibold text-xl">
+                        Expertise
+                      </span>
+
+                      <span>Add Expertise</span>
+                    </div>
+
+                    <div className="flex my-3 justify-between items-center">
+                      <div className="flex flex-col w-full">
+                        <div className="flex justify-between">
+                          <span>Web Design</span>
+                          <span>80%</span>
+                        </div>
+
+                        <ProgressBar progress={80} duration={100} />
+                      </div>
+                    </div>
+                    <div className="flex my-3 justify-between items-center">
+                      <div className="flex flex-col w-full">
+                        <div className="flex justify-between">
+                          <span>Web Design</span>
+                          <span>80%</span>
+                        </div>
+
+                        <ProgressBar progress={80} duration={100} />
+                      </div>
+                    </div>
+                    <div className="flex my-3 justify-between items-center">
+                      <div className="flex flex-col w-full">
+                        <div className="flex justify-between">
+                          <span>Web Design</span>
+                          <span>80%</span>
+                        </div>
+
+                        <ProgressBar progress={80} duration={100} />
+                      </div>
+                    </div>
+                    <div className="flex my-3 justify-between items-center">
+                      <div className="flex flex-col w-full">
+                        <div className="flex justify-between">
+                          <span>Web Design</span>
+                          <span>80%</span>
+                        </div>
+
+                        <ProgressBar progress={80} duration={100} />
+                      </div>
+                    </div>
+                    <div className="flex my-3 justify-between items-center">
+                      <div className="flex flex-col w-full">
+                        <div className="flex justify-between">
+                          <span>Web Design</span>
+                          <span>80%</span>
+                        </div>
+
+                        <ProgressBar progress={80} duration={100} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-white_A700_01 w-[49%] mb-3 md:w-full p-[1rem] flex flex-col">
+                    <div className="flex justify-between items-center">
+                      <span className="my-3 font-semibold text-xl">
+                        Analytics
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap my-3 justify-evenly p-[0.5rem] bg-white_A700_01 shadow-bs2 items-center">
+                      <Img src="/images/analytics1.png" alt="ellipseOne_One" />
+                      <span className="text-xl font-semibold">
+                        Total Learning Time
+                      </span>
+                      <span className="text-2xl text-orange_500">0</span>
+                    </div>
+                    <div className="flex my-3 flex-wrap justify-evenly p-[0.5rem] bg-white_A700_01 shadow-bs2 items-center">
+                      <Img src="/images/analytics2.png" alt="ellipseOne_One" />
+                      <span className="text-xl font-semibold">
+                        Average Attendence
+                      </span>
+                      <span className="text-2xl text-orange_500">0</span>
+                    </div>
+                    <div className="flex flex-wrap my-3 justify-evenly p-[0.5rem] bg-white_A700_01 shadow-bs2 items-center">
+                      <Img src="/images/analytics3.png" alt="ellipseOne_One" />
+                      <span className="text-xl font-semibold">
+                        Session Completed
+                      </span>
+                      <span className="text-2xl text-orange_500">0</span>
                     </div>
                   </div>
                 </div>
