@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
 import "./menteeProfile.css";
+import { useLocation, useParams } from "react-router-dom";
 
 // CSS styles for the loader
 const override = css`
@@ -14,16 +15,19 @@ const override = css`
   border-color: red;
 `;
 
-const ProfilementeePage = () => {
+const ProfilementeePage = (props) => {
   const [loading, setLoading] = useState(false);
   const [questionsList, setQuestionsList] = useState([]);
   const [userDetails, setUserDetails] = useState(null);
 
+  const history = useLocation();
+  const { id } = useParams();
   const fileInputRef = useRef(null);
 
   const fetchUserData = () => {
     setLoading(true);
-    secured.get("/users").then((response) => {
+    let url = id ? `/users/${id}` : "/users";
+    secured.get(url).then((response) => {
       console.log("res", response.data.data);
       setUserDetails({
         ...response.data.data,
@@ -75,8 +79,8 @@ const ProfilementeePage = () => {
   };
 
   const fetchQuestions = () => {
-    let url = `/questions/users`;
     setLoading(true);
+    let url = id ? `/questions/users/${id}` : "/questions/users";
     secured.get(url).then((response) => {
       console.log(response.data);
       if (response?.data?.status) {
@@ -90,9 +94,9 @@ const ProfilementeePage = () => {
     let url = `/users/upload`;
     setLoading(true);
     const formData = new FormData();
-   
+
     formData.append("image", file);
-   
+
     secured.post(url, formData).then((response) => {
       console.log(response.data);
       if (response?.data?.status) {
@@ -108,7 +112,7 @@ const ProfilementeePage = () => {
   useEffect(() => {
     fetchUserData();
     fetchQuestions();
-  }, []);
+  }, [history]);
 
   return (
     <>
@@ -136,10 +140,11 @@ const ProfilementeePage = () => {
         </div>
       )}
       <div className="bg-white_A700 flex flex-col font-nunitosans items-center justify-start mx-auto w-full responsive-view">
-        <Header
-          className="bg-orange_500 w-full"
-          style={{ height: "30vh", overflowY: "auto" }}
-        />
+        {props.showHeader == false ? (
+          <></>
+        ) : (
+          <Header className="bg-orange_500 w-full" />
+        )}
         <div className="font-segoeui w-full">
           {userDetails && (
             <div className="bg-white_A700_01 my-7 flex flex-col items-end justify-start max-w-[1055px] mx-auto pr-3.5 md:px-5 py-3.5 w-full">
@@ -157,15 +162,21 @@ const ProfilementeePage = () => {
                         style={{ width: "100%" }}
                         alt="images"
                       />
-                      <Button
-                        className="cursor-pointer font-normal mx-auto text-[15px] text-center text-white_A700_01 change-pic"
-                        size="lg"
-                        variant="FillGray900b7"
-                        htmlFor="fileInput"
-                        onClick={handleClick}
-                      >
-                        Change Photo
-                      </Button>
+
+                      {id ? (
+                        <></>
+                      ) : (
+                        <Button
+                          className="cursor-pointer font-normal mx-auto text-[15px] text-center text-white_A700_01 change-pic"
+                          size="lg"
+                          variant="FillGray900b7"
+                          htmlFor="fileInput"
+                          onClick={handleClick}
+                        >
+                          Change Photo
+                        </Button>
+                      )}
+
                       <input
                         id="fileInput"
                         type="file"
@@ -226,6 +237,7 @@ const ProfilementeePage = () => {
                           type="text"
                           className="font-normal  ml-[40px] text-gray-600-01 w-auto input-style"
                           variant="body14"
+                          readOnly={id}
                           value={userDetails.name}
                           style={{ width: "80%" }}
                           onChange={handleInputChange("name")}
@@ -248,7 +260,7 @@ const ProfilementeePage = () => {
                           </Text>
                           <input
                             type="text"
-                            className="font-normal  ml-[40px] text-gray-600-01 w-auto input-style"
+                            className="font-normal ml-[40px] text-gray-600-01 w-auto input-style"
                             variant="body14"
                             readOnly={true}
                             value={userDetails.email}
@@ -264,7 +276,7 @@ const ProfilementeePage = () => {
                         </div>
                       </div>
                       <div className="relative w-full">
-                        <div className="flex flex-row sm:gap-10 items-start ml-[15px]">
+                        <div className="flex flex-row sm:gap-10 mt-3 items-start ml-[15px]">
                           <Text
                             className="font-semibold text-gray_900_040 "
                             variant="body14"
@@ -276,6 +288,7 @@ const ProfilementeePage = () => {
                           <textarea
                             rows={3}
                             cols={50}
+                            readOnly={id}
                             className="font-normal  ml-[40px] text-gray-600-01 w-auto input-style"
                             variant="body14"
                             value={userDetails?.aboutyourself}
@@ -286,15 +299,20 @@ const ProfilementeePage = () => {
                       </div>
                     </div>
                   </div>
-                  <Button
-                    className="cursor-pointer font-semibold mb-[166px] min-w-[102px] md:ml-[0] ml-[29px] text-base text-center text-white_A700_01"
-                    shape="RoundedBorder4"
-                    size="sm"
-                    variant="FillAmberA70001"
-                    onClick={handleUpdate}
-                  >
-                    Update
-                  </Button>
+
+                  {id ? (
+                    <></>
+                  ) : (
+                    <Button
+                      className="cursor-pointer font-semibold mb-[166px] min-w-[102px] md:ml-[0] ml-[29px] text-base text-center text-white_A700_01"
+                      shape="RoundedBorder4"
+                      size="sm"
+                      variant="FillAmberA70001"
+                      onClick={handleUpdate}
+                    >
+                      Update
+                    </Button>
+                  )}
                 </div>
               </div>
 

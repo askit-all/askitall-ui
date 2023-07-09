@@ -23,11 +23,11 @@ const NotificationModal = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
   const fetchNotifications = () => {
-    setLoading(true);
+    // setLoading(true);
     let url = `/notifications`;
     secured.get(url).then((response) => {
       setNotifications(response.data.data);
-      setLoading(false);
+      // setLoading(false);
     });
   };
 

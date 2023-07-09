@@ -15,9 +15,9 @@ const Popover = ({ content, children }) => {
   
     const userDetails = JSON.parse(localStorage.getItem('userData'));
     if(userDetails.type == 'mentor'){
-      history("/mentor-profile");
+      history("/mentor-profile-new");
     } else if(userDetails.type == 'mentee'){
-      history("/mentee-profile");
+      history("/mentor-profile-new");
     }
 
   };
