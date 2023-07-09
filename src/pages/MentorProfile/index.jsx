@@ -30,6 +30,12 @@ const NewprofilementprPage = (props) => {
 
   const [showAddDropdown, setShowAddDropdown] = useState(false);
 
+  const [bookings, setBookings] = useState({
+    date: "",
+    fromTime: "",
+    toTime: "",
+  });
+
   const handleInputChange = (fieldName) => (event) => {
     setUserDetails({ ...userDetails, [fieldName]: event.target.value });
   };
@@ -164,6 +170,54 @@ const NewprofilementprPage = (props) => {
         setLoading(false);
       }
     });
+  };
+
+  const today = new Date();
+  const minDate = today.toISOString().substr(0, 10);
+  const maxDate = new Date(today.setDate(today.getDate() + 15))
+    .toISOString()
+    .substr(0, 10);
+
+  const handleInputChangeForBooking = (event, field) => {
+    const { value } = event.target;
+    const updatedBookings = bookings;
+    updatedBookings[field] = value;
+
+    // const currentDate = new Date();
+    // const currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+
+    // const currentBooking = updatedBookings;
+    // console.log(currentBooking)
+    // // Clear conflicting values
+    // if (
+    //   field === "fromTime" &&
+    //   currentBooking.toTime &&
+    //   (value >= currentBooking.toTime ||
+    //     (currentBooking.date === minDate && value < currentTime))
+    // ) {
+    //   updatedBookings.toTime = "";
+    // }
+
+    // if (
+    //   field === "toTime" &&
+    //   currentBooking.fromTime &&
+    //   (value <= currentBooking.fromTime ||
+    //     (currentBooking.date === minDate && value < currentTime))
+    // ) {
+    //   updatedBookings.fromTime = "";
+    // }
+
+    // // Validate date range
+    // const selectedDate = new Date(currentBooking.date);
+    // const minSelectableDate = new Date();
+    // minSelectableDate.setDate(minSelectableDate.getDate() - 1); // Allow today as well
+
+    // if (selectedDate < minSelectableDate || selectedDate > maxDate) {
+    //   // Clear all values for invalid date
+    //   updatedBookings = { date: "", fromTime: "", toTime: "" };
+    // }
+
+    setBookings(updatedBookings);
   };
 
   const fileInputRef = useRef(null);
@@ -384,6 +438,45 @@ const NewprofilementprPage = (props) => {
                         size={22}
                       ></RatingBar>
                     </div>
+
+                    <div className="flex w-full my-4 flex-col gap-5 justify-evenly items-center bg-white_A700_01 shadow-bs3 p-6">
+                      <input
+                        type="date"
+                        className="mb-2 w-full px-4 py-2 border rounded"
+                        value={bookings.date}
+                        onChange={(e) => handleInputChangeForBooking(e, "date")}
+                        min={minDate}
+                        max={maxDate}
+                      />
+                      <div className="flex w-full gap-6 justify-between items-center">
+                        <input
+                          type="time"
+                          className="mb-2 w-full px-4 py-2 border rounded"
+                          value={bookings.fromTime}
+                          onChange={(e) =>
+                            handleInputChangeForBooking(e, "fromTime")
+                          }
+                        />
+                        <input
+                          type="time"
+                          className="mb-2 w-full px-4 py-2 border rounded"
+                          value={bookings.toTime}
+                          onChange={(e) =>
+                            handleInputChangeForBooking(e, "toTime")
+                          }
+                        />
+                      </div>
+
+                      <Button
+                        className="cursor-pointer font-normal font-segoeui min-w-[117px] mt-[20px] text-base text-center text-white_A700_01"
+                        shape="RoundedBorder4"
+                        size="md"
+                        variant="OutlineAmberA700"
+                      >
+                        schedule call
+                      </Button>
+                    </div>
+
                     {/* <Button
                     className="cursor-pointer font-normal font-segoeui min-w-[117px] mt-[20px] text-base text-center text-white_A700_01"
                     shape="RoundedBorder4"
