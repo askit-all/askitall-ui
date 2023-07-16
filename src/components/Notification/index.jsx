@@ -21,12 +21,20 @@ const NotificationModal = ({ children }) => {
   };
 
   const [notifications, setNotifications] = useState([]);
-
+  const [showMore, setShowNore] = useState(false);
   const fetchNotifications = () => {
     // setLoading(true);
     let url = `/notifications`;
     secured.get(url).then((response) => {
-      setNotifications(response.data.data);
+      let notifi = [];
+      if (response.data.data && response.data.data.length > 3) {
+        notifi = response.data.data.slice(0, 3);
+        setShowNore(true);
+      } else {
+        notifi = response.data.data;
+      }
+
+      setNotifications(notifi);
       // setLoading(false);
     });
   };
@@ -86,7 +94,7 @@ const NotificationModal = ({ children }) => {
               <h2>Notifications List</h2>
               <ul className="notification-list">
                 {notifications && notifications.length ? (
-                  notifications.map((notification,index) => (
+                  notifications.map((notification, index) => (
                     <>
                       <li key={index}>{notification.desc}</li>
                       <hr />
@@ -100,6 +108,14 @@ const NotificationModal = ({ children }) => {
                   </>
                 )}
               </ul>
+
+              {showMore ? (
+                <>
+                  <button>View More</button>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         )}

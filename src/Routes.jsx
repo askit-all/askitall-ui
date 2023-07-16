@@ -15,6 +15,7 @@ const Signup = React.lazy(() => import("pages/Signup"));
 const LandingPage2 = React.lazy(() => import("pages/LandingPage2"));
 const Loginpage = React.lazy(() => import("pages/Loginpage"));
 const Landingpage = React.lazy(() => import("pages/Landingpage"));
+const AllNotifications = React.lazy(() => import("pages/AllNotifications"));
 // const LandingPageNew = React.lazy(() => import("pages/LandingPageNew"));
 
 
@@ -50,6 +51,7 @@ const ProjectRoutes = () => {
 
           <Route path="/mentor-profile-new" element={<DesktopOne />} />
           <Route path="/booking-tab" element={<BookingTab />} />
+          <Route path="/notifications" element={<AllNotifications />} />
 
           
 

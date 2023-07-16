@@ -564,7 +564,7 @@ const HomepagenewuserOnePage = () => {
               </div>
             </div>
           </div>
-          <div className="font-oxygen sm:h-[605px] md:h-[893px] h-[958px] mt-[90px] md:px-5  w-full">
+          <div className="font-oxygen mt-[90px] md:px-5  w-full">
             <div className=" flex flex-col md:gap-10 gap-[74px] items-center justify-start">
               <div className="flex flex-col items-start justify-start pl-[50.44px] pr-[51.56px] md:px-10 sm:px-5 w-auto md:w-full">
                 <Text
@@ -630,112 +630,28 @@ const HomepagenewuserOnePage = () => {
           </div>
 
           <footer className="bg-orange_500 flex font-helvetica items-center justify-center mt-[146px] md:px-5 w-full">
-            <div className="h-[221px] sm:h-[381px] md:h-[564px] ml-[262px] mr-[259px] my-20  w-[64%] md:w-full">
-              <div className=" bg-orange_500 flex md:flex-col flex-row md:gap-5 h-full inset-[0] items-start justify-center m-auto md:pr-10 sm:pr-5 pr-[115px] w-full">
-                <Img
-                  src="images/img_frame.svg"
-                  className="h-[30px] md:mt-0 mt-[94px]"
-                  alt="frame"
-                />
-                <div className="flex md:flex-1 flex-col items-start justify-end md:ml-[0] ml-[363px] pt-4 px-4 w-[17%] md:w-full">
-                  <ul className="flex flex-col gap-[21px] items-start justify-start mt-[9px] py-[9px] md:w-full common-column-list">
-                    <li>
-                      <a
-                        href="javascript:"
-                        className="font-normal text-black_900"
-                      >
-                        <Text variant="body16">Grants</Text>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="javascript:"
-                        className="font-normal text-black_900"
-                      >
-                        <Text variant="body16">Break Solana</Text>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="javascript:"
-                        className="font-normal text-black_900"
-                      >
-                        <Text variant="body14">Media Kit</Text>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="javascript:"
-                        className="font-normal text-black_900"
-                      >
-                        <Text variant="body14">Careers</Text>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="javascript:"
-                        className="font-normal text-black_900"
-                      >
-                        <Text variant="body14">Disclaimer</Text>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <ul className="flex md:flex-1 flex-col items-start justify-start ml-4 md:ml-[0] md:mt-0 mt-[26px] pr-2.5 py-2.5 md:w-full common-column-list">
-                  <li>
-                    <a
-                      href="javascript:"
-                      className="font-normal text-black_900"
-                    >
-                      <Text variant="body14">Ecosystem</Text>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="javascript:"
-                      className="font-normal mt-5 text-black_900"
-                    >
-                      <Text variant="body16">Blog</Text>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="javascript:"
-                      className="font-normal mt-[18px] text-black_900"
-                    >
-                      <Text variant="body14">Newsletter</Text>
-                    </a>
-                  </li>
-                </ul>
+            <div className="flex flex-col w-full">
+              <div className="flex justify-center items-center p-8">
+                <div
+                  style={{
+                    background: "rgba(217, 217, 217, 1)",
+                    height: "15vh",
+                    width: "40vw",
+                  }}
+                ></div>
               </div>
-              <Text
-                className=" font-normal text-black_900 uppercase"
-                variant="body16"
-              >
-                Get Connected
-              </Text>
-              <div className=" flex flex-row items-center justify-evenly">
-                <Img
-                  src="images/img_frame_black_900.svg"
-                  className="h-5 w-[19px]"
-                  alt="frame_One"
-                />
-                <SelectBox
-                  className="font-normal text-[15px] text-black_900 text-center uppercase w-[66%] sm:w-full"
-                  placeholderClassName="text-black_900"
-                  indicator={
-                    <Img
-                      src="images/img_arrowdown.svg"
-                      className="h-[17px] mr-[0] w-[17px]"
-                      alt="arrow_down"
-                    />
-                  }
-                  isMulti={false}
-                  name="groupSeventyThree"
-                  options={enOptionsList}
-                  isSearchable={false}
-                  placeholder="en"
-                />
+              <div className="my-5 w-full flex flex-wrap justify-center gap-3 items-center">
+                <pre className="text-white">FAQ | </pre>
+                <pre className="text-white">Contact Us | </pre>
+                <pre className="text-white">Guidelines | </pre>
+                <pre className="text-white">Careers | </pre>
+                <pre className="text-white">Investors | </pre>
+                <pre className="text-white">Modern Slavery Act Statement</pre>
+              </div>
+
+              <div className="my-5 mb-10 w-full flex flex-wrap justify-center gap-3 items-center">
+                <pre className="text-white"> © 2023 ASKITSLL | </pre>
+                <pre className="text-white">All Rights Reserved</pre>
               </div>
             </div>
           </footer>
