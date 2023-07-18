@@ -15,6 +15,7 @@ const Signup = React.lazy(() => import("pages/Signup"));
 const LandingPage2 = React.lazy(() => import("pages/LandingPage2"));
 const Loginpage = React.lazy(() => import("pages/Loginpage"));
 const Landingpage = React.lazy(() => import("pages/Landingpage"));
+const AllNotifications = React.lazy(() => import("pages/AllNotifications"));
 // const LandingPageNew = React.lazy(() => import("pages/LandingPageNew"));
 
 
@@ -41,13 +42,16 @@ const ProjectRoutes = () => {
           <Route path="/call" element={<VideoCall />} />
           <Route path="/schedule" element={<Scheduling />} />
           <Route path="/mentor-profile" element={<MentorProfile />} />
+          <Route path="/mentor-profile/:id" element={<MentorProfile/>} />
           <Route path="/mentee-profile" element={<MenteeProfile />} />
+          <Route path="/mentee-profile/:id" element={<MenteeProfile />} />
           <Route path="/about-us" element={<Aboutus />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/tc" element={<Termsandcondition />} />
 
           <Route path="/mentor-profile-new" element={<DesktopOne />} />
           <Route path="/booking-tab" element={<BookingTab />} />
+          <Route path="/notifications" element={<AllNotifications />} />
 
           
 
