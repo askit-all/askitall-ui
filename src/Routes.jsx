@@ -23,8 +23,8 @@ const AllNotifications = React.lazy(() => import("pages/AllNotifications"));
 //   import("pages/Superadmindashboard")
 // );
 // const DesktopThree = React.lazy(() => import("pages/DesktopThree"));
-const BookingTab = React.lazy(() => import("pages/DesktopTwo"));
-const DesktopOne = React.lazy(() => import("pages/DesktopOne"));
+const BookingTab = React.lazy(() => import("pages/Bookings"));
+const Profile = React.lazy(() => import("pages/Profile"));
 const ProjectRoutes = () => {
   return (
     <React.Suspense fallback={<>Loading...</>}>
@@ -49,20 +49,10 @@ const ProjectRoutes = () => {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/tc" element={<Termsandcondition />} />
 
-          <Route path="/mentor-profile-new" element={<DesktopOne />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/booking-tab" element={<BookingTab />} />
           <Route path="/notifications" element={<AllNotifications />} />
 
-          
-
-           {/* <Route
-            path="/superadmindashboard"
-            element={<Superadmindashboard />}
-          /> */}
-          {/* <Route path="/desktopone" element={<DesktopOne />} />
-          <Route path="/desktoptwo" element={<DesktopTwo />} /> */}
-          {/* <Route path="/desktopthree" element={<DesktopThree />} /> */}
-          {/* <Route path="/faqtwo" element={<FAQTwo />} /> */}
         </Routes>
       </Router>
     </React.Suspense>

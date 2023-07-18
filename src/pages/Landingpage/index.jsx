@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Button, Img, List, SelectBox, Text } from "components";
+import { useNavigate } from "react-router-dom";
 
 const enOptionsList = [
   { label: "Option1", value: "option1" },
@@ -9,6 +10,15 @@ const enOptionsList = [
 ];
 
 const HomepagenewuserOnePage = () => {
+  const history = useNavigate();
+
+  const onClickRegister = () => {
+    history("/signup");
+  }
+  const onClickLogin = () => {
+    history("/login");
+  }
+
   return (
     <>
       <div className="bg-white_A700 flex flex-col font-nunitosans gap-[53px] items-center justify-star w-full">
@@ -42,6 +52,7 @@ const HomepagenewuserOnePage = () => {
                 size="lg"
                 variant="FillOrange500"
                 style={{ width: "50%" }}
+                onClick={onClickRegister}
               >
                 Register
               </Button>
@@ -51,6 +62,7 @@ const HomepagenewuserOnePage = () => {
                 size="lg"
                 variant="OutlineOrange500"
                 style={{ width: "50%" }}
+                onClick={onClickLogin}
               >
                 Login
               </Button>

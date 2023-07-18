@@ -157,26 +157,27 @@ const BookingForm = () => {
             onChange={(e) => handleInputChange(e, index, "toTime")}
           />
 
+          {bookings.length > 1 ? 
           <button
             className="px-4 py-2 bg-red-500 text-white rounded"
             onClick={() => deleteRow(index)}
           >
             Delete
+          </button> : null}
+
+          <button
+            className={`mb-2 sm:mb-0 px-4 py-2 bg-green-500 text-white rounded ${
+              hasOverlap ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={addRow}
+            disabled={hasOverlap}
+          >
+            Add Row
           </button>
         </div>
       ))}
 
       <div className="flex flex-wrap items-center justify-between">
-        <button
-          className={`mb-2 sm:mb-0 px-4 py-2 bg-green-500 text-white rounded ${
-            hasOverlap ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          onClick={addRow}
-          disabled={hasOverlap}
-        >
-          Add Row
-        </button>
-
         <button
           className={`px-4 py-2 bg-blue-500 text-white rounded ${
             hasOverlap ? "opacity-50 cursor-not-allowed" : ""

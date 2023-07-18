@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Img, Text } from "components";
 import Header from "components/Header";
-import DesktopTwoPage from "pages/DesktopTwo";
+import Bookings from "pages/Bookings";
 import ProfilementeePage from "pages/MenteeProfile";
 import NewprofilementprPage from "pages/MentorProfile";
 import { useNavigate } from "react-router-dom";
@@ -17,9 +17,12 @@ const ProfleHome = () => {
 
   const history = useNavigate();
 
-  const [tabSelected, setTabSelected] = useState("home");
+  const [tabSelected, setTabSelected] = useState("profile");
   const userDetails = JSON.parse(localStorage.getItem("userData"));
   const handleTabChange = (type) => {
+    if(type === "home"){
+      history("/questionnaire");
+    }
     setTabSelected(type);
   };
 
@@ -56,7 +59,7 @@ const ProfleHome = () => {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-evenly sm:w-100">
-              <div
+            <div
                 className={`flex justify-evenly items-center my-3 ${
                   tabSelected === "home" ? "tab-selected" : ""
                 }`}
@@ -72,6 +75,25 @@ const ProfleHome = () => {
                 <div className="ml-10 sm:ml-3 w-[70%]">
                   <Text className="font-semibold" variant="body10">
                     Home{" "}
+                  </Text>
+                </div>
+              </div>
+              <div
+                className={`flex justify-evenly items-center my-3 ${
+                  tabSelected === "profile" ? "tab-selected" : ""
+                }`}
+                onClick={() => handleTabChange("profile")}
+              >
+                <div className="flex justify-end w-[30%]">
+                  <Img
+                    src="images/img_home.svg"
+                    className="h-5 w-5"
+                    alt="home"
+                  />
+                </div>
+                <div className="ml-10 sm:ml-3 w-[70%]">
+                  <Text className="font-semibold" variant="body10">
+                    Profile{" "}
                   </Text>
                 </div>
               </div>
@@ -122,7 +144,7 @@ const ProfleHome = () => {
           </div>
 
           <div className="w-[70%] sm:w-full md:w-[70%]">
-            {tabSelected == "home" &&
+            {tabSelected == "profile" &&
             userDetails &&
             userDetails.type == "mentor" ? (
               <NewprofilementprPage showHeader={false} />
@@ -130,7 +152,7 @@ const ProfleHome = () => {
               <></>
             )}
 
-            {tabSelected == "home" &&
+            {tabSelected == "profile" &&
             userDetails &&
             userDetails.type == "mentee" ? (
               <ProfilementeePage showHeader={false} />
@@ -138,7 +160,7 @@ const ProfleHome = () => {
               <></>
             )}
 
-            {tabSelected == "booking" ? <DesktopTwoPage /> : <></>}
+            {tabSelected == "booking" ? <Bookings /> : <></>}
           </div>
 
           {/* <Line className="bg-blue_gray_100_01 h-[786px] md:h-px md:ml-[0] ml-[69px] md:w-full w-px" />

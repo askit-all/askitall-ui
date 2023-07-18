@@ -3,7 +3,7 @@ import "./tabs.css";
 import { Button, Img, Input, Line, Text } from "components";
 import ManageBookings from "components/ManageBookings";
 
-const DesktopTwoPage = () => {
+const Bookings = () => {
   const [activeTab, setActiveTab] = useState("Upcoming");
 
   const handleTabClick = (label) => {
@@ -75,4 +75,4 @@ const Tab = ({ label, content, activeTab, onClick }) => {
   );
 };
 
-export default DesktopTwoPage;
+export default Bookings;
