@@ -30,17 +30,26 @@ const NewprofilementprPage = (props) => {
 
   const [showAddDropdown, setShowAddDropdown] = useState(false);
 
-  const [bookings, setBookings] = useState({
+  const [bookings, setBookings] = useState([]);
+  const [singleBooking, setSingleBooking] = useState({
     date: "",
-    fromTime: "",
-    toTime: "",
+    startTime: "",
+    endTime: "",
   });
 
   const handleInputChange = (fieldName) => (event) => {
     setUserDetails({ ...userDetails, [fieldName]: event.target.value });
   };
 
+  const handleExpertiseInputChange = (event, index, fieldName) => {
+    const { value } = event.target;
+    const updatedExpertise = [...userDetails.expertise];
+    updatedExpertise[index][fieldName] = value;
+    setUserDetails({ ...userDetails, expertise: updatedExpertise });
+  };
+
   const { id } = useParams();
+  const { fromNotification } = useParams();
 
   useEffect(() => {
     fetchCategories();
@@ -75,7 +84,17 @@ const NewprofilementprPage = (props) => {
         aboutyourself: response.data.data.userinfo
           ? response.data.data.userinfo.aboutyourself
           : "",
+        expertise:
+          response.data.data.userinfo?.expertise &&
+          response.data.data.userinfo?.expertise.length
+            ? response.data.data.userinfo?.expertise
+            : [],
       });
+
+      if (props.fetchUserDataAgain) {
+        props.fetchUserDataAgain();
+      }
+
       setLoading(false);
     });
   };
@@ -112,6 +131,30 @@ const NewprofilementprPage = (props) => {
 
   const handleAddChange = () => {
     setShowAddDropdown(!showAddDropdown);
+  };
+
+  const addRow = () => {
+    let updatedExpertise = [...userDetails.expertise];
+    if (updatedExpertise && updatedExpertise.length) {
+      if (
+        updatedExpertise[updatedExpertise.length - 1].expertise &&
+        updatedExpertise[updatedExpertise.length - 1].value
+      ) {
+        updatedExpertise.push({ expertise: "", value: null });
+        setUserDetails({ ...userDetails, expertise: updatedExpertise });
+      } else {
+        toast.error("Enter Expertise and Value first!");
+      }
+    } else {
+      updatedExpertise.push({ expertise: "", value: null });
+      setUserDetails({ ...userDetails, expertise: updatedExpertise });
+    }
+  };
+
+  const removeRow = (index) => {
+    const updatedExpertise = [...userDetails.expertise];
+    const expertise = updatedExpertise.splice(index, 1);
+    setUserDetails({ ...userDetails, expertise: updatedExpertise });
   };
 
   const handleCloseDropdown = () => {
@@ -154,6 +197,7 @@ const NewprofilementprPage = (props) => {
         gender: userDetails.gender,
         occupation: userDetails.occupation,
         aboutyourself: userDetails.aboutyourself,
+        expertise: userDetails.expertise,
       },
     };
 
@@ -180,44 +224,9 @@ const NewprofilementprPage = (props) => {
 
   const handleInputChangeForBooking = (event, field) => {
     const { value } = event.target;
-    const updatedBookings = bookings;
+    const updatedBookings = singleBooking;
     updatedBookings[field] = value;
-
-    // const currentDate = new Date();
-    // const currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-
-    // const currentBooking = updatedBookings;
-    // console.log(currentBooking)
-    // // Clear conflicting values
-    // if (
-    //   field === "fromTime" &&
-    //   currentBooking.toTime &&
-    //   (value >= currentBooking.toTime ||
-    //     (currentBooking.date === minDate && value < currentTime))
-    // ) {
-    //   updatedBookings.toTime = "";
-    // }
-
-    // if (
-    //   field === "toTime" &&
-    //   currentBooking.fromTime &&
-    //   (value <= currentBooking.fromTime ||
-    //     (currentBooking.date === minDate && value < currentTime))
-    // ) {
-    //   updatedBookings.fromTime = "";
-    // }
-
-    // // Validate date range
-    // const selectedDate = new Date(currentBooking.date);
-    // const minSelectableDate = new Date();
-    // minSelectableDate.setDate(minSelectableDate.getDate() - 1); // Allow today as well
-
-    // if (selectedDate < minSelectableDate || selectedDate > maxDate) {
-    //   // Clear all values for invalid date
-    //   updatedBookings = { date: "", fromTime: "", toTime: "" };
-    // }
-
-    setBookings(updatedBookings);
+    setSingleBooking(updatedBookings);
   };
 
   const fileInputRef = useRef(null);
@@ -230,7 +239,6 @@ const NewprofilementprPage = (props) => {
             (item2) => item2.category_id === item1.category_id
           )
       );
-      console.log("ttyv", filteredArray);
       setCategoryList(filteredArray);
     }
   }, [userDetails]);
@@ -262,22 +270,100 @@ const NewprofilementprPage = (props) => {
     formData.append("image", file);
 
     secured.post(url, formData).then((response) => {
-      console.log(response.data);
       if (response?.data?.status) {
         setUserDetails((prevUserDetails) => ({
           ...prevUserDetails,
           profileImageUrl: response.data.data.imageUrl,
         }));
+        if (props.fetchUserDataAgain) {
+          props.fetchUserDataAgain();
+        }
         setLoading(false);
       }
     });
   };
 
-  // useEffect(() => {
-  //   fetchCategories();
-  //   fetchUserData();
-  //   fetchQuestions();
-  // }, []);
+  const [availableDates, setAvaialableDates] = useState([]);
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [slots, setSlots] = useState([]);
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setSelectedSlot(null);
+    setSlots([]);
+    fetchSlots(date);
+  };
+
+  const fetchSlots = async (date) => {
+    let url = "/slots/get-all-slots-by-date";
+    let payload = {
+      date,
+      userId: id,
+    };
+    secured.post(url, payload).then((response) => {
+      if (response.data.slots && response.data.slots.length) {
+        setSlots(response.data.slots);
+      }
+    });
+  };
+
+  const handleSlotChange = (slot) => {
+    setSelectedSlot(slot);
+  };
+
+  const handleScheduleCall = () => {
+    // Create payload and perform the API call to schedule the call
+    const payload = {
+      mentorId: id,
+      bookingDate: selectedDate,
+      slot: selectedSlot,
+    };
+    // Call your API endpoint here to schedule the call using the payload
+    let url = "/slots/book-slot";
+    secured.post(url, payload).then((response) => {
+      // if (response.data.slots && response.data.slots.length) {
+      setSelectedDate(null);
+      setSelectedSlot(null);
+      setSlots([]);
+      // }
+    });
+  };
+
+  const fetchAllSlots = () => {
+    let url = "/slots/get-slot-dates";
+    let payload = {
+      userId: id,
+    };
+    secured.post(url, payload).then((response) => {
+      if (response.data.slotDates && response.data.slotDates.length) {
+        setBookings(response.data.slotDates);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (bookings && bookings.length) {
+      const groupedData = bookings.reduce((acc, obj) => {
+        const key = obj.date;
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(obj);
+        return acc;
+      }, {});
+
+      let dateKeys = Object.keys(groupedData);
+      setAvaialableDates(dateKeys);
+    }
+  }, [bookings]);
+
+  useEffect(() => {
+    if (fromNotification) {
+      fetchAllSlots();
+    }
+  }, [fromNotification]);
   return (
     <>
       {loading && (
@@ -439,43 +525,58 @@ const NewprofilementprPage = (props) => {
                       ></RatingBar>
                     </div>
 
-                    <div className="flex w-full my-4 flex-col gap-5 justify-evenly items-center bg-white_A700_01 shadow-bs3 p-6">
-                      <input
-                        type="date"
-                        className="mb-2 w-full px-4 py-2 border rounded"
-                        value={bookings.date}
-                        onChange={(e) => handleInputChangeForBooking(e, "date")}
-                        min={minDate}
-                        max={maxDate}
-                      />
-                      <div className="flex w-full gap-6 justify-between items-center">
-                        <input
-                          type="time"
-                          className="mb-2 w-full px-4 py-2 border rounded"
-                          value={bookings.fromTime}
-                          onChange={(e) =>
-                            handleInputChangeForBooking(e, "fromTime")
-                          }
-                        />
-                        <input
-                          type="time"
-                          className="mb-2 w-full px-4 py-2 border rounded"
-                          value={bookings.toTime}
-                          onChange={(e) =>
-                            handleInputChangeForBooking(e, "toTime")
-                          }
-                        />
-                      </div>
+                    {fromNotification ? (
+                      <div className="flex w-full my-4 flex-col gap-5 justify-evenly items-center bg-white_A700_01 shadow-bs3 p-6">
+                        <h2 className="text-xl font-semibold">
+                          Select a Date:
+                        </h2>
+                        <select
+                          className="w-full px-4 my-2 border border-gray-300 rounded-md"
+                          value={selectedDate}
+                          onChange={(e) => handleDateChange(e.target.value)}
+                        >
+                          <option value={null}>Select a date</option>
+                          {availableDates.map((date) => (
+                            <option key={date} value={date}>
+                              {date.split("T")[0]}
+                            </option>
+                          ))}
+                        </select>
 
-                      <Button
-                        className="cursor-pointer font-normal font-segoeui min-w-[117px] mt-[20px] text-base text-center text-white_A700_01"
-                        shape="RoundedBorder4"
-                        size="md"
-                        variant="OutlineAmberA700"
-                      >
-                        schedule call
-                      </Button>
-                    </div>
+                        {selectedDate && (
+                          <div className="w-full">
+                            <h2 className="text-xl font-semibold">
+                              Select a Slot:
+                            </h2>
+                            <select
+                              className="w-full px-4 my-2 border border-gray-300 rounded-md"
+                              value={selectedSlot}
+                              onChange={(e) => handleSlotChange(e.target.value)}
+                            >
+                              <option value="">Select a slot</option>
+                              {slots.map((slot) => (
+                                <option key={slot.slot} value={slot.slot}>
+                                  {slot.slot}
+                                </option>
+                              ))}
+                            </select>
+
+                            {selectedSlot && (
+                              <div className="flex justify-center">
+                                <button
+                                  className="bg-orange-400 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md"
+                                  onClick={handleScheduleCall}
+                                >
+                                  Schedule Call
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <></>
+                    )}
 
                     {/* <Button
                     className="cursor-pointer font-normal font-segoeui min-w-[117px] mt-[20px] text-base text-center text-white_A700_01"
@@ -643,60 +744,104 @@ const NewprofilementprPage = (props) => {
                       <span className="my-3 font-semibold text-xl">
                         Expertise
                       </span>
-
-                      <span>Add Expertise</span>
+                      {id ? (
+                        <></>
+                      ) : (
+                        <>
+                          <div className="flex gap-2">
+                            <span className="text-3xl" onClick={() => addRow()}>
+                              +
+                            </span>
+                            <Button
+                              className="cursor-pointer font-normal min-w-[53px] text-base text-center text-white_A700_01"
+                              shape="RoundedBorder4"
+                              size="md"
+                              variant="OutlineGray900"
+                              onClick={handleUpdate}
+                            >
+                              Update
+                            </Button>
+                          </div>
+                        </>
+                      )}
                     </div>
 
-                    <div className="flex my-3 justify-between items-center">
-                      <div className="flex flex-col w-full">
-                        <div className="flex justify-between">
-                          <span>Web Design</span>
-                          <span>80%</span>
+                    {!id &&
+                    userDetails.expertise &&
+                    userDetails.expertise.length ? (
+                      <div className="flex my-3 justify-between items-center">
+                        <div className="flex flex-col w-full">
+                          {userDetails.expertise.map((exper, index) => (
+                            <>
+                              <div className="flex gap-2 justify-between items-center">
+                                <input
+                                  type="text"
+                                  name="exper"
+                                  id="exper"
+                                  className="font-normal input-style text-gray-600-01 w-[70%] "
+                                  placeholder="Expertise"
+                                  value={exper.expertise}
+                                  onChange={(e) =>
+                                    handleExpertiseInputChange(
+                                      e,
+                                      index,
+                                      "expertise"
+                                    )
+                                  }
+                                />
+                                <input
+                                  type="number"
+                                  min={0}
+                                  max={100}
+                                  name="experVal"
+                                  className="font-normal text-gray-600-01 w-[70%] input-style"
+                                  placeholder="Value"
+                                  value={exper.value}
+                                  onChange={(e) =>
+                                    handleExpertiseInputChange(
+                                      e,
+                                      index,
+                                      "value"
+                                    )
+                                  }
+                                />
+                                <Img
+                                  src="images/img_close.svg"
+                                  className="h-[18px] mr-2.5 w-[18px]"
+                                  alt="close"
+                                  onClick={() => removeRow(index)}
+                                />
+                              </div>
+                            </>
+                          ))}
                         </div>
-
-                        <ProgressBar progress={80} duration={100} />
                       </div>
-                    </div>
-                    <div className="flex my-3 justify-between items-center">
-                      <div className="flex flex-col w-full">
-                        <div className="flex justify-between">
-                          <span>Web Design</span>
-                          <span>80%</span>
+                    ) : (
+                      <></>
+                    )}
+
+                    {id &&
+                    userDetails.expertise &&
+                    userDetails.expertise.length ? (
+                      <div className="flex my-3 justify-between items-center">
+                        <div className="flex flex-col w-full">
+                          {userDetails.expertise.map((exper, index) => (
+                            <>
+                              <div className="flex justify-between">
+                                <span>{exper.expertise}</span>
+                                <span>{exper.value}</span>
+                              </div>
+                              <ProgressBar
+                                progress={exper.value}
+                                duration={100}
+                              />
+                            </>
+                          ))}
                         </div>
-
-                        <ProgressBar progress={80} duration={100} />
                       </div>
-                    </div>
-                    <div className="flex my-3 justify-between items-center">
-                      <div className="flex flex-col w-full">
-                        <div className="flex justify-between">
-                          <span>Web Design</span>
-                          <span>80%</span>
-                        </div>
-
-                        <ProgressBar progress={80} duration={100} />
-                      </div>
-                    </div>
-                    <div className="flex my-3 justify-between items-center">
-                      <div className="flex flex-col w-full">
-                        <div className="flex justify-between">
-                          <span>Web Design</span>
-                          <span>80%</span>
-                        </div>
-
-                        <ProgressBar progress={80} duration={100} />
-                      </div>
-                    </div>
-                    <div className="flex my-3 justify-between items-center">
-                      <div className="flex flex-col w-full">
-                        <div className="flex justify-between">
-                          <span>Web Design</span>
-                          <span>80%</span>
-                        </div>
-
-                        <ProgressBar progress={80} duration={100} />
-                      </div>
-                    </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                   <div className="bg-white_A700_01 w-[49%] mb-3 md:w-full p-[1rem] flex flex-col">
                     <div className="flex justify-between items-center">

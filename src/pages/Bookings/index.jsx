@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./tabs.css";
 import { Button, Img, Input, Line, Text } from "components";
 import ManageBookings from "components/ManageBookings";
+import { secured } from "api/interceptors";
 
 const Bookings = () => {
   const [activeTab, setActiveTab] = useState("Upcoming");
+
+
 
   const handleTabClick = (label) => {
     setActiveTab(label);
@@ -15,7 +18,7 @@ const Bookings = () => {
       <div className="bg-white_A700_01 flex flex-col items-start justify-start mx-auto px-5 md:px-10 w-full">
         <div className="flex flex-col gap-8 items-start justify-start w-full">
           <div className="flex flex-col items-start justify-start w-full">
-            <Text className="font-bold text-gray_900" as="h5" variant="h5">
+            <Text className="font-bold text-gray_900 my-4" as="h5" variant="h5">
               Bookings
             </Text>
 
@@ -25,7 +28,7 @@ const Bookings = () => {
                 activeTab={activeTab}
                 onClick={handleTabClick}
               />
-              <Tab
+              {/* <Tab
                 label="Pending"
                 activeTab={activeTab}
                 onClick={handleTabClick}
@@ -35,7 +38,7 @@ const Bookings = () => {
                 label="Past"
                 activeTab={activeTab}
                 onClick={handleTabClick}
-              />
+              /> */}
 
               <Tab
                 label="Cancelled"

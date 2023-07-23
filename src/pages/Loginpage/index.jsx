@@ -33,7 +33,6 @@ const LoginPage = () => {
   });
 
   const responseFacebook = (response) => {
-    console.log(response);
   };
 
   const handleChange = (event) => {
@@ -55,7 +54,6 @@ const LoginPage = () => {
         setFormFields({ ..._initialFields });
         validator.visibleFields = [];
         forceUpdate();
-        console.log(response);
 
         if (response.data?.success) {
           localStorage.setItem("token", response.data.token);
@@ -177,7 +175,6 @@ const getCodeFromWindowURL = url => {
 };
 
 const getUserCredentials = code => {
-  console.log("code ..." + code);
   secured
     .get(`/users/loginByLinkedin?code=${code}&redirectUrl=${_linkedInConfig.redirectUrl}`)
     .then(response => {

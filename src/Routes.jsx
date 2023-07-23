@@ -43,6 +43,7 @@ const ProjectRoutes = () => {
           <Route path="/schedule" element={<Scheduling />} />
           <Route path="/mentor-profile" element={<MentorProfile />} />
           <Route path="/mentor-profile/:id" element={<MentorProfile/>} />
+          <Route path="/mentor-profile/:id/fromNotification/:fromNotification" element={<MentorProfile/>} />
           <Route path="/mentee-profile" element={<MenteeProfile />} />
           <Route path="/mentee-profile/:id" element={<MenteeProfile />} />
           <Route path="/about-us" element={<Aboutus />} />
