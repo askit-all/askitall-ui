@@ -3,11 +3,11 @@ import "./tabs.css";
 import { Button, Img, Input, Line, Text } from "components";
 import ManageBookings from "components/ManageBookings";
 import { secured } from "api/interceptors";
+import UpcomingBookings from "components/UpcomingBookings";
 
 const Bookings = () => {
   const [activeTab, setActiveTab] = useState("Upcoming");
-
-
+  const userData = JSON.parse(localStorage.getItem("userData"));
 
   const handleTabClick = (label) => {
     setActiveTab(label);
@@ -46,15 +46,19 @@ const Bookings = () => {
                 onClick={handleTabClick}
               />
 
-              <Tab
-                label="Manage"
-                activeTab={activeTab}
-                onClick={handleTabClick}
-              />
+              {userData.type == "mentor" ? (
+                <Tab
+                  label="Manage"
+                  activeTab={activeTab}
+                  onClick={handleTabClick}
+                />
+              ) : (
+                <></>
+              )}
             </div>
 
             <div className="tab-content w-full">
-              {activeTab === "Upcoming" ? "No Upcoming booking" : <></>}
+              {activeTab === "Upcoming" ? <UpcomingBookings /> : <></>}
               {activeTab === "Pending" ? "No Pending booking" : <></>}
               {activeTab === "Past" ? "No Past booking" : <></>}
               {activeTab === "Cancelled" ? "No Cancelled booking" : <></>}
