@@ -36,7 +36,7 @@ const SignupPage = () => {
   });
 
   const responseFacebook = (response) => {
-    console.log(response);
+
   }
 
   const handleChange = (event) => {
@@ -168,7 +168,6 @@ const getCodeFromWindowURL = url => {
 };
 
 const getUserCredentials = code => {
-  console.log("code ..." + code);
   secured
     .get(`/users/loginByLinkedin?code=${code}&redirectUrl=${_linkedInConfig.redirectUrl}`)
     .then(response => {

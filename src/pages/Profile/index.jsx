@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Img, Text } from "components";
 import Header from "components/Header";
@@ -6,6 +6,7 @@ import Bookings from "pages/Bookings";
 import ProfilementeePage from "pages/MenteeProfile";
 import NewprofilementprPage from "pages/MentorProfile";
 import { useNavigate } from "react-router-dom";
+import { secured } from "api/interceptors";
 
 const egJobSearchCareerTransitionEtcOptionsList = [
   { label: "Option1", value: "option1" },
@@ -16,9 +17,35 @@ const egJobSearchCareerTransitionEtcOptionsList = [
 const ProfleHome = () => {
 
   const history = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [tabSelected, setTabSelected] = useState("profile");
-  const userDetails = JSON.parse(localStorage.getItem("userData"));
+  const [userDetails, setUserDetails] = useState(null);
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = () => {
+    setLoading(true);
+
+    let url = "/users";
+    secured.get(url).then((response) => {
+      setUserDetails({
+        ...response.data.data,
+        gender: response.data.data.userinfo
+          ? response.data.data.userinfo.gender
+          : "",
+        occupation: response.data.data.userinfo
+          ? response.data.data.userinfo.occupation
+          : "",
+        aboutyourself: response.data.data.userinfo
+          ? response.data.data.userinfo.aboutyourself
+          : "",
+      });
+      setLoading(false);
+    });
+  };
+
   const handleTabChange = (type) => {
     if(type === "home"){
       history("/questionnaire");
@@ -54,7 +81,7 @@ const ProfleHome = () => {
                   className="font-bold my-3 inset-x-[0] mx-auto text-blue_gray_900_06 top-[0] w-max"
                   variant="body6"
                 >
-                  {userDetails.name}
+                  {userDetails?.name}
                 </Text>
               </div>
             </div>
@@ -67,7 +94,7 @@ const ProfleHome = () => {
               >
                 <div className="flex justify-end w-[30%]">
                   <Img
-                    src="images/img_home.svg"
+                    src="images/home.png"
                     className="h-5 w-5"
                     alt="home"
                   />
@@ -147,7 +174,7 @@ const ProfleHome = () => {
             {tabSelected == "profile" &&
             userDetails &&
             userDetails.type == "mentor" ? (
-              <NewprofilementprPage showHeader={false} />
+              <NewprofilementprPage fetchUserDataAgain={fetchUserData} showHeader={false} />
             ) : (
               <></>
             )}
@@ -155,7 +182,7 @@ const ProfleHome = () => {
             {tabSelected == "profile" &&
             userDetails &&
             userDetails.type == "mentee" ? (
-              <ProfilementeePage showHeader={false} />
+              <ProfilementeePage fetchUserDataAgain={fetchUserData} showHeader={false} />
             ) : (
               <></>
             )}

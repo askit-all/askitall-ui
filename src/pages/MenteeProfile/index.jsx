@@ -28,13 +28,16 @@ const ProfilementeePage = (props) => {
     setLoading(true);
     let url = id ? `/users/${id}` : "/users";
     secured.get(url).then((response) => {
-      console.log("res", response.data.data);
+
       setUserDetails({
         ...response.data.data,
         aboutyourself: response.data.data.userinfo
           ? response.data.data.userinfo.aboutyourself
           : "",
       });
+      if (props.fetchUserDataAgain) {
+        props.fetchUserDataAgain();
+      }
       setLoading(false);
     });
   };
@@ -82,7 +85,6 @@ const ProfilementeePage = (props) => {
     setLoading(true);
     let url = id ? `/questions/users/${id}` : "/questions/users";
     secured.get(url).then((response) => {
-      console.log(response.data);
       if (response?.data?.status) {
         setQuestionsList(response.data.data);
         setLoading(false);
@@ -98,12 +100,14 @@ const ProfilementeePage = (props) => {
     formData.append("image", file);
 
     secured.post(url, formData).then((response) => {
-      console.log(response.data);
       if (response?.data?.status) {
         setUserDetails((prevUserDetails) => ({
           ...prevUserDetails,
           profileImageUrl: response.data.data.imageUrl,
         }));
+        if (props.fetchUserDataAgain) {
+          props.fetchUserDataAgain();
+        }
         setLoading(false);
       }
     });

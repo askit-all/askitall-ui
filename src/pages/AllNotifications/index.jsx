@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import { BeatLoader } from "react-spinners";
 import { secured } from "api/interceptors";
+import { useNavigate } from "react-router-dom";
 
 // CSS styles for the loader
 const override = css`
@@ -23,8 +24,17 @@ function NotificationItem({ notification }) {
 
 function AllNotifications() {
   const [loading, setLoading] = useState(false);
-
+  const userData = JSON.parse(localStorage.getItem("userData"));
   const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate();
+
+  const handleNavigation = (item) => {
+    if (userData.type == "mentee") {
+      navigate(
+        `/mentor-profile/${item.notificationFrom}/fromNotification/${true}`
+      );
+    }
+  };
 
   const fetchNotifications = () => {
     setLoading(true);
@@ -73,6 +83,7 @@ function AllNotifications() {
           ) : (
             notifications.map((notification) => (
               <NotificationItem
+                onClick={() => handleNavigation(notification)}
                 key={notification._id}
                 notification={notification}
               />

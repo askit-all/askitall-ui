@@ -4,6 +4,7 @@ import { secured } from "api/interceptors";
 
 import { css } from "@emotion/react";
 import { BeatLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 // CSS styles for the loader
 const override = css`
@@ -15,7 +16,10 @@ const override = css`
 const NotificationModal = ({ children }) => {
   const [showPopover, setShowPopover] = useState(false);
   const [loading, setLoading] = useState(false);
+  const userData = JSON.parse(localStorage.getItem("userData"));
   const popoverRef = useRef(null);
+  const navigate = useNavigate();
+
   const handleModalToggle = () => {
     setShowPopover(!showPopover);
   };
@@ -37,6 +41,13 @@ const NotificationModal = ({ children }) => {
       setNotifications(notifi);
       // setLoading(false);
     });
+  };
+
+  const handleNavigation = (item) => {
+    if(userData.type == 'mentee'){
+      navigate(`/mentor-profile/${item.notificationFrom}/fromNotification/${true}`);
+    }
+
   };
 
   useEffect(() => {
@@ -96,7 +107,12 @@ const NotificationModal = ({ children }) => {
                 {notifications && notifications.length ? (
                   notifications.map((notification, index) => (
                     <>
-                      <li key={index}>{notification.desc}</li>
+                      <li
+                        key={index}
+                        onClick={() => handleNavigation(notification)}
+                      >
+                        {notification.desc}
+                      </li>
                       <hr />
                     </>
                   ))
