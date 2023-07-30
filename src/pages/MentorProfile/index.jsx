@@ -154,7 +154,32 @@ const NewprofilementprPage = (props) => {
   const removeRow = (index) => {
     const updatedExpertise = [...userDetails.expertise];
     const expertise = updatedExpertise.splice(index, 1);
-    setUserDetails({ ...userDetails, expertise: updatedExpertise });
+
+    let payload = {
+      name: userDetails.name,
+      email: userDetails.email,
+      type: "mentor",
+      userinfo: {
+        gender: userDetails.gender,
+        occupation: userDetails.occupation,
+        aboutyourself: userDetails.aboutyourself,
+        expertise: updatedExpertise,
+      },
+    };
+
+    setLoading(true);
+    secured.post("/users", payload).then((response) => {
+      if (response?.data?.status) {
+        toast.success("Profile Updated!", {
+          icon: "👏",
+        });
+        fetchUserData();
+        setLoading(false);
+      } else {
+        toast.error("Something went wrong!");
+        setLoading(false);
+      }
+    });
   };
 
   const handleCloseDropdown = () => {
@@ -304,7 +329,8 @@ const NewprofilementprPage = (props) => {
     };
     secured.post(url, payload).then((response) => {
       if (response.data.slots && response.data.slots.length) {
-        setSlots(response.data.slots);
+        let finalSlots = response.data.slots.filter((ele) => !ele.status);
+        setSlots(finalSlots);
       }
     });
   };
@@ -809,7 +835,10 @@ const NewprofilementprPage = (props) => {
                                   src="images/img_close.svg"
                                   className="h-[18px] mr-2.5 w-[18px]"
                                   alt="close"
-                                  onClick={() => removeRow(index)}
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => {
+                                    removeRow(index);
+                                  }}
                                 />
                               </div>
                             </>

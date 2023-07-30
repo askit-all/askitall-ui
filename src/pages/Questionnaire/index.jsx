@@ -153,6 +153,7 @@ const Questionnaire = () => {
                   <div className="flex flex-row sm:flex-col sm:justify-center gap-[15px] items-center justify-start w-[50%] md:w-full">
                     <div
                       className="flex justify-between items-center"
+                      style={{cursor:"pointer"}}
                       onClick={() => handleEditProfile(item)}
                     >
                       <Img

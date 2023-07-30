@@ -62,7 +62,7 @@ const HomePageMenteeOneCard3 = (props) => {
           />
           <Input
             wrapClassName="flex w-full"
-            className="font-nunitosans font-semibold p-0 placeholder:text-gray_500 text-gray_500 text-left text-xl w-full"
+            className="font-nunitosans font-semibold p-0 placeholder:text-gray_500  text-left text-xl w-full"
             name="language"
             placeholder="   Ask a Question"
             // prefix={
