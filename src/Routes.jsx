@@ -39,7 +39,7 @@ const ProjectRoutes = () => {
          
           <Route path="/questionnaire" element={<Questionnaire />} />
           {/* <Route path="/mentor" element={<MentorHomepage />} /> */}
-          <Route path="/call" element={<VideoCall />} />
+          <Route path="/call/:bookingId" element={<VideoCall />} />
           <Route path="/schedule" element={<Scheduling />} />
           <Route path="/mentor-profile" element={<MentorProfile />} />
           <Route path="/mentor-profile/:id" element={<MentorProfile/>} />
