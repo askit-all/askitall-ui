@@ -29,7 +29,7 @@ function AllNotifications() {
   const navigate = useNavigate();
 
   const handleNavigation = (item) => {
-    if (userData.type == "mentee") {
+    if (userData.type == "mentee" && item.notificationFrom) {
       navigate(
         `/mentor-profile/${item.notificationFrom}/fromNotification/${true}`
       );

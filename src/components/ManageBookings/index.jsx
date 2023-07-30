@@ -7,33 +7,36 @@ import { FaBan, FaTrashAlt } from "react-icons/fa";
 const BookingForm = () => {
   const [bookings, setBookings] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [singleBooking, setSingleBooking] = useState([
-    { date: "", startTime: "", endTime: "" },
-  ]);
+  const [showModalUnavail, setShowModalUnavail] = useState(false);
+  const [singleBooking, setSingleBooking] = useState({
+    date: "",
+    startTime: "",
+    endTime: "",
+  });
   const userData = JSON.parse(localStorage.getItem("userData"));
-  const [hasOverlap, setHasOverlap] = useState(false);
-
-  const deleteRow = (index) => {
-    const updatedBookings = [...bookings];
-    updatedBookings.splice(index, 1);
-    setBookings(updatedBookings);
-    checkOverlap(updatedBookings);
-  };
+  // const [hasOverlap, setHasOverlap] = useState(false);
 
   const handleDeleteClick = () => {
     setShowModal(true);
   };
 
-  const handleUnavailableClick = (booking) => {
+  const handleUnavailClick = () => {
+    setShowModalUnavail(true);
+  };
+
+  const handleUnavailableClick = (index) => {
+    let booking = bookings[index];
     let url = "/slots/mark-unavailable";
     let payload = {
       date: booking.date,
       slot: booking.slot,
     };
     secured.post(url, payload).then((response) => {
-      toast.success("All slots for the date are deleted");
+      toast.success("Slot is unavailable now");
       setFilteredDate(new Date().toISOString());
     });
+
+    setShowModalUnavail(false);
   };
 
   const handleConfirmDelete = (booking) => {
@@ -55,26 +58,63 @@ const BookingForm = () => {
     setShowModal(false);
   };
 
-  const checkOverlap = (bookings, updatedBookings) => {
-    let overlap = false;
-    let arr = [...bookings, updatedBookings];
-    for (let i = 0; i < arr.length; i++) {
-      for (let j = i + 1; j < arr.length; j++) {
-        const bookingA = arr[i];
-        const bookingB = arr[j];
-
-        if (bookingA.date === bookingB.date) {
-          overlap = true;
-          break;
-        }
-      }
-    }
-
-    setHasOverlap(overlap);
+  const handleCancelUnavail = () => {
+    // Perform actions for "No" confirmation or if the modal is closed
+    setShowModalUnavail(false);
   };
 
-  const handleCreate = () => {
+  // const checkOverlap = (bookings, updatedBookings) => {
+  //   let overlap = false;
+  //   let arr = [...bookings, updatedBookings];
+  //   for (let i = 0; i < arr.length; i++) {
+  //     for (let j = i + 1; j < arr.length; j++) {
+  //       const bookingA = arr[i];
+  //       const bookingB = arr[j];
+
+  //       if (bookingA.date === bookingB.date) {
+  //         overlap = true;
+  //         break;
+  //       }
+  //     }
+  //   }
+
+  //   setHasOverlap(overlap);
+  // };
+
+  const handleCreate = (event) => {
     // Handle the update action here
+
+    event.preventDefault();
+
+    const currentDate = new Date();
+    const selectedDate = new Date(singleBooking.date);
+    const selectedStartTime = new Date(
+      `${singleBooking.date}T${singleBooking.startTime}`
+    );
+    const selectedEndTime = new Date(
+      `${singleBooking.date}T${singleBooking.endTime}`
+    );
+
+    if (selectedDate.toDateString() === currentDate.toDateString()) {
+      // If the selected date is the current date
+      const currentTime = currentDate.getTime();
+      const selectedStartTimeMs = selectedStartTime.getTime();
+
+      if (selectedStartTimeMs < currentTime) {
+        toast.error("Start time cannot be less than the current time.");
+        return;
+      }
+
+      if (selectedStartTime >= selectedEndTime) {
+        // If the selected date is different from the current date
+        toast.error("Start time must be before the end time.");
+        return;
+      }
+    } else if (selectedStartTime >= selectedEndTime) {
+      // If the selected date is different from the current date
+      toast.error("Start time must be before the end time.");
+      return;
+    }
 
     if (
       singleBooking.date &&
@@ -114,45 +154,45 @@ const BookingForm = () => {
 
   const handleInputChange = (event, field) => {
     const { value } = event.target;
-    const updatedBookings = singleBooking;
-    updatedBookings[field] = value;
+    setSingleBooking({
+      ...singleBooking,
+      [field]: value,
+    });
+    // const currentDate = new Date();
+    // const currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
 
-    const currentDate = new Date();
-    const currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-
-    const currentBooking = updatedBookings;
+    // const currentBooking = updatedBookings;
 
     // Clear conflicting values
-    if (
-      field === "startTime" &&
-      currentBooking.endTime &&
-      (value >= currentBooking.endTime ||
-        (currentBooking.date === minDate && value < currentTime))
-    ) {
-      updatedBookings.endTime = "";
-    }
+    // if (
+    //   field === "startTime" &&
+    //   currentBooking.endTime &&
+    //   (value >= currentBooking.endTime ||
+    //     (currentBooking.date === minDate && value < currentTime))
+    // ) {
+    //   updatedBookings.endTime = "";
+    // }
 
-    if (
-      field === "endTime" &&
-      currentBooking.startTime &&
-      (value <= currentBooking.startTime ||
-        (currentBooking.date === minDate && value < currentTime))
-    ) {
-      updatedBookings.startTime = "";
-    }
+    // if (
+    //   field === "endTime" &&
+    //   currentBooking.startTime &&
+    //   (value <= currentBooking.startTime ||
+    //     (currentBooking.date === minDate && value < currentTime))
+    // ) {
+    //   updatedBookings.startTime = "";
+    // }
 
-    // Validate date range
-    const selectedDate = new Date(currentBooking.date);
-    const minSelectableDate = new Date();
-    minSelectableDate.setDate(minSelectableDate.getDate() - 1); // Allow today as well
+    // // Validate date range
+    // const selectedDate = new Date(currentBooking.date);
+    // const minSelectableDate = new Date();
+    // minSelectableDate.setDate(minSelectableDate.getDate() - 1); // Allow today as well
 
-    if (selectedDate < minSelectableDate || selectedDate > maxDate) {
-      // Clear all values for invalid date
-      updatedBookings = { date: "", startTime: "", endTime: "" };
-    }
+    // if (selectedDate < minSelectableDate || selectedDate > maxDate) {
+    //   // Clear all values for invalid date
+    //   updatedBookings = { date: "", startTime: "", endTime: "" };
+    // }
 
-    setSingleBooking(updatedBookings);
-    checkOverlap(bookings, updatedBookings);
+    // checkOverlap(bookings, updatedBookings);
   };
 
   const createSlots = (payload) => {
@@ -225,107 +265,119 @@ const BookingForm = () => {
     setFilteredDate(event.target.value);
   };
   return (
-    <div
-      className="container mx-auto p-4"
-      style={{ height: "calc(100vh - 14.5rem)", overflowY: "auto" }}
-    >
-      <div className="w-full flex gap-4 my-5 items-center">
-        <span className="font-semibold">Filter By : </span>
-        <input
-          type="date"
-          defaultValue={filteredDate.substring(0, 10)}
-          onChange={(e) => handleDateChange(e)}
-        />
-      </div>
+    <>
+      <div
+        className="container mx-auto p-4"
+        style={{ height: "calc(100vh - 14.5rem)", overflowY: "auto" }}
+      >
+        <div className="w-full flex gap-4 my-5 items-center">
+          <span className="font-semibold">Filter By : </span>
+          <input
+            type="date"
+            defaultValue={filteredDate.substring(0, 10)}
+            onChange={(e) => handleDateChange(e)}
+          />
+        </div>
 
-      <div className="flex mb-4 md:flex-col gap-5 justify-evenly items-center bg-white_A700_01 shadow-bs p-3">
-        <input
-          type="date"
-          className="mb-2 md:w-full w-full px-4 py-2 border rounded"
-          value={singleBooking.date}
-          onChange={(e) => handleInputChange(e, "date")}
-          min={minDate}
-          max={maxDate}
-        />
-        <input
-          type="time"
-          className="mb-2 md:w-full w-full px-4 py-2 border rounded"
-          value={singleBooking.startTime}
-          onChange={(e) => handleInputChange(e, "startTime")}
-        />
-        <input
-          type="time"
-          className="mb-2 md:w-full w-full px-4 py-2 border rounded"
-          value={singleBooking.endTime}
-          onChange={(e) => handleInputChange(e, "endTime")}
-        />
-
-        <button
-          className={`px-4 py-2 bg-blue-500 text-white rounded ${
-            hasOverlap ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          onClick={() => handleCreate()}
-          disabled={hasOverlap}
-        >
-          Create
-        </button>
-      </div>
-      {bookings.map((booking, index) => (
-        <div
-          key={index}
-          className="flex mb-4 md:flex-col gap-5 justify-evenly items-center bg-white_A700_01 shadow-bs p-3"
-        >
+        <div className="flex mb-4 md:flex-col gap-5 justify-evenly items-center bg-white_A700_01 shadow-bs p-3">
           <input
             type="date"
             className="mb-2 md:w-full w-full px-4 py-2 border rounded"
-            defaultValue={booking.date.substring(0, 10)} // Extracting the date part "YYYY-MM-DD"
-            onChange={(e) => handleInputChange(e, index, "date")}
+            value={singleBooking.date}
+            onChange={(e) => handleInputChange(e, "date")}
             min={minDate}
-            readOnly={true}
             max={maxDate}
           />
           <input
             type="time"
             className="mb-2 md:w-full w-full px-4 py-2 border rounded"
-            defaultValue={booking.startTime}
-            readOnly={true}
-            onChange={(e) => handleInputChange(e, index, "startTime")}
+            value={singleBooking.startTime}
+            onChange={(e) => handleInputChange(e, "startTime")}
           />
           <input
             type="time"
             className="mb-2 md:w-full w-full px-4 py-2 border rounded"
-            defaultValue={booking.endTime}
-            readOnly={true}
-            onChange={(e) => handleInputChange(e, index, "endTime")}
+            value={singleBooking.endTime}
+            onChange={(e) => handleInputChange(e, "endTime")}
           />
 
-          {booking.status ? (
-            <></>
-          ) : (
-            <FaTrashAlt
-              style={{ height: "2rem", width: "4rem", cursor: "pointer" }}
-              onClick={() => handleDeleteClick()}
-            />
-          )}
-          {showModal && (
-            <ModalDeleteBooking
-              message="Are you sure you want to delete all slots for this date?"
-              onConfirm={() => handleConfirmDelete(booking)}
-              onCancel={() => handleCancelDelete()}
-            />
-          )}
-
-          {booking.status ? (
-            <></>
-          ) : (
-            <FaBan
-              style={{ height: "2rem", width: "4rem", cursor: "pointer" }}
-              onClick={() => handleUnavailableClick(booking)}
-            />
-          )}
+          <button
+            className={`px-4 py-2 bg-blue-500 text-white rounded`}
+            onClick={(e) => handleCreate(e)}
+            // disabled={hasOverlap}
+          >
+            Create
+          </button>
         </div>
-      ))}
-    </div>
+        {bookings.map((booking, index) => (
+          <div
+            key={index}
+            className="flex mb-4 md:flex-col gap-5 justify-evenly items-center bg-white_A700_01 shadow-bs p-3"
+          >
+            <input
+              type="date"
+              className="mb-2 md:w-full w-full px-4 py-2 border rounded"
+              defaultValue={booking.date.substring(0, 10)} // Extracting the date part "YYYY-MM-DD"
+              onChange={(e) => handleInputChange(e, index, "date")}
+              min={minDate}
+              readOnly={true}
+              max={maxDate}
+            />
+            <input
+              type="time"
+              className="mb-2 md:w-full w-full px-4 py-2 border rounded"
+              defaultValue={booking.startTime}
+              readOnly={true}
+              onChange={(e) => handleInputChange(e, index, "startTime")}
+            />
+            <input
+              type="time"
+              className="mb-2 md:w-full w-full px-4 py-2 border rounded"
+              defaultValue={booking.endTime}
+              readOnly={true}
+              onChange={(e) => handleInputChange(e, index, "endTime")}
+            />
+
+            <div className="flex justify-between items-center">
+              {booking.status ? (
+                <></>
+              ) : (
+                <FaTrashAlt
+                  style={{ height: "2rem", width: "4rem", cursor: "pointer" }}
+                  onClick={() => handleDeleteClick()}
+                  title="Delete"
+                />
+              )}
+              {showModal && (
+                <ModalDeleteBooking
+                  message="Are you sure you want to delete all slots for this date?"
+                  onConfirm={() => handleConfirmDelete(booking)}
+                  onCancel={() => handleCancelDelete()}
+                />
+              )}
+
+              {booking.status ? (
+                <></>
+              ) : (
+                <FaBan
+                  style={{ height: "2rem", width: "4rem", cursor: "pointer" }}
+                  onClick={() => handleUnavailClick()}
+                  title="Unavailable"
+                />
+              )}
+
+              {showModalUnavail && (
+                <ModalDeleteBooking
+                  message="Are you sure you want to make this slot unavailable?"
+                  onConfirm={() => handleUnavailableClick(index)}
+                  onCancel={() => handleCancelUnavail()}
+                />
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

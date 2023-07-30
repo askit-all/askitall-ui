@@ -1,17 +1,57 @@
+import { secured } from "api/interceptors";
+import SlotButton from "components/ScheduleSlotButton";
 import React, { useState, useEffect } from "react";
 
 const UpcomingBookings = () => {
   const [bookings, setBookings] = useState([]);
-
+  const userData = JSON.parse(localStorage.getItem("userData"));
   // Function to fetch bookings from the API
   const fetchBookings = async () => {
-    try {
-      const response = await fetch("YOUR_BOOKINGS_API_ENDPOINT");
-      const data = await response.json();
-      setBookings(data);
-    } catch (error) {
-      console.error("Error fetching bookings:", error);
+    let url = "/slots/get-bookings";
+    let payload = {
+      userId: userData.userid,
+    };
+    secured.post(url, payload).then((response) => {
+      if (response.data.bookings && response.data.bookings.length) {
+        response.data.bookings.forEach((ele) => {
+          ele["showDate"] = new Date(ele.bookingDate).toLocaleString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          });
+
+          ele["startTime"] = ele.slot?.split("-")[0].trimEnd();
+        });
+
+        let finalBokings = response.data.bookings.filter(
+          (ele) => getTimeDifferenceInMinutes(ele.startTime) >= 0
+        );
+
+        setBookings(finalBokings);
+      } else {
+        setBookings([]);
+      }
+    });
+  };
+
+  const getTimeDifferenceInMinutes = (slotStartTime) => {
+    // Parse the time string into hours and minutes
+    const [time, period] = slotStartTime.split(" ");
+    const [hours, minutes] = time.split(":");
+
+    // Convert to 24-hour format
+    let hours24 = parseInt(hours, 10);
+    if (period.toLowerCase() === "pm" && hours24 < 12) {
+      hours24 += 12;
     }
+
+    // Create the slot start time using the current date and time
+    const currentDateTime = new Date();
+    const slotStartTime24 = new Date(currentDateTime);
+    slotStartTime24.setHours(hours24, minutes, 0, 0);
+
+    const timeDifference = slotStartTime24 - currentDateTime;
+    return timeDifference / (1000 * 60); // Convert to minutes
   };
 
   // useEffect to fetch bookings when the component mounts
@@ -28,9 +68,21 @@ const UpcomingBookings = () => {
               key={booking.id}
               className="p-4 rounded-md shadow-md bg-white hover:bg-gray-100 transition duration-300"
             >
-              <p className="text-lg font-semibold">Booking ID: {booking.id}</p>
-              <p>Customer Name: {booking.customerName}</p>
-              <p>Booking Date: {booking.bookingDate}</p>
+              <div className="flex sm:flex-col justify-between items-center">
+                <div>
+                  <p className="text-lg font-semibold">
+                    Call With: {booking.mentorName}
+                  </p>
+                  <p className="">Booking Date: {booking.showDate}</p>
+                </div>
+                <div>
+                  <SlotButton
+                    startTime={booking.startTime}
+                    bookingId={booking.bookingId}
+                  />
+                </div>
+              </div>
+
               {/* Add other booking details as needed */}
             </li>
           ))}
