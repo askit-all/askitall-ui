@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const SlotButton = ({ startTime }) => {
+const SlotButton = ({ startTime, bookingId }) => {
   const [showButton, setShowButton] = useState(false);
+  const navigate = useNavigate();
 
   const getTimeDifferenceInMinutes = (slotStartTime) => {
     // Parse the time string into hours and minutes
@@ -23,6 +25,10 @@ const SlotButton = ({ startTime }) => {
     return timeDifference / (1000 * 60); // Convert to minutes
   };
 
+  const gotoCall = () => {
+    navigate(`/call/${bookingId}`);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       const timeDifference = getTimeDifferenceInMinutes(startTime);
@@ -34,8 +40,14 @@ const SlotButton = ({ startTime }) => {
 
   return (
     <div>
-      {showButton && <button>Button</button>}
-      {!showButton && <div>Button will appear when there are 5 mins left</div>}
+      {/* {showButton && ( */}
+        <button
+          className="bg-orange-400 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md"
+          onClick={() => gotoCall()}
+        >
+          Attend Call
+        </button>
+      {/* )} */}
     </div>
   );
 };

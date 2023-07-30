@@ -15,7 +15,7 @@ const Bookings = () => {
 
   return (
     <>
-      <div className="bg-white_A700_01 flex flex-col items-start justify-start mx-auto px-5 md:px-10 w-full">
+      <div className="bg-white_A700_01 flex flex-col items-start justify-start mx-auto px-5 w-full">
         <div className="flex flex-col gap-8 items-start justify-start w-full">
           <div className="flex flex-col items-start justify-start w-full">
             <Text className="font-bold text-gray_900 my-4" as="h5" variant="h5">
@@ -57,7 +57,7 @@ const Bookings = () => {
               )}
             </div>
 
-            <div className="tab-content w-full">
+            <div className="mt-3 w-full">
               {activeTab === "Upcoming" ? <UpcomingBookings /> : <></>}
               {activeTab === "Pending" ? "No Pending booking" : <></>}
               {activeTab === "Past" ? "No Past booking" : <></>}

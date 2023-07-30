@@ -21,14 +21,37 @@ const UpcomingBookings = () => {
           });
 
           ele["startTime"] = ele.slot?.split("-")[0].trimEnd();
-          console.log(ele["startTime"]);
         });
 
-        setBookings(response.data.bookings);
+        let finalBokings = response.data.bookings.filter(
+          (ele) => getTimeDifferenceInMinutes(ele.startTime) >= 0
+        );
+
+        setBookings(finalBokings);
       } else {
         setBookings([]);
       }
     });
+  };
+
+  const getTimeDifferenceInMinutes = (slotStartTime) => {
+    // Parse the time string into hours and minutes
+    const [time, period] = slotStartTime.split(" ");
+    const [hours, minutes] = time.split(":");
+
+    // Convert to 24-hour format
+    let hours24 = parseInt(hours, 10);
+    if (period.toLowerCase() === "pm" && hours24 < 12) {
+      hours24 += 12;
+    }
+
+    // Create the slot start time using the current date and time
+    const currentDateTime = new Date();
+    const slotStartTime24 = new Date(currentDateTime);
+    slotStartTime24.setHours(hours24, minutes, 0, 0);
+
+    const timeDifference = slotStartTime24 - currentDateTime;
+    return timeDifference / (1000 * 60); // Convert to minutes
   };
 
   // useEffect to fetch bookings when the component mounts
@@ -45,12 +68,21 @@ const UpcomingBookings = () => {
               key={booking.id}
               className="p-4 rounded-md shadow-md bg-white hover:bg-gray-100 transition duration-300"
             >
-              <p className="text-lg font-semibold">
-                Booking ID: {booking.bookingId}
-              </p>
-              <p>Customer Name: {booking.customerName}</p>
-              <p>Booking Date: {booking.showDate}</p>
-              <SlotButton startTime={booking.startTime} />
+              <div className="flex sm:flex-col justify-between items-center">
+                <div>
+                  <p className="text-lg font-semibold">
+                    Call With: {booking.mentorName}
+                  </p>
+                  <p className="">Booking Date: {booking.showDate}</p>
+                </div>
+                <div>
+                  <SlotButton
+                    startTime={booking.startTime}
+                    bookingId={booking.bookingId}
+                  />
+                </div>
+              </div>
+
               {/* Add other booking details as needed */}
             </li>
           ))}

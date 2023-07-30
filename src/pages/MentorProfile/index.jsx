@@ -350,9 +350,9 @@ const NewprofilementprPage = (props) => {
     let url = "/slots/book-slot";
     secured.post(url, payload).then((response) => {
       // if (response.data.slots && response.data.slots.length) {
-      setSelectedDate(null);
+      toast.success("Slot booked");
       setSelectedSlot(null);
-      setSlots([]);
+      fetchSlots(selectedDate);
       // }
     });
   };

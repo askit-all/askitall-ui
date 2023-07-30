@@ -338,40 +338,42 @@ const BookingForm = () => {
               onChange={(e) => handleInputChange(e, index, "endTime")}
             />
 
-            {booking.status ? (
-              <></>
-            ) : (
-              <FaTrashAlt
-                style={{ height: "2rem", width: "4rem", cursor: "pointer" }}
-                onClick={() => handleDeleteClick()}
-                title="Delete"
-              />
-            )}
-            {showModal && (
-              <ModalDeleteBooking
-                message="Are you sure you want to delete all slots for this date?"
-                onConfirm={() => handleConfirmDelete(booking)}
-                onCancel={() => handleCancelDelete()}
-              />
-            )}
+            <div className="flex justify-between items-center">
+              {booking.status ? (
+                <></>
+              ) : (
+                <FaTrashAlt
+                  style={{ height: "2rem", width: "4rem", cursor: "pointer" }}
+                  onClick={() => handleDeleteClick()}
+                  title="Delete"
+                />
+              )}
+              {showModal && (
+                <ModalDeleteBooking
+                  message="Are you sure you want to delete all slots for this date?"
+                  onConfirm={() => handleConfirmDelete(booking)}
+                  onCancel={() => handleCancelDelete()}
+                />
+              )}
 
-            {booking.status ? (
-              <></>
-            ) : (
-              <FaBan
-                style={{ height: "2rem", width: "4rem", cursor: "pointer" }}
-                onClick={() => handleUnavailClick()}
-                title="Unavailable"
-              />
-            )}
+              {booking.status ? (
+                <></>
+              ) : (
+                <FaBan
+                  style={{ height: "2rem", width: "4rem", cursor: "pointer" }}
+                  onClick={() => handleUnavailClick()}
+                  title="Unavailable"
+                />
+              )}
 
-            {showModalUnavail && (
-              <ModalDeleteBooking
-                message="Are you sure you want to make this slot unavailable?"
-                onConfirm={() => handleUnavailableClick(index)}
-                onCancel={() => handleCancelUnavail()}
-              />
-            )}
+              {showModalUnavail && (
+                <ModalDeleteBooking
+                  message="Are you sure you want to make this slot unavailable?"
+                  onConfirm={() => handleUnavailableClick(index)}
+                  onCancel={() => handleCancelUnavail()}
+                />
+              )}
+            </div>
           </div>
         ))}
       </div>
