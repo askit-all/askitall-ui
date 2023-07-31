@@ -16,8 +16,8 @@ const LandingPage2 = React.lazy(() => import("pages/LandingPage2"));
 const Loginpage = React.lazy(() => import("pages/Loginpage"));
 const Landingpage = React.lazy(() => import("pages/Landingpage"));
 const AllNotifications = React.lazy(() => import("pages/AllNotifications"));
+const Feedback = React.lazy(() => import("pages/FeedBack"));
 // const LandingPageNew = React.lazy(() => import("pages/LandingPageNew"));
-
 
 // const Superadmindashboard = React.lazy(() =>
 //   import("pages/Superadmindashboard")
@@ -36,14 +36,17 @@ const ProjectRoutes = () => {
           <Route path="/login" element={<Loginpage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/landingpage2" element={<LandingPage2 />} />
-         
+
           <Route path="/questionnaire" element={<Questionnaire />} />
           {/* <Route path="/mentor" element={<MentorHomepage />} /> */}
           <Route path="/call/:bookingId" element={<VideoCall />} />
           <Route path="/schedule" element={<Scheduling />} />
           <Route path="/mentor-profile" element={<MentorProfile />} />
-          <Route path="/mentor-profile/:id" element={<MentorProfile/>} />
-          <Route path="/mentor-profile/:id/fromNotification/:fromNotification" element={<MentorProfile/>} />
+          <Route path="/mentor-profile/:id" element={<MentorProfile />} />
+          <Route
+            path="/mentor-profile/:id/fromNotification/:fromNotification"
+            element={<MentorProfile />}
+          />
           <Route path="/mentee-profile" element={<MenteeProfile />} />
           <Route path="/mentee-profile/:id" element={<MenteeProfile />} />
           <Route path="/about-us" element={<Aboutus />} />
@@ -54,6 +57,7 @@ const ProjectRoutes = () => {
           <Route path="/booking-tab" element={<BookingTab />} />
           <Route path="/notifications" element={<AllNotifications />} />
 
+          <Route path="/feedback" element={<Feedback />} />
         </Routes>
       </Router>
     </React.Suspense>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SlotButton = ({ startTime, bookingId }) => {
+const SlotButton = ({ startTime, bookingId,slotDate }) => {
   const [showButton, setShowButton] = useState(false);
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const SlotButton = ({ startTime, bookingId }) => {
 
     // Create the slot start time using the current date and time
     const currentDateTime = new Date();
-    const slotStartTime24 = new Date(currentDateTime);
+    const slotStartTime24 = new Date(slotDate);
     slotStartTime24.setHours(hours24, minutes, 0, 0);
 
     const timeDifference = slotStartTime24 - currentDateTime;
@@ -40,14 +40,14 @@ const SlotButton = ({ startTime, bookingId }) => {
 
   return (
     <div>
-      {/* {showButton && ( */}
+      {showButton && (
         <button
           className="bg-orange-400 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md"
           onClick={() => gotoCall()}
         >
           Attend Call
         </button>
-      {/* )} */}
+      )}
     </div>
   );
 };
