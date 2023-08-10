@@ -351,6 +351,7 @@ const BookingForm = () => {
               {showModal && (
                 <ModalDeleteBooking
                   message="Are you sure you want to delete all slots for this date?"
+                  index={index}
                   onConfirm={() => handleConfirmDelete(booking)}
                   onCancel={() => handleCancelDelete()}
                 />

@@ -330,9 +330,36 @@ const NewprofilementprPage = (props) => {
     secured.post(url, payload).then((response) => {
       if (response.data.slots && response.data.slots.length) {
         let finalSlots = response.data.slots.filter((ele) => !ele.status);
+        finalSlots.forEach((ele) => {
+          ele["startTime"] = ele.slot?.split("-")[0].trimEnd();
+        });
+
+        finalSlots = finalSlots.filter(
+          (ele) => getTimeDifferenceInMinutes(ele.startTime, ele.date) >= 0
+        );
         setSlots(finalSlots);
       }
     });
+  };
+
+  const getTimeDifferenceInMinutes = (slotStartTime, slotDate) => {
+    // Parse the time string into hours and minutes
+    const [time, period] = slotStartTime.split(" ");
+    const [hours, minutes] = time.split(":");
+
+    // Convert to 24-hour format
+    let hours24 = parseInt(hours, 10);
+    if (period.toLowerCase() === "pm" && hours24 < 12) {
+      hours24 += 12;
+    }
+
+    // Create the slot start time using the current date and time
+    const currentDateTime = new Date();
+    const slotStartTime24 = new Date(slotDate);
+    slotStartTime24.setHours(hours24, minutes, 0, 0);
+
+    const timeDifference = slotStartTime24 - currentDateTime;
+    return timeDifference / (1000 * 60); // Convert to minutes
   };
 
   const handleSlotChange = (slot) => {

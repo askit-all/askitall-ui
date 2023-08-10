@@ -24,7 +24,8 @@ const UpcomingBookings = () => {
         });
 
         let finalBokings = response.data.bookings.filter(
-          (ele) => getTimeDifferenceInMinutes(ele.startTime) >= 0
+          (ele) =>
+            getTimeDifferenceInMinutes(ele.startTime, ele.bookingDate) >= 0
         );
 
         setBookings(finalBokings);
@@ -34,7 +35,7 @@ const UpcomingBookings = () => {
     });
   };
 
-  const getTimeDifferenceInMinutes = (slotStartTime) => {
+  const getTimeDifferenceInMinutes = (slotStartTime, slotDate) => {
     // Parse the time string into hours and minutes
     const [time, period] = slotStartTime.split(" ");
     const [hours, minutes] = time.split(":");
@@ -47,7 +48,7 @@ const UpcomingBookings = () => {
 
     // Create the slot start time using the current date and time
     const currentDateTime = new Date();
-    const slotStartTime24 = new Date(currentDateTime);
+    const slotStartTime24 = new Date(slotDate);
     slotStartTime24.setHours(hours24, minutes, 0, 0);
 
     const timeDifference = slotStartTime24 - currentDateTime;
@@ -70,15 +71,29 @@ const UpcomingBookings = () => {
             >
               <div className="flex sm:flex-col justify-between items-center">
                 <div>
-                  <p className="text-lg font-semibold">
-                    Call With: {booking.mentorName}
-                  </p>
-                  <p className="">Booking Date: {booking.showDate}</p>
+                  {userData.type == "mentee" ? (
+                    <p className="">
+                      Call With: <span className="text-lg font-semibold">{booking.mentorName}</span>
+                    </p>
+                  ) : (
+                    <></>
+                  )}
+
+                  {userData.type == "mentor" ? (
+                    <p className="text-lg font-semibold">
+                      Call With:  <span className="text-lg font-semibold">{booking.menteeName}</span>
+                    </p>
+                  ) : (
+                    <></>
+                  )}
+                  <p className="">Booking Date:  <span className="text-lg font-semibold">{booking.showDate}</span></p>
+                  <p className="">Slot:  <span className="text-lg font-semibold">{booking.slot}</span></p>
                 </div>
                 <div>
                   <SlotButton
                     startTime={booking.startTime}
                     bookingId={booking.bookingId}
+                    slotDate={booking.bookingDate}
                   />
                 </div>
               </div>
