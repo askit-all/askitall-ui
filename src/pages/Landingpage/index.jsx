@@ -2,6 +2,7 @@ import React from "react";
 
 import { Button, Img, List, SelectBox, Text } from "components";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const enOptionsList = [
   { label: "Option1", value: "option1" },
@@ -11,13 +12,19 @@ const enOptionsList = [
 
 const HomepagenewuserOnePage = () => {
   const history = useNavigate();
-
+  const token = localStorage.getItem("token");
   const onClickRegister = () => {
     history("/signup");
   }
   const onClickLogin = () => {
     history("/login");
   }
+
+  useEffect(() => {
+    if (token) {
+      history("/questionnaire");
+    }
+  }, [history]);
 
   return (
     <>

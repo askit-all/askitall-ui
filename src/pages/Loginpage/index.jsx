@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 // import FacebookLogin from 'react-facebook-login'
 import "../../styles/login.css"; // Import the CSS file
-import linkedInLoginImage from '../../assets/images/linkedinimage.png';
+import linkedInLoginImage from "../../assets/images/linkedinimage.png";
 
 const _initialFields = {
   email: "",
@@ -15,25 +15,28 @@ const _initialFields = {
 };
 
 const _linkedInConfig = {
-  clientId: '77a7m25hnyodov',
-  redirectUrl: 'http://localhost:3000/login',
-  oauthUrl: 'https://www.linkedin.com/oauth/v2/authorization?response_type=code',
-  scope: 'r_liteprofile%20r_emailaddress',
-  state: '123456'
-}
+  clientId: "77a7m25hnyodov",
+  redirectUrl: "http://localhost:3000/login",
+  oauthUrl:
+    "https://www.linkedin.com/oauth/v2/authorization?response_type=code",
+  scope: "r_liteprofile%20r_emailaddress",
+  state: "123456",
+};
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
   const [formFields, setFormFields] = useState({ ..._initialFields });
-
+  const token = localStorage.getItem("token");
   const [validator, forceUpdate] = useValidator({
     autoForceUpdate: true,
     validators: {},
   });
 
-  const responseFacebook = (response) => {
-  };
+  useEffect(() => {
+    if(token){
+      navigate("/questionnaire");
+    }
+  }, [navigate]);
 
   const handleChange = (event) => {
     setFormFields((prevState) => {
@@ -57,7 +60,10 @@ const LoginPage = () => {
 
         if (response.data?.success) {
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("userData", JSON.stringify(response.data.userData));
+          localStorage.setItem(
+            "userData",
+            JSON.stringify(response.data.userData)
+          );
         }
 
         toast("Welcome", {
@@ -78,48 +84,55 @@ const LoginPage = () => {
   const [user, setUser] = useState([]);
   const [profile, setProfile] = useState(null);
 
-
-  function handleGoogleCallbackResponse(response){
+  function handleGoogleCallbackResponse(response) {
     const userObj = jwt_decode(response.credential);
-    secured.post("/users/saveLoginInfoGoogle", {
-      name : `${userObj?.given_name} ${userObj?.family_name}`,
-      email : userObj?.email
-    }).then((response) => {
-      toast(response?.data?.message, {
-        icon: "👏",
-      });
+    secured
+      .post("/users/saveLoginInfoGoogle", {
+        name: `${userObj?.given_name} ${userObj?.family_name}`,
+        email: userObj?.email,
+      })
+      .then((response) => {
+        toast(response?.data?.message, {
+          icon: "👏",
+        });
 
-      if (response?.data?.data?.success) {
-        localStorage.setItem("token", response?.data?.data?.token);
-        localStorage.setItem("userData", JSON.stringify(response?.data?.data?.userData));
-        navigate("/questionnaire");
-      }
-    });
-    
+        if (response?.data?.data?.success) {
+          localStorage.setItem("token", response?.data?.data?.token);
+          localStorage.setItem(
+            "userData",
+            JSON.stringify(response?.data?.data?.userData)
+          );
+          navigate("/questionnaire");
+        }
+      });
   }
 
-  useEffect(
-    () => {
-      const initializeGoogleSignIn = () => {
-        if (typeof window.google !== 'undefined' && window.google.accounts && window.google.accounts.id) {
-          window.google.accounts.id.initialize({
-            client_id : "602685784094-t7l06k06cikhpnhbmfuld0hmg36n9cbn.apps.googleusercontent.com",
-            callback : handleGoogleCallbackResponse        
-          });
-    
-          window.google.accounts.id.renderButton(
-            document.getElementById("googleLogin"),{
-              theme : "outline", 
-              size : "large"
-            }
-          )
-        }else{
-          setTimeout(initializeGoogleSignIn, 100);
-        }
+  useEffect(() => {
+    const initializeGoogleSignIn = () => {
+      if (
+        typeof window.google !== "undefined" &&
+        window.google.accounts &&
+        window.google.accounts.id
+      ) {
+        window.google.accounts.id.initialize({
+          client_id:
+            "602685784094-t7l06k06cikhpnhbmfuld0hmg36n9cbn.apps.googleusercontent.com",
+          callback: handleGoogleCallbackResponse,
+        });
+
+        window.google.accounts.id.renderButton(
+          document.getElementById("googleLogin"),
+          {
+            theme: "outline",
+            size: "large",
+          }
+        );
+      } else {
+        setTimeout(initializeGoogleSignIn, 100);
       }
-      initializeGoogleSignIn();
-      
-    },[]);
+    };
+    initializeGoogleSignIn();
+  }, []);
 
   // log out function to log the user out of google and set the profile array to null
   const logOut = () => {
@@ -127,7 +140,7 @@ const LoginPage = () => {
     setProfile(null);
   };
 
- const onLinkedInClick = () => {
+  const onLinkedInClick = () => {
     const { clientId, redirectUrl, oauthUrl, scope, state } = _linkedInConfig;
     const linkedinUrl = `${oauthUrl}&client_id=${clientId}&scope=${scope}&state=${state}&redirect_uri=${redirectUrl}`;
     const width = 450,
@@ -136,61 +149,63 @@ const LoginPage = () => {
       top = window.screen.height / 2 - height / 2;
     window.open(
       linkedinUrl,
-      'Linkedin',
-      'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' +
-      width +
-      ', height=' +
-      height +
-      ', top=' +
-      top +
-      ', left=' +
-      left
+      "Linkedin",
+      "menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=" +
+        width +
+        ", height=" +
+        height +
+        ", top=" +
+        top +
+        ", left=" +
+        left
     );
- }
-
- useEffect(() => {
-  if (window.opener && window.opener !== window) {
-    const code = getCodeFromWindowURL(window.location.href);
-    window.opener.postMessage({ 'type': 'code', 'code': code }, '*');
-    window.close();
-  }
-  window.addEventListener('message', handlePostMessage);
-
-  return () => {
-    window.removeEventListener('message', handlePostMessage);
   };
-}, []);
 
+  useEffect(() => {
+    if (window.opener && window.opener !== window) {
+      const code = getCodeFromWindowURL(window.location.href);
+      window.opener.postMessage({ type: "code", code: code }, "*");
+      window.close();
+    }
+    window.addEventListener("message", handlePostMessage);
 
-const handlePostMessage = event => {
-  if (event.data.type === 'code') {
-    const { code } = event.data;
-    getUserCredentials(code);
-  }
-};
+    return () => {
+      window.removeEventListener("message", handlePostMessage);
+    };
+  }, []);
 
-const getCodeFromWindowURL = url => {
-  const popupWindowURL = new URL(url);
-  return popupWindowURL.searchParams.get('code');
-};
+  const handlePostMessage = (event) => {
+    if (event.data.type === "code") {
+      const { code } = event.data;
+      getUserCredentials(code);
+    }
+  };
 
-const getUserCredentials = code => {
-  secured
-    .get(`/users/loginByLinkedin?code=${code}&redirectUrl=${_linkedInConfig.redirectUrl}`)
-    .then(response => {
-      toast(response?.data?.message, {
-        icon: "👏",
+  const getCodeFromWindowURL = (url) => {
+    const popupWindowURL = new URL(url);
+    return popupWindowURL.searchParams.get("code");
+  };
+
+  const getUserCredentials = (code) => {
+    secured
+      .get(
+        `/users/loginByLinkedin?code=${code}&redirectUrl=${_linkedInConfig.redirectUrl}`
+      )
+      .then((response) => {
+        toast(response?.data?.message, {
+          icon: "👏",
+        });
+
+        if (response?.data?.data?.success) {
+          localStorage.setItem("token", response?.data?.data?.token);
+          localStorage.setItem(
+            "userData",
+            JSON.stringify(response?.data?.data?.userData)
+          );
+          navigate("/questionnaire");
+        }
       });
-
-      if (response?.data?.data?.success) {
-        localStorage.setItem("token", response?.data?.data?.token);
-        localStorage.setItem("userData", JSON.stringify(response?.data?.data?.userData));
-        navigate("/questionnaire");
-      }
-
-    });
-};
-
+  };
 
   return (
     <>
@@ -278,18 +293,17 @@ const getUserCredentials = code => {
                 </Button>
                 <div className="flex flex-row gap-2.5 items-start justify-between responsive-or w-full">
                   <Line className="bg-black_900 h-px mb-2.5 mt-4 w-[44%]" />
-                  <Text
-                    className="font-semibold text-black_900"
-                  >
-                    OR
-                  </Text>
+                  <Text className="font-semibold text-black_900">OR</Text>
                   <Line className="bg-black_900 h-px mb-2.5 mt-4 w-[44%]" />
                 </div>
-               
 
                 <div id="googleLogin"></div>
                 <br />
-                <img src={linkedInLoginImage} alt="Sign in with LinkedIn" onClick={onLinkedInClick} />
+                <img
+                  src={linkedInLoginImage}
+                  alt="Sign in with LinkedIn"
+                  onClick={onLinkedInClick}
+                />
                 {/* <FacebookLogin
                   appId="577565794498484"
                   autoLoad={false}
