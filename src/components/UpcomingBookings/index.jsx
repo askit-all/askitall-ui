@@ -73,7 +73,10 @@ const UpcomingBookings = () => {
                 <div>
                   {userData.type == "mentee" ? (
                     <p className="">
-                      Call With: <span className="text-lg font-semibold">{booking.mentorName}</span>
+                      Call With:{" "}
+                      <span className="text-lg font-semibold">
+                        {booking.mentorName}
+                      </span>
                     </p>
                   ) : (
                     <></>
@@ -81,13 +84,40 @@ const UpcomingBookings = () => {
 
                   {userData.type == "mentor" ? (
                     <p className="text-lg font-semibold">
-                      Call With:  <span className="text-lg font-semibold">{booking.menteeName}</span>
+                      Call With:{" "}
+                      <span className="text-lg font-semibold">
+                        {booking.menteeName}
+                      </span>
                     </p>
                   ) : (
                     <></>
                   )}
-                  <p className="">Booking Date:  <span className="text-lg font-semibold">{booking.showDate}</span></p>
-                  <p className="">Slot:  <span className="text-lg font-semibold">{booking.slot}</span></p>
+                  <p className="">
+                    Booking Date:{" "}
+                    <span className="text-lg font-semibold">
+                      {booking.showDate}
+                    </span>
+                  </p>
+                  <p className="">
+                    Slot:{" "}
+                    <span className="text-lg font-semibold">
+                      {booking.slot}
+                    </span>
+                  </p>
+
+                  {booking.isCallStarted && userData.type == 'mentee' ? (
+                    <p
+                      style={{
+                        color: "red",
+                        fontWeight: "500",
+                        fontSize: "20px",
+                      }}
+                    >
+                      Call already started
+                    </p>
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 <div>
                   <SlotButton

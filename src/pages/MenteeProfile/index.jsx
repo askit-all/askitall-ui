@@ -28,7 +28,7 @@ const ProfilementeePage = (props) => {
     setLoading(true);
     let url = id ? `/users/${id}` : "/users";
     secured.get(url).then((response) => {
-
+      localStorage.setItem('userData',JSON.stringify(response.data.data))
       setUserDetails({
         ...response.data.data,
         aboutyourself: response.data.data.userinfo

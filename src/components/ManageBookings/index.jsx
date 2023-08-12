@@ -208,10 +208,16 @@ const BookingForm = () => {
   const fetchAllSlots = () => {
     // setSingleBooking({ date: "", startTime: "", endTime: "" });
     let url = "/slots/get-all-slots-by-date";
+   
+    const originalDate = new Date(filteredDate);
+    originalDate.setUTCHours(0, 0, 0, 0);
+
     let payload = {
-      date: filteredDate,
+      date: originalDate.toISOString(),
       userId: userData.userid,
     };
+
+
     secured.post(url, payload).then((response) => {
       if (response.data.slots && response.data.slots.length) {
         response.data.slots.forEach((ele) => {
