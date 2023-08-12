@@ -17,6 +17,8 @@ const VideoCall = () => {
   const [appID, setAppId] = useState('e27fafd3d0c24c3da5fc2a25d546c40f');
   const [uid, setUserId] = useState('');
   const { bookingId } = useParams();
+
+  const userData = JSON.parse(localStorage.getItem("userData"));
   
   useEffect(() => { 
     async function getAgoraToken() {
@@ -30,8 +32,8 @@ const VideoCall = () => {
           setVideocall(true);
           setUserId(tokenData?.user_id)
 
-          if(tokenData?.channel && tokenData?.user_id){
-             acquireCloudRecording(tokenData?.channel);
+          if(tokenData?.channel && tokenData?.bookingId){
+             acquireCloudRecording(tokenData?.channel, tokenData?.bookingId, tokenData?.token);
           }
         }
       } catch (error) {
@@ -44,25 +46,28 @@ const VideoCall = () => {
   }, []);
 
 
-  async function acquireCloudRecording(channel, bookingId){
-    const response = await secured.post("/rtc/recording", {
+  async function acquireCloudRecording(channel, bookingId, token){
+    if(userData?.type === "mentor"){
+      const response = await secured.post("/rtc/recording", {
         channel,
-        bookingId
-    });
-    console.log(response);
+        bookingId,
+        token
+      });
+    }
   }
 
   const stopRecording = async() =>{
-    const response = await secured.post("/rtc/stop-recording", {
-      bookingId
-    });
-    console.log(response);
+    if(userData?.type === "mentor"){
+      secured.post("/rtc/stop-recording", {
+        bookingId
+      });
+    }
   } 
 
-  const handleEndCall = async() => {
+  const handleEndCall = () => {
     setVideocall(false);
-    await stopRecording();
-    history("/questionnaire");
+    stopRecording();
+    history("/feedback");
   }
   return (  
     <div style={styles.container}>
