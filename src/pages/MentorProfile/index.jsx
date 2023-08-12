@@ -27,7 +27,7 @@ const NewprofilementprPage = (props) => {
 
   const [categorySelected, setCategorySelecteed] = useState("");
   const [categoryList, setCategoryList] = useState([]);
-
+  const [rating, setRating] = useState(0);
   const [showAddDropdown, setShowAddDropdown] = useState(false);
 
   const [bookings, setBookings] = useState([]);
@@ -57,6 +57,12 @@ const NewprofilementprPage = (props) => {
     fetchQuestions();
   }, [history]);
 
+  useEffect(() => {
+    if (userDetails?.userid) {
+      fetchRating();
+    }
+  }, [userDetails?.userid]);
+
   const fetchQuestions = () => {
     setLoading(true);
     let url = id ? `/questions/users/${id}` : "/questions/users";
@@ -68,12 +74,26 @@ const NewprofilementprPage = (props) => {
     });
   };
 
+  const fetchRating = () => {
+    setLoading(true);
+    let url = id
+      ? `/reviews/average-rating/${id}`
+      : `/reviews/average-rating/${userDetails?.userid}`;
+    secured.get(url).then((response) => {
+      if (response?.data) {
+        setRating(response?.data?.averageRating);
+        
+      }
+    });
+
+    setLoading(false);
+  };
+
   const fetchUserData = () => {
     setLoading(true);
 
     let url = id ? `/users/${id}` : "/users";
     secured.get(url).then((response) => {
-      localStorage.setItem("userData", JSON.stringify(response.data.data));
       setUserDetails({
         ...response.data.data,
         gender: response.data.data.userinfo
@@ -233,6 +253,7 @@ const NewprofilementprPage = (props) => {
         toast.success("Profile Updated!", {
           icon: "👏",
         });
+        localStorage.setItem("userData", JSON.stringify(response.data.data));
         fetchUserData();
         setLoading(false);
       } else {
@@ -470,9 +491,21 @@ const NewprofilementprPage = (props) => {
                           }
                           className="h-[150px] md:h-auto rounded-[50%] w-[150px]"
                           alt="ellipseOne_One"
-                          htmlFor="fileInput"
-                          onClick={handleClick}
                         />
+                        {id ? (
+                          <></>
+                        ) : (
+                          <Button
+                            className="cursor-pointer font-normal mx-auto text-[15px] text-center text-white_A700_01 change-pic"
+                            size="lg"
+                            variant="FillGray900b7"
+                            htmlFor="fileInput"
+                            style={{ marginTop: "1rem", width: "fit-content" }}
+                            onClick={handleClick}
+                          >
+                            Change Photo
+                          </Button>
+                        )}
                         <input
                           id="fileInput"
                           type="file"
@@ -572,7 +605,7 @@ const NewprofilementprPage = (props) => {
                     <div className="flex flex-row items-center justify-center mt-2.5 w-[55%] md:w-full">
                       <RatingBar
                         className="flex justify-between w-[172px]"
-                        value={5}
+                        value={rating}
                         starCount={5}
                         activeColor="#ff9915"
                         size={22}
