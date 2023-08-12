@@ -58,13 +58,18 @@ const SignupPage = () => {
         ...formFields,
       };
       opened.post("/users/register", payload).then((response) => {
-        setFormFields({ ..._initialFields });
-        validator.visibleFields = [];
-        forceUpdate();
+        if(response?.data){
+          setFormFields({ ..._initialFields });
+          validator.visibleFields = [];
+          forceUpdate();
+  
+          toast.success("Joined! You may now login in");
+  
+          navigate("/login");
+        } else{
+          toast.error("Something went wrong");
+        }
 
-        toast.success("Joined! You may now login in");
-
-        navigate("/login");
       });
     } else {
       validator.showMessages();

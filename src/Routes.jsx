@@ -57,7 +57,7 @@ const ProjectRoutes = () => {
           <Route path="/booking-tab" element={<BookingTab />} />
           <Route path="/notifications" element={<AllNotifications />} />
 
-          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/feedback/:mentorId" element={<Feedback />} />
         </Routes>
       </Router>
     </React.Suspense>

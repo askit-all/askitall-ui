@@ -2,13 +2,16 @@ import { secured } from "api/interceptors";
 import Header from "components/Header";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FeedbackForm = () => {
+
+  const history = useNavigate();
+
   const [rating, setRating] = useState(0);
   const [description, setDescription] = useState("");
-  const mentorId = '4356';
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const { mentorId } = useParams();
   const handleRatingChange = (value) => {
     setRating(value);
   };
@@ -24,17 +27,14 @@ const FeedbackForm = () => {
     let payload = {
       rating: rating,
       description: description,
-      mentorId:mentorId      
+      mentorId: mentorId,
     };
 
     secured.post("/reviews", payload).then((response) => {
-      if (response?.data?.status) {
-        toast.success("Feedback saved!", {
-          icon: "👏",
-        });
-      } else {
-        toast.error("Something went wrong!");
-      }
+      toast.success("Feedback saved!", {
+        icon: "👏",
+      });
+      history("/questionnaire");
     });
 
     setIsSubmitting(false);
