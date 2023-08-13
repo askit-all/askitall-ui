@@ -38,8 +38,7 @@ const VideoCall = () => {
           if (tokenData?.channel && tokenData?.bookingId) {
             acquireCloudRecording(
               tokenData?.channel,
-              tokenData?.bookingId,
-              tokenData?.token
+              tokenData?.bookingId
             );
           }
         }
@@ -63,12 +62,11 @@ const VideoCall = () => {
     });
   };
 
-  async function acquireCloudRecording(channel, bookingId, token) {
+  async function acquireCloudRecording(channel, bookingId) {
     if (userData?.type === "mentor") {
       const response = await secured.post("/rtc/recording", {
         channel,
-        bookingId,
-        token,
+        bookingId
       });
     }
   }
