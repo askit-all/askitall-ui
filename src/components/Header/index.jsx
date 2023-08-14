@@ -2,6 +2,7 @@ import { Img } from "components";
 import NotificationModal from "components/Notification";
 import "../../styles/header.css";
 import Popover from "../Popover";
+import { FaBell, FaUser } from "react-icons/fa";
 
 const Header = (props) => {
 
@@ -50,18 +51,20 @@ const Header = (props) => {
 
           <div className="flex items-center head-btn-width justify-between">
             <NotificationModal>
-              <Img
+              {/* <Img
                 className="head-img-width"
                 src="images/img_notification.svg"
                 alt="notification"
-              />
+              /> */}
+              <FaBell style={{color:'white',fontSize:'1.5rem'}}/>
             </NotificationModal>
             <Popover>
-              <Img
+              {/* <Img
                 src="images/img_user.svg"
                 alt="user"
                 className="head-img-width"
-              />
+              /> */}
+              <FaUser style={{color:'white',fontSize:'1.5rem'}}/>
             </Popover>
           </div>
         </div>
