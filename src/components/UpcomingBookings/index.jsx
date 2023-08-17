@@ -105,7 +105,7 @@ const UpcomingBookings = () => {
                     </span>
                   </p>
 
-                  {booking.isCallStarted && userData.type == 'mentee' ? (
+                  {booking.isCallStarted && userData.type == "mentee" ? (
                     <p
                       style={{
                         color: "red",
@@ -120,11 +120,25 @@ const UpcomingBookings = () => {
                   )}
                 </div>
                 <div>
-                  <SlotButton
-                    startTime={booking.startTime}
-                    bookingId={booking.bookingId}
-                    slotDate={booking.bookingDate}
-                  />
+                  {userData.type == "mentee" && booking.isCallStarted ? (
+                    <SlotButton
+                      startTime={booking.startTime}
+                      bookingId={booking.bookingId}
+                      slotDate={booking.bookingDate}
+                    />
+                  ) : (
+                    <></>
+                  )}
+
+                  {userData.type == "mentor" ? (
+                    <SlotButton
+                      startTime={booking.startTime}
+                      bookingId={booking.bookingId}
+                      slotDate={booking.bookingDate}
+                    />
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
 
