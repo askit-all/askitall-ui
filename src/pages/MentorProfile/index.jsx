@@ -279,7 +279,7 @@ const NewprofilementprPage = (props) => {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (categoryList.length && userDetails.categories.length) {
+    if (categoryList && categoryList.length && userDetails?.categories?.length) {
       const filteredArray = categoryList.filter(
         (item1) =>
           !userDetails.categories.some(
