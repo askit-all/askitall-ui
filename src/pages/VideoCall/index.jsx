@@ -13,10 +13,8 @@ const VideoCall = () => {
   const [isPinned, setPinned] = useState(false);
   const [bookingData, setBookingData] = useState(null);
   const [username, setUsername] = useState("");
-  const [channel, setChannel] = useState("user1--user2");
-  const [agoraToken, setAgoraToken] = useState(
-    "006e27fafd3d0c24c3da5fc2a25d546c40fIABY0cWQWEjhJhAe+9zZpn3Svf8dORio2KDLjvbFgZnvEbseIsY9idUzIgBEciznU1CWZAQAAQDjDJVkAgDjDJVkAwDjDJVkBADjDJVk"
-  );
+  const [channel, setChannel] = useState("");
+  const [agoraToken, setAgoraToken] = useState("");
   const [appID, setAppId] = useState("e27fafd3d0c24c3da5fc2a25d546c40f");
   const [uid, setUserId] = useState("");
   const { bookingId } = useParams();
