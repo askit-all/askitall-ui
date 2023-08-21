@@ -54,8 +54,8 @@ const HomePageMenteeOneCard3 = (props) => {
               props.userDetails
                 ? props.userDetails.profileImageUrl
                   ? props.userDetails.profileImageUrl
-                  : "images/img_ellipse1_150x150.png"
-                : "images/img_ellipse1_150x150.png"
+                  : "images/img_ellipse2.png"
+                : "images/img_ellipse2.png"
             }
             className="h-[46px] md:h-auto rounded-[50%] w-[46px]"
             alt="ellipseTwo"

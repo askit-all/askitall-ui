@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Img, List, Text } from "components";
 import Header from "components/Header";
 import SuperAdminDashboardCheckboxactive from "components/SuperAdminDashboardCheckboxactive";
+import { useNavigate } from "react-router-dom";
 
 const HomepagementorPage = () => {
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   return (
     <>
       <div className="bg-white_A700_01 flex flex-col font-nunitosans items-center justify-start mx-auto pb-[84px] w-full">

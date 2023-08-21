@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Button, Line, Text } from "components";
 import Header from "components/Header";
+import { useNavigate } from "react-router-dom";
 
 const BookingpagePage = () => {
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   return (
     <>
       <div className="bg-white_A700 flex flex-col font-nunitosans gap-[30px] justify-start mx-auto pb-[1564px] w-full">
