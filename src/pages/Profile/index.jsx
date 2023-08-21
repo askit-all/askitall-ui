@@ -21,9 +21,15 @@ const ProfleHome = () => {
   const [tabSelected, setTabSelected] = useState("profile");
   const [userDetails, setUserDetails] = useState(null);
 
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
     fetchUserData();
-  }, []);
+  }, [navigate]);
 
   const fetchUserData = () => {
     setLoading(true);
@@ -70,8 +76,8 @@ const ProfleHome = () => {
                   userDetails
                     ? userDetails.profileImageUrl
                       ? userDetails.profileImageUrl
-                      : "images/img_ellipse1_150x150.png"
-                    : "images/img_ellipse1_150x150.png"
+                      : "images/img_ellipse2.png"
+                    : "images/img_ellipse2.png"
                 }
                 className="h-20 md:h-auto rounded-[50%] w-20"
                 alt="ellipseSeven"

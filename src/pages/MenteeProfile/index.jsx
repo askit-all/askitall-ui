@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
 import "./menteeProfile.css";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 // CSS styles for the loader
 const override = css`
@@ -24,11 +24,22 @@ const ProfilementeePage = (props) => {
   const { id } = useParams();
   const fileInputRef = useRef(null);
 
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    fetchUserData();
+    fetchQuestions();
+  }, [navigate]);
+
   const fetchUserData = () => {
     setLoading(true);
     let url = id ? `/users/${id}` : "/users";
     secured.get(url).then((response) => {
-      
       setUserDetails({
         ...response.data.data,
         aboutyourself: response.data.data.userinfo
@@ -72,7 +83,7 @@ const ProfilementeePage = (props) => {
         toast.success("Profile Updated!", {
           icon: "👏",
         });
-        localStorage.setItem('userData',JSON.stringify(response.data.data))
+        localStorage.setItem("userData", JSON.stringify(response.data.data));
         fetchUserData();
         setLoading(false);
       } else {
@@ -113,11 +124,6 @@ const ProfilementeePage = (props) => {
       }
     });
   };
-
-  useEffect(() => {
-    fetchUserData();
-    fetchQuestions();
-  }, [history]);
 
   return (
     <>
@@ -161,7 +167,9 @@ const ProfilementeePage = (props) => {
                         src={
                           userDetails
                             ? userDetails.profileImageUrl
-                            : "images/img_ellipse1_150x150.png"
+                              ? userDetails.profileImageUrl
+                              : "images/img_ellipse2.png"
+                            : "images/img_ellipse2.png"
                         }
                         className="h-[149px] mx-auto object-cover"
                         style={{ width: "100%" }}
@@ -342,15 +350,18 @@ const ProfilementeePage = (props) => {
                             >
                               <div className="flex flex-col items-start justify-start mb-0.5 w-[47%] md:w-full">
                                 <div className="flex flex-row sm:flex-col sm:justify-center gap-[15px] items-center justify-start md:w-full">
-                                  <Img
-                                    src={
-                                      item.profileImageUrl
-                                        ? item.profileImageUrl
-                                        : "images/img_ellipse2.png"
-                                    }
-                                    className="h-[46px] md:h-auto rounded-[50%] w-[46px]"
-                                    alt="ellipseTwo_One"
-                                  />
+                                  {item.profileImageUrl ? (
+                                    <Img
+                                      src={item.profileImageUrl}
+                                      className="h-[46px] md:h-auto rounded-[50%] w-[46px]"
+                                      alt="ellipseTwo_One"
+                                    />
+                                  ) : (
+                                    <>
+                                      <Img src="images/img_ellipse2.png" />
+                                    </>
+                                  )}
+
                                   <Text
                                     className="font-bold text-gray_900"
                                     variant="body10"

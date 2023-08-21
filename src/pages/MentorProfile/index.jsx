@@ -3,7 +3,7 @@ import { Button, Img, Line, RatingBar, Text } from "components";
 import Header from "components/Header";
 import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import "./mentorProfile.css";
 
 import { css } from "@emotion/react";
@@ -20,6 +20,19 @@ const override = css`
 
 const NewprofilementprPage = (props) => {
   const history = useLocation();
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    fetchCategories();
+    fetchUserData();
+    fetchQuestions();
+  }, [navigate]);
 
   const [questionsList, setQuestionsList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -51,11 +64,6 @@ const NewprofilementprPage = (props) => {
   const { id } = useParams();
   const { fromNotification } = useParams();
 
-  useEffect(() => {
-    fetchCategories();
-    fetchUserData();
-    fetchQuestions();
-  }, [history]);
 
   useEffect(() => {
     if (userDetails?.userid) {
@@ -82,7 +90,6 @@ const NewprofilementprPage = (props) => {
     secured.get(url).then((response) => {
       if (response?.data) {
         setRating(response?.data?.averageRating);
-        
       }
     });
 
@@ -279,7 +286,11 @@ const NewprofilementprPage = (props) => {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (categoryList.length && userDetails.categories.length) {
+    if (
+      categoryList &&
+      categoryList.length &&
+      userDetails?.categories?.length
+    ) {
       const filteredArray = categoryList.filter(
         (item1) =>
           !userDetails.categories.some(
@@ -486,8 +497,8 @@ const NewprofilementprPage = (props) => {
                             userDetails
                               ? userDetails.profileImageUrl
                                 ? userDetails.profileImageUrl
-                                : "images/img_ellipse1_150x150.png"
-                              : "images/img_ellipse1_150x150.png"
+                                : "images/img_ellipse2.png"
+                              : "images/img_ellipse2.png"
                           }
                           className="h-[150px] md:h-auto rounded-[50%] w-[150px]"
                           alt="ellipseOne_One"
