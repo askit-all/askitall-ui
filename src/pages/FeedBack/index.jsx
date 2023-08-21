@@ -1,12 +1,20 @@
 import { secured } from "api/interceptors";
 import Header from "components/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
 const FeedbackForm = () => {
 
   const history = useNavigate();
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const [rating, setRating] = useState(0);
   const [description, setDescription] = useState("");

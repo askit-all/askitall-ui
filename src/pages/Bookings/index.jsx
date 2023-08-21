@@ -4,10 +4,19 @@ import { Button, Img, Input, Line, Text } from "components";
 import ManageBookings from "components/ManageBookings";
 import { secured } from "api/interceptors";
 import UpcomingBookings from "components/UpcomingBookings";
+import { useNavigate } from "react-router-dom";
 
 const Bookings = () => {
   const [activeTab, setActiveTab] = useState("Upcoming");
   const userData = JSON.parse(localStorage.getItem("userData"));
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const handleTabClick = (label) => {
     setActiveTab(label);

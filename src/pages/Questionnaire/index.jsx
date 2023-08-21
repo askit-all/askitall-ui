@@ -28,6 +28,18 @@ const Questionnaire = () => {
     navigate("/mentor-profile");
   };
 
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    fetchCategories();
+    fetchQuestions();
+    fetchUserData();
+  }, [navigate]);
+
   const handleClose = () => {
     setIsOpen(false);
   };
@@ -99,11 +111,6 @@ const Questionnaire = () => {
     });
   };
 
-  useEffect(() => {
-    fetchCategories();
-    fetchQuestions();
-    fetchUserData();
-  }, []);
 
   return (
     <>
@@ -153,7 +160,7 @@ const Questionnaire = () => {
                   <div className="flex flex-row sm:flex-col sm:justify-center gap-[15px] items-center justify-start w-[50%] md:w-full">
                     <div
                       className="flex justify-between items-center"
-                      style={{cursor:"pointer"}}
+                      style={{ cursor: "pointer" }}
                       onClick={() => handleEditProfile(item)}
                     >
                       <Img

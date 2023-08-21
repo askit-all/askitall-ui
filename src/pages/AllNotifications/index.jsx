@@ -27,6 +27,14 @@ function AllNotifications() {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    fetchNotifications();
+  }, [navigate]);
 
   const handleNavigation = (item) => {
     if (userData.type == "mentee" && item.notificationFrom) {
@@ -45,9 +53,6 @@ function AllNotifications() {
     });
   };
 
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
   return (
     <>
       {loading && (
