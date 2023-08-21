@@ -87,7 +87,7 @@ const VideoCall = () => {
   return (
     <div style={styles.container}>
       <div style={styles.videoContainer}>
-        {videocall && channel && agoraToken ? (
+        {videocall && channel && uid && agoraToken ? (
           <AgoraUIKit
             rtcProps={{
               appId: appID,
