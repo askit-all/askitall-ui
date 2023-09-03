@@ -1,4 +1,6 @@
 import { secured } from "api/interceptors";
+import CancelSlotButton from "components/CancelSlotButton";
+import ReSlotButton from "components/ReScheduleSlotButton";
 import SlotButton from "components/ScheduleSlotButton";
 import React, { useState, useEffect } from "react";
 
@@ -25,7 +27,7 @@ const UpcomingBookings = () => {
 
         let finalBokings = response.data.bookings.filter(
           (ele) =>
-            getTimeDifferenceInMinutes(ele.startTime, ele.bookingDate) >= 0
+            getTimeDifferenceInMinutes(ele.startTime, ele.bookingDate) >= 0 && ele.status !== 'CANCELLED'
         );
 
         setBookings(finalBokings);
@@ -118,6 +120,22 @@ const UpcomingBookings = () => {
                   ) : (
                     <></>
                   )}
+
+                  <div className="flex gap-3 my-2">
+                    <ReSlotButton
+                      startTime={booking.startTime}
+                      booking={booking}
+                      slotDate={booking.bookingDate}
+                      fetchBookings={fetchBookings}
+                    />
+
+                    <CancelSlotButton
+                      startTime={booking.startTime}
+                      booking={booking}
+                      slotDate={booking.bookingDate}
+                      fetchBookings={fetchBookings}
+                    />
+                  </div>
                 </div>
                 <div>
                   {userData.type == "mentee" && booking.isCallStarted ? (

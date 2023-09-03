@@ -64,7 +64,6 @@ const NewprofilementprPage = (props) => {
   const { id } = useParams();
   const { fromNotification } = useParams();
 
-
   useEffect(() => {
     if (userDetails?.userid) {
       fetchRating();
@@ -484,62 +483,408 @@ const NewprofilementprPage = (props) => {
         {userDetails && (
           <div className="bg-gradient3  flex flex-col font-segoeui items-center justify-end mx-auto p-[23px] sm:px-5 w-full">
             <div className="flex md:flex-col flex-row gap-2 w-full">
+              {!props.fromProfile ? (
+                <div
+                  className="bg-white_A700_01 md:mt-0 p-2.5 rounded shadow-bs12 w-[33%] md:w-full"
+                  // style={{ maxHeight: "calc(100vh - 13rem)" }}
+                >
+                  <div className="flex justify-end m-auto w-[91%]">
+                    <div className="flex flex-col h-full inset-[0] items-center m-auto w-full">
+                      <div className="font-segoeui w-full">
+                        <div className="flex flex-col gap-[29px] h-full inset-[0] items-center justify-center m-auto  md:px-10 sm:px-5  w-full">
+                          <Img
+                            src={
+                              userDetails
+                                ? userDetails.profileImageUrl
+                                  ? userDetails.profileImageUrl
+                                  : "images/img_ellipse2.png"
+                                : "images/img_ellipse2.png"
+                            }
+                            className="h-[150px] md:h-auto rounded-[50%] w-[150px]"
+                            alt="ellipseOne_One"
+                          />
+                          {id ? (
+                            <></>
+                          ) : (
+                            <Button
+                              className="cursor-pointer font-normal mx-auto text-[15px] text-center text-white_A700_01 change-pic"
+                              size="lg"
+                              variant="FillGray900b7"
+                              htmlFor="fileInput"
+                              style={{
+                                marginTop: "1rem",
+                                width: "fit-content",
+                              }}
+                              onClick={handleClick}
+                            >
+                              Change Photo
+                            </Button>
+                          )}
+                          <input
+                            id="fileInput"
+                            type="file"
+                            ref={fileInputRef}
+                            disabled={id}
+                            onChange={handleFileChange}
+                            style={{ display: "none" }}
+                          />
+                          <Text
+                            className="font-semibold mb-[18px] text-gray_900"
+                            variant="body10"
+                          >
+                            Categories
+                          </Text>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 w-full">
+                        {userDetails.categories &&
+                        userDetails.categories.length ? (
+                          userDetails.categories.map((category, index) => (
+                            <>
+                              <div className=" bg-white_A700_01 flex flex-row items-center justify-evenly p-1 my-2 rounded">
+                                <Text
+                                  className="font-normal ml-[7px] text-gray_900"
+                                  variant="body12"
+                                >
+                                  {category.name}
+                                </Text>
+
+                                {id ? (
+                                  <></>
+                                ) : (
+                                  <Img
+                                    src="images/img_close.svg"
+                                    className="h-[18px] mr-2.5 w-[18px]"
+                                    alt="close"
+                                    name={{ index }}
+                                    onClick={() => removeCategory(index)}
+                                  />
+                                )}
+                              </div>
+                            </>
+                          ))
+                        ) : (
+                          <></>
+                        )}
+
+                        {showAddDropdown && (
+                          <>
+                            <div className=" bg-white_A700_01 flex flex-row items-center justify-between p-1 my-2 rounded">
+                              <select
+                                className="rounded-[30px]"
+                                value={categorySelected}
+                                onChange={handleCategoryChange}
+                              >
+                                <option value="">Select Category</option>
+                                {categoryList &&
+                                  categoryList.map((option) => (
+                                    <option
+                                      key={option.category_id}
+                                      value={option.category_id}
+                                    >
+                                      {option.name}
+                                    </option>
+                                  ))}
+                              </select>
+                              <Img
+                                src="images/img_close.svg"
+                                className="h-[18px] mr-2.5 w-[18px]"
+                                alt="close"
+                                onClick={handleCloseDropdown}
+                              />
+                            </div>
+                          </>
+                        )}
+                      </div>
+
+                      {id ? (
+                        <></>
+                      ) : (
+                        <Text
+                          className="font-bold mt-[15px] text-orange_500"
+                          variant="body12"
+                          onClick={handleAddChange}
+                        >
+                          Add Categories
+                        </Text>
+                      )}
+
+                      <Text
+                        className="font-nunitosans font-semibold italic mt-[30px] text-gray_900"
+                        variant="body10"
+                      >
+                        Average Rating
+                      </Text>
+                      <div className="flex flex-row items-center justify-center mt-2.5 w-[55%] md:w-full">
+                        <RatingBar
+                          className="flex justify-between w-[172px]"
+                          value={rating}
+                          starCount={5}
+                          activeColor="#ff9915"
+                          size={22}
+                        ></RatingBar>
+                      </div>
+
+                      {fromNotification ? (
+                        <div className="flex w-full my-4 flex-col gap-5 justify-evenly items-center bg-white_A700_01 shadow-bs3 p-6">
+                          <h2 className="text-xl font-semibold">
+                            Select a Date:
+                          </h2>
+                          <select
+                            className="w-full px-4 my-2 border border-gray-300 rounded-md"
+                            value={selectedDate}
+                            onChange={(e) => handleDateChange(e.target.value)}
+                          >
+                            <option value={null}>Select a date</option>
+                            {availableDates.map((date) => (
+                              <option key={date} value={date}>
+                                {date.split("T")[0]}
+                              </option>
+                            ))}
+                          </select>
+
+                          {selectedDate && (
+                            <div className="w-full">
+                              <h2 className="text-xl font-semibold">
+                                Select a Slot:
+                              </h2>
+                              <select
+                                className="w-full px-4 my-2 border border-gray-300 rounded-md"
+                                value={selectedSlot}
+                                onChange={(e) =>
+                                  handleSlotChange(e.target.value)
+                                }
+                              >
+                                <option value="">Select a slot</option>
+                                {slots.map((slot) => (
+                                  <option key={slot.slot} value={slot.slot}>
+                                    {slot.slot}
+                                  </option>
+                                ))}
+                              </select>
+
+                              {selectedSlot && (
+                                <div className="flex justify-center">
+                                  <button
+                                    className="bg-orange-400 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md"
+                                    onClick={handleScheduleCall}
+                                  >
+                                    Schedule Call
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+
+                      {/* <Button
+                    className="cursor-pointer font-normal font-segoeui min-w-[117px] mt-[20px] text-base text-center text-white_A700_01"
+                    shape="RoundedBorder4"
+                    size="md"
+                    variant="OutlineAmberA700"
+                  >
+                    schedule call
+                  </Button> */}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
               <div
-                className="bg-white_A700_01 md:mt-0 p-2.5 rounded shadow-bs12 w-[33%] md:w-full"
+                className={
+                  "flex md:flex-1 flex-col gap-3 items-center justify-start md:w-full " +
+                  (props.fromProfile ? " w-[100%]" : " w-[66%]")
+                }
                 // style={{ maxHeight: "calc(100vh - 13rem)" }}
               >
-                <div className="flex justify-end m-auto w-[91%]">
-                  <div className="flex flex-col h-full inset-[0] items-center m-auto w-full">
-                    <div className="font-segoeui w-full">
-                      <div className="flex flex-col gap-[29px] h-full inset-[0] items-center justify-center m-auto  md:px-10 sm:px-5  w-full">
-                        <Img
-                          src={
-                            userDetails
-                              ? userDetails.profileImageUrl
-                                ? userDetails.profileImageUrl
-                                : "images/img_ellipse2.png"
-                              : "images/img_ellipse2.png"
-                          }
-                          className="h-[150px] md:h-auto rounded-[50%] w-[150px]"
-                          alt="ellipseOne_One"
-                        />
+                <div className="bg-white_A700_01 flex flex-col items-center justify-start pl-1 py-1 rounded w-[99%] md:w-full">
+                  <div className="flex flex-col gap-[15px] justify-start my-[9px] w-full">
+                    <div className="flex flex-row items-center px-[15px] w-auto">
+                      <Text
+                        className="font-semibold text-gray-900 w-[15%]"
+                        variant="body14"
+                      >
+                        Full Name
+                      </Text>
+                      <input
+                        type="text"
+                        className="font-normal text-gray-600-01 input-style w-[85%]"
+                        variant="body14"
+                        readOnly={id}
+                        value={userDetails.name}
+                        onChange={handleInputChange("name")}
+                      />
+                    </div>
+                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
+                    <div className="flex flex-row items-center px-[15px] w-auto">
+                      <Text
+                        className="font-semibold text-gray-900 w-[15%]"
+                        variant="body14"
+                      >
+                        Email
+                      </Text>
+                      <input
+                        type="text"
+                        className="font-normal text-gray-600-01 input-style w-[85%]"
+                        variant="body14"
+                        readOnly={true}
+                        value={userDetails.email}
+                        onChange={handleInputChange("email")}
+                      />
+                    </div>
+                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
+                    <div className="flex flex-row items-center px-[15px] w-auto">
+                      <Text
+                        className="font-semibold mb-0.5 text-gray-900 w-[15%]"
+                        variant="body14"
+                      >
+                        Occupation
+                      </Text>
+                      <input
+                        type="text"
+                        className="font-normal text-gray-600-01 input-style w-[85%]"
+                        variant="body14"
+                        readOnly={id}
+                        value={userDetails.occupation}
+                        onChange={handleInputChange("occupation")}
+                      />
+                    </div>
+                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
+                    <div className="flex flex-row items-center px-[15px] w-auto">
+                      <Text
+                        className="font-semibold text-gray-900 w-[15%]"
+                        variant="body16"
+                      >
+                        Gender
+                      </Text>
+
+                      {id ? (
+                        <div className="w-70%">
+                          <Text
+                            className="font-normal ml-5 text-gray-900 w-[15%]"
+                            variant="body16"
+                          >
+                            {userDetails.gender}
+                          </Text>
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <div className="flex items-center justify-between mx-3">
+                            <label>Male</label>
+                            <input
+                              type="radio"
+                              name="gender"
+                              className="ml-2"
+                              value="male"
+                              checked={userDetails.gender === "male"}
+                              onChange={handleInputChange("gender")}
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-between mx-3 ">
+                            <label>Female</label>
+                            <input
+                              type="radio"
+                              name="gender"
+                              className="ml-2"
+                              value="female"
+                              checked={userDetails.gender === "female"}
+                              onChange={handleInputChange("gender")}
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-between mx-3">
+                            <label>Other</label>
+                            <input
+                              type="radio"
+                              name="gender"
+                              className="ml-2"
+                              value="other"
+                              checked={userDetails.gender === "other"}
+                              onChange={handleInputChange("gender")}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
+
+                    <div className="flex flex-row items-center px-[15px] w-auto">
+                      <Text
+                        className="font-semibold w-[15%] ml-1 md:ml-[0] text-gray-900"
+                        variant="body14"
+                      >
+                        About me
+                      </Text>
+
+                      {/* <div className="outer-white"> */}
+                      <textarea
+                        rows={3}
+                        cols={50}
+                        readOnly={id}
+                        className="font-normal text-gray-600-01 w-[85%] input-style"
+                        variant="body14"
+                        value={userDetails?.aboutyourself}
+                        onChange={handleInputChange("aboutyourself")}
+                      />
+                      {/* </div> */}
+                    </div>
+
+                    {id ? (
+                      <></>
+                    ) : (
+                      <div className="flex sm:flex-col px-[15px] flex-row sm:gap-10 gap-[108px] items-start justify-start w-[90%] md:w-full">
+                        <Button
+                          className="cursor-pointer font-normal min-w-[53px] text-base text-center text-white_A700_01"
+                          shape="RoundedBorder4"
+                          size="md"
+                          variant="OutlineGray900"
+                          onClick={handleUpdate}
+                        >
+                          Update
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex md:flex-col justify-between w-full">
+                  {props.fromProfile ? (
+                    <div
+                      className={
+                        "bg-white_A700_01 mb-3 md:w-full p-[1rem] flex flex-col " +
+                        (props.fromProfile ? "w-[32%]" : "w-[49%]")
+                      }
+                    >
+                      <div className="flex justify-between items-center">
+                        <span className="my-3 font-semibold text-xl">
+                          Categories
+                        </span>
                         {id ? (
                           <></>
                         ) : (
-                          <Button
-                            className="cursor-pointer font-normal mx-auto text-[15px] text-center text-white_A700_01 change-pic"
-                            size="lg"
-                            variant="FillGray900b7"
-                            htmlFor="fileInput"
-                            style={{ marginTop: "1rem", width: "fit-content" }}
-                            onClick={handleClick}
-                          >
-                            Change Photo
-                          </Button>
+                          <>
+                            <div style={{cursor:'pointer'}} className="flex gap-2">
+                              <span
+                                className="text-3xl"
+                                onClick={handleAddChange}
+                              >
+                                +
+                              </span>
+                            </div>
+                          </>
                         )}
-                        <input
-                          id="fileInput"
-                          type="file"
-                          ref={fileInputRef}
-                          disabled={id}
-                          onChange={handleFileChange}
-                          style={{ display: "none" }}
-                        />
-                        <Text
-                          className="font-semibold mb-[18px] text-gray_900"
-                          variant="body10"
-                        >
-                          Categories
-                        </Text>
                       </div>
-                    </div>
 
-                    <div className="grid grid-cols-2 w-full">
                       {userDetails.categories &&
                       userDetails.categories.length ? (
                         userDetails.categories.map((category, index) => (
                           <>
-                            <div className=" bg-white_A700_01 flex flex-row items-center justify-evenly p-1 my-2 rounded">
+                            <div className=" bg-white_A700_01 flex flex-row items-center justify-between p-1 my-2 rounded">
                               <Text
                                 className="font-normal ml-[7px] text-gray_900"
                                 variant="body12"
@@ -594,250 +939,15 @@ const NewprofilementprPage = (props) => {
                         </>
                       )}
                     </div>
-
-                    {id ? (
-                      <></>
-                    ) : (
-                      <Text
-                        className="font-bold mt-[15px] text-orange_500"
-                        variant="body12"
-                        onClick={handleAddChange}
-                      >
-                        Add Categories
-                      </Text>
-                    )}
-
-                    <Text
-                      className="font-nunitosans font-semibold italic mt-[30px] text-gray_900"
-                      variant="body10"
-                    >
-                      Average Rating
-                    </Text>
-                    <div className="flex flex-row items-center justify-center mt-2.5 w-[55%] md:w-full">
-                      <RatingBar
-                        className="flex justify-between w-[172px]"
-                        value={rating}
-                        starCount={5}
-                        activeColor="#ff9915"
-                        size={22}
-                      ></RatingBar>
-                    </div>
-
-                    {fromNotification ? (
-                      <div className="flex w-full my-4 flex-col gap-5 justify-evenly items-center bg-white_A700_01 shadow-bs3 p-6">
-                        <h2 className="text-xl font-semibold">
-                          Select a Date:
-                        </h2>
-                        <select
-                          className="w-full px-4 my-2 border border-gray-300 rounded-md"
-                          value={selectedDate}
-                          onChange={(e) => handleDateChange(e.target.value)}
-                        >
-                          <option value={null}>Select a date</option>
-                          {availableDates.map((date) => (
-                            <option key={date} value={date}>
-                              {date.split("T")[0]}
-                            </option>
-                          ))}
-                        </select>
-
-                        {selectedDate && (
-                          <div className="w-full">
-                            <h2 className="text-xl font-semibold">
-                              Select a Slot:
-                            </h2>
-                            <select
-                              className="w-full px-4 my-2 border border-gray-300 rounded-md"
-                              value={selectedSlot}
-                              onChange={(e) => handleSlotChange(e.target.value)}
-                            >
-                              <option value="">Select a slot</option>
-                              {slots.map((slot) => (
-                                <option key={slot.slot} value={slot.slot}>
-                                  {slot.slot}
-                                </option>
-                              ))}
-                            </select>
-
-                            {selectedSlot && (
-                              <div className="flex justify-center">
-                                <button
-                                  className="bg-orange-400 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-md"
-                                  onClick={handleScheduleCall}
-                                >
-                                  Schedule Call
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-
-                    {/* <Button
-                    className="cursor-pointer font-normal font-segoeui min-w-[117px] mt-[20px] text-base text-center text-white_A700_01"
-                    shape="RoundedBorder4"
-                    size="md"
-                    variant="OutlineAmberA700"
+                  ) : (
+                    <></>
+                  )}
+                  <div
+                    className={
+                      "bg-white_A700_01 mb-3 md:w-full p-[1rem] flex flex-col " +
+                      (props.fromProfile ? "w-[32%]" : "w-[49%]")
+                    }
                   >
-                    schedule call
-                  </Button> */}
-                  </div>
-                </div>
-              </div>
-              <div
-                className="flex md:flex-1 flex-col gap-3 items-center w-[66%] justify-start md:w-full"
-                // style={{ maxHeight: "calc(100vh - 13rem)" }}
-              >
-                <div className="bg-white_A700_01 flex flex-col items-center justify-start pl-1 py-1 rounded w-[99%] md:w-full">
-                  <div className="flex flex-col gap-[15px] justify-start my-[9px] w-full">
-                    <div className="flex flex-row items-center px-[15px] w-auto">
-                      <Text
-                        className="font-normal text-gray-900 w-[30%]"
-                        variant="body14"
-                      >
-                        Full Name
-                      </Text>
-                      <input
-                        type="text"
-                        className="font-normal text-gray-600-01 input-style w-[70%]"
-                        variant="body14"
-                        readOnly={id}
-                        value={userDetails.name}
-                        onChange={handleInputChange("name")}
-                      />
-                    </div>
-                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
-                    <div className="flex flex-row items-center px-[15px] w-auto">
-                      <Text
-                        className="font-normal text-gray-900 w-[30%]"
-                        variant="body14"
-                      >
-                        Email
-                      </Text>
-                      <input
-                        type="text"
-                        className="font-normal text-gray-600-01 input-style w-[70%]"
-                        variant="body14"
-                        readOnly={true}
-                        value={userDetails.email}
-                        onChange={handleInputChange("email")}
-                      />
-                    </div>
-                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
-                    <div className="flex flex-row items-center px-[15px] w-auto">
-                      <Text
-                        className="font-normal mb-0.5 text-gray-900 w-[30%]"
-                        variant="body14"
-                      >
-                        Occupation
-                      </Text>
-                      <input
-                        type="text"
-                        className="font-normal text-gray-600-01 input-style w-[70%]"
-                        variant="body14"
-                        readOnly={id}
-                        value={userDetails.occupation}
-                        onChange={handleInputChange("occupation")}
-                      />
-                    </div>
-                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
-                    <div className="flex flex-row items-center px-[15px] w-auto">
-                      <Text
-                        className="font-normal text-gray-900 w-[30%]"
-                        variant="body16"
-                      >
-                        Gender
-                      </Text>
-
-                      {id ? (
-                        <div className="w-70%">
-                          <Text
-                            className="font-normal ml-5 text-gray-900 w-[30%]"
-                            variant="body16"
-                          >
-                            {userDetails.gender}
-                          </Text>
-                        </div>
-                      ) : (
-                        <div className=" w-[70%]">
-                          <label className="ml-5">
-                            <input
-                              type="radio"
-                              name="gender"
-                              value="male"
-                              checked={userDetails.gender === "male"}
-                              onChange={handleInputChange("gender")}
-                            />
-                            Male
-                          </label>
-                          <label className="ml-5">
-                            <input
-                              type="radio"
-                              name="gender"
-                              value="female"
-                              checked={userDetails.gender === "female"}
-                              onChange={handleInputChange("gender")}
-                            />
-                            Female
-                          </label>
-                          <label className="ml-5">
-                            <input
-                              type="radio"
-                              name="gender"
-                              value="other"
-                              checked={userDetails.gender === "other"}
-                              onChange={handleInputChange("gender")}
-                            />
-                            Other
-                          </label>
-                        </div>
-                      )}
-                    </div>
-                    {/* <Line className="bg-black_900_19 h-px w-[96%]" /> */}
-
-                    <div className="flex flex-row items-center px-[15px] w-auto">
-                      <Text
-                        className="font-normal w-[30%] ml-1 md:ml-[0] text-gray-900"
-                        variant="body14"
-                      >
-                        about me
-                      </Text>
-
-                      {/* <div className="outer-white"> */}
-                      <textarea
-                        rows={3}
-                        cols={50}
-                        readOnly={id}
-                        className="font-normal text-gray-600-01 w-[70%] input-style"
-                        variant="body14"
-                        value={userDetails?.aboutyourself}
-                        onChange={handleInputChange("aboutyourself")}
-                      />
-                      {/* </div> */}
-                    </div>
-
-                    {id ? (
-                      <></>
-                    ) : (
-                      <div className="flex sm:flex-col px-[15px] flex-row sm:gap-10 gap-[108px] items-start justify-start w-[90%] md:w-full">
-                        <Button
-                          className="cursor-pointer font-normal min-w-[53px] text-base text-center text-white_A700_01"
-                          shape="RoundedBorder4"
-                          size="md"
-                          variant="OutlineGray900"
-                          onClick={handleUpdate}
-                        >
-                          Update
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="flex md:flex-col justify-between w-full">
-                  <div className="bg-white_A700_01 w-[49%] mb-3 md:w-full p-[1rem] flex flex-col">
                     <div className="flex justify-between items-center">
                       <span className="my-3 font-semibold text-xl">
                         Expertise
@@ -876,7 +986,7 @@ const NewprofilementprPage = (props) => {
                                   type="text"
                                   name="exper"
                                   id="exper"
-                                  className="font-normal input-style text-gray-600-01 w-[70%] "
+                                  className="font-normal input-style text-gray-600-01 w-[85%] "
                                   placeholder="Expertise"
                                   value={exper.expertise}
                                   onChange={(e) =>
@@ -892,7 +1002,7 @@ const NewprofilementprPage = (props) => {
                                   min={0}
                                   max={100}
                                   name="experVal"
-                                  className="font-normal text-gray-600-01 w-[70%] input-style"
+                                  className="font-normal text-gray-600-01 w-[85%] input-style"
                                   placeholder="Value"
                                   value={exper.value}
                                   onChange={(e) =>
@@ -944,7 +1054,12 @@ const NewprofilementprPage = (props) => {
                       <></>
                     )}
                   </div>
-                  <div className="bg-white_A700_01 w-[49%] mb-3 md:w-full p-[1rem] flex flex-col">
+                  <div
+                    className={
+                      "bg-white_A700_01 mb-3 md:w-full p-[1rem] flex flex-col " +
+                      (props.fromProfile ? "w-[32%]" : "w-[49%]")
+                    }
+                  >
                     <div className="flex justify-between items-center">
                       <span className="my-3 font-semibold text-xl">
                         Analytics
@@ -997,7 +1112,7 @@ const NewprofilementprPage = (props) => {
                           >
                             <div className="flex flex-col items-start justify-start mb-0.5 w-[47%] md:w-full">
                               <div className="flex flex-row sm:flex-col sm:justify-center gap-[15px] items-center justify-start md:w-full">
-                                <Img
+                                {/* <Img
                                   src={
                                     item.profileImageUrl
                                       ? item.profileImageUrl
@@ -1011,7 +1126,7 @@ const NewprofilementprPage = (props) => {
                                   variant="body10"
                                 >
                                   {item.username}
-                                </Text>
+                                </Text> */}
 
                                 <div className="flex items-center">
                                   <span>Category : </span>
