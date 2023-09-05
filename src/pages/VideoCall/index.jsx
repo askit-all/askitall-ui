@@ -77,9 +77,18 @@ const VideoCall = () => {
     }
   };
 
+  const endCall = async () => {
+    if (userData?.type === "mentor") {
+      secured.post("/rtc/end-call", {
+        bookingId,
+      });
+    }
+  };
+
   const handleEndCall = () => {
     setVideocall(false);
     stopRecording();
+    endCall();
     history(`/feedback/${bookingData.mentorId}`);
   };
   return (
