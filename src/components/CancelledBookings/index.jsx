@@ -4,14 +4,14 @@ import ReSlotButton from "components/ReScheduleSlotButton";
 import SlotButton from "components/ScheduleSlotButton";
 import React, { useState, useEffect } from "react";
 
-const UpcomingBookings = () => {
+const CancelledBookings = () => {
   const [bookings, setBookings] = useState([]);
   const userData = JSON.parse(localStorage.getItem("userData"));
   // Function to fetch bookings from the API
   const fetchBookings = async () => {
     let url = "/slots/get-bookings";
     let payload = {
-      userId: userData.userid ? userData.userid : userData.id,
+        userId: userData.userid ? userData.userid : userData.id,
     };
     secured.post(url, payload).then((response) => {
       if (response.data.bookings && response.data.bookings.length) {
@@ -28,7 +28,7 @@ const UpcomingBookings = () => {
         let finalBokings = response.data.bookings.filter(
           (ele) =>
             getTimeDifferenceInMinutes(ele.startTime, ele.bookingDate) >= 0 &&
-            ele.status !== "CANCELLED" && ele.status !== "RESCHEDULED"
+            ele.status == "CANCELLED"
         );
 
         setBookings(finalBokings);
@@ -107,61 +107,6 @@ const UpcomingBookings = () => {
                       {booking.slot}
                     </span>
                   </p>
-
-                  {booking.isCallStarted && userData.type == "mentee" ? (
-                    <p
-                      style={{
-                        color: "red",
-                        fontWeight: "500",
-                        fontSize: "20px",
-                      }}
-                    >
-                      Call already started
-                    </p>
-                  ) : (
-                    <></>
-                  )}
-
-                  <div className="flex gap-3 my-2">
-                    {userData.type == "mentee" ? (
-                      <ReSlotButton
-                        startTime={booking.startTime}
-                        booking={booking}
-                        slotDate={booking.bookingDate}
-                        fetchBookings={fetchBookings}
-                      />
-                    ) : (
-                      <></>
-                    )}
-
-                    <CancelSlotButton
-                      startTime={booking.startTime}
-                      booking={booking}
-                      slotDate={booking.bookingDate}
-                      fetchBookings={fetchBookings}
-                    />
-                  </div>
-                </div>
-                <div>
-                  {userData.type == "mentee" && booking.isCallStarted ? (
-                    <SlotButton
-                      startTime={booking.startTime}
-                      bookingId={booking.bookingId}
-                      slotDate={booking.bookingDate}
-                    />
-                  ) : (
-                    <></>
-                  )}
-
-                  {userData.type == "mentor" ? (
-                    <SlotButton
-                      startTime={booking.startTime}
-                      bookingId={booking.bookingId}
-                      slotDate={booking.bookingDate}
-                    />
-                  ) : (
-                    <></>
-                  )}
                 </div>
               </div>
 
@@ -171,11 +116,11 @@ const UpcomingBookings = () => {
         </ul>
       ) : (
         <>
-          <p>No Upcoming Bookings</p>
+          <p>No Cancelled Bookings</p>
         </>
       )}
     </div>
   );
 };
 
-export default UpcomingBookings;
+export default CancelledBookings;
