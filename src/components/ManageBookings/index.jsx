@@ -13,6 +13,7 @@ const BookingForm = () => {
     startTime: "",
     endTime: "",
   });
+  const [slotIndex, setSlotIndex] = useState(-1);
   const userData = JSON.parse(localStorage.getItem("userData"));
   // const [hasOverlap, setHasOverlap] = useState(false);
 
@@ -20,23 +21,28 @@ const BookingForm = () => {
     setShowModal(true);
   };
 
-  const handleUnavailClick = () => {
+  const handleUnavailClick = (index) => {
+    setSlotIndex(index)
     setShowModalUnavail(true);
   };
 
-  const handleUnavailableClick = (index) => {
-    let booking = bookings[index];
-    let url = "/slots/mark-unavailable";
-    let payload = {
-      date: booking.date,
-      slot: booking.slot,
-    };
-    secured.post(url, payload).then((response) => {
-      toast.success("Slot is unavailable now");
-      setFilteredDate(new Date().toISOString());
-    });
-
-    setShowModalUnavail(false);
+  const handleUnavailableClick = () => {
+    if(slotIndex > -1){
+      let booking = bookings[slotIndex];
+      let url = "/slots/mark-unavailable";
+      let payload = {
+        date: booking.date,
+        slot: booking.slot,
+      };
+      secured.post(url, payload).then((response) => {
+        toast.success("Slot is unavailable now");
+        setFilteredDate(new Date().toISOString());
+      });
+  
+      setShowModalUnavail(false);
+    }else{
+      toast.error("Please select any slot!");
+    }
   };
 
   const handleConfirmDelete = (booking) => {
@@ -368,7 +374,7 @@ const BookingForm = () => {
               ) : (
                 <FaBan
                   style={{ height: "2rem", width: "4rem", cursor: "pointer" }}
-                  onClick={() => handleUnavailClick()}
+                  onClick={() => handleUnavailClick(index)}
                   title="Unavailable"
                 />
               )}
@@ -376,7 +382,7 @@ const BookingForm = () => {
               {showModalUnavail && (
                 <ModalDeleteBooking
                   message="Are you sure you want to make this slot unavailable?"
-                  onConfirm={() => handleUnavailableClick(index)}
+                  onConfirm={() => handleUnavailableClick()}
                   onCancel={() => handleCancelUnavail()}
                 />
               )}
