@@ -5,6 +5,8 @@ import ManageBookings from "components/ManageBookings";
 import { secured } from "api/interceptors";
 import UpcomingBookings from "components/UpcomingBookings";
 import { useNavigate } from "react-router-dom";
+import CancelledBookings from "components/CancelledBookings";
+import PastBookings from "components/PastBookings";
 
 const Bookings = () => {
   const [activeTab, setActiveTab] = useState("Upcoming");
@@ -37,17 +39,17 @@ const Bookings = () => {
                 activeTab={activeTab}
                 onClick={handleTabClick}
               />
-              {/* <Tab
+               {/* <Tab
                 label="Pending"
                 activeTab={activeTab}
                 onClick={handleTabClick}
-              />
+              /> */}
 
               <Tab
                 label="Past"
                 activeTab={activeTab}
                 onClick={handleTabClick}
-              /> */}
+              /> 
 
               <Tab
                 label="Cancelled"
@@ -69,8 +71,8 @@ const Bookings = () => {
             <div className="mt-3 w-full">
               {activeTab === "Upcoming" ? <UpcomingBookings /> : <></>}
               {activeTab === "Pending" ? "No Pending booking" : <></>}
-              {activeTab === "Past" ? "No Past booking" : <></>}
-              {activeTab === "Cancelled" ? "No Cancelled booking" : <></>}
+              {activeTab === "Past" ? <PastBookings /> : <></>}
+              {activeTab === "Cancelled" ? <CancelledBookings /> : <></>}
               {activeTab === "Manage" ? <ManageBookings /> : <></>}
             </div>
           </div>
