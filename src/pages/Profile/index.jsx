@@ -163,7 +163,7 @@ const ProfleHome = () => {
             </div>
             <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-evenly sm:w-100">
               <div
-                className={`flex justify-evenly items-center my-3 ${
+                className={`flex justify-evenly items-center my-3 cursor-pointer ${
                   tabSelected === "home" ? "tab-selected" : ""
                 }`}
                 onClick={() => handleTabChange("home")}
@@ -178,7 +178,7 @@ const ProfleHome = () => {
                 </div>
               </div>
               <div
-                className={`flex justify-evenly items-center my-3 ${
+                className={`flex justify-evenly items-center my-3 cursor-pointer ${
                   tabSelected === "profile" ? "tab-selected" : ""
                 }`}
                 onClick={() => handleTabChange("profile")}
@@ -197,7 +197,7 @@ const ProfleHome = () => {
                 </div>
               </div>
               <div
-                className={`flex justify-evenly items-center my-3 ${
+                className={`flex justify-evenly items-center my-3 cursor-pointer ${
                   tabSelected === "booking" ? "tab-selected" : ""
                 }`}
                 onClick={() => handleTabChange("booking")}

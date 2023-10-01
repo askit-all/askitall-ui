@@ -70,6 +70,7 @@ const ProfilementeePage = (props) => {
     let payload = {
       name: userDetails.name,
       email: userDetails.email,
+      credit: userDetails.credit,
       type: "mentee",
       profileImageUrl: userDetails.profileImageUrl,
       userinfo: {
@@ -256,12 +257,6 @@ const ProfilementeePage = (props) => {
                             style={{ width: "80%" }}
                             onChange={handleInputChange("name")}
                           />
-                          {/* <Text
-                      className="font-semibold mb-[15px] ml-[40px] text-amber_A700"
-                      variant="body14"
-                    >
-                      {userDetails.name}
-                    </Text> */}
                         </div>
                         <div className="h-10 sm:h-28 relative w-full">
                           <div className="flex flex-row sm:gap-10 items-start ml-[15px]">
@@ -289,6 +284,26 @@ const ProfilementeePage = (props) => {
                       </Text> */}
                           </div>
                         </div>
+
+                        <div className="flex flex-row sm:gap-10 items-start w-full">
+                          <Text
+                            className="font-semibold ml-[13px] text-gray_900_04"
+                            variant="body14"
+                            style={{ alignSelf: "center", width: "20%" }}
+                          >
+                            Credit
+                          </Text>
+                          <input
+                            type="number"
+                            className="font-normal  ml-[40px] text-gray-600-01 w-auto input-style"
+                            variant="body14"
+                            readOnly={id}
+                            value={userDetails.credit}
+                            style={{ width: "80%" }}
+                            onChange={handleInputChange("credit")}
+                          />
+                        </div>
+
                         <div className="relative w-full">
                           <div className="flex flex-row sm:gap-10 mt-3 items-start ml-[15px]">
                             <Text
@@ -362,6 +377,23 @@ const ProfilementeePage = (props) => {
                       readOnly={true}
                       value={userDetails.email}
                       onChange={handleInputChange("email")}
+                    />
+                  </div>
+
+                  <div className="flex flex-row items-center px-[15px] w-auto">
+                    <Text
+                      className="font-semibold text-gray-900 w-[15%]"
+                      variant="body14"
+                    >
+                      Credit
+                    </Text>
+                    <input
+                      type="number"
+                      className="font-normal text-gray-600-01 input-style w-[85%]"
+                      variant="body14"
+                      readOnly={true}
+                      value={userDetails.credit}
+                      onChange={handleInputChange("credit")}
                     />
                   </div>
 

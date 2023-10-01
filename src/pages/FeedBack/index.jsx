@@ -5,7 +5,6 @@ import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
 const FeedbackForm = () => {
-
   const history = useNavigate();
 
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ const FeedbackForm = () => {
     }
   }, [navigate]);
 
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(5);
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { mentorId } = useParams();
@@ -30,7 +29,6 @@ const FeedbackForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
 
     let payload = {
       rating: rating,
@@ -38,6 +36,14 @@ const FeedbackForm = () => {
       mentorId: mentorId,
     };
 
+    if (rating < 3) {
+      if (!description) {
+        toast.error("Feedback content is required");
+        return;
+      }
+    }
+
+    setIsSubmitting(true);
     secured.post("/reviews", payload).then((response) => {
       toast.success("Feedback saved!", {
         icon: "👏",
@@ -98,7 +104,6 @@ const FeedbackForm = () => {
               value={description}
               onChange={handleFeedbackChange}
               className="border border-gray-300 rounded-lg w-full px-3 py-2 mt-1 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
             ></textarea>
           </div>
           <button

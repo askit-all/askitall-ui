@@ -13,7 +13,13 @@ const override = css`
   border-color: red;
 `;
 
-const NotificationModal = ({ children }) => {
+const NotificationModal = ({
+  children,
+  notifications,
+  showMore,
+  showRedDot,
+  setRedDot,
+}) => {
   const [showPopover, setShowPopover] = useState(false);
   const [loading, setLoading] = useState(false);
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -24,35 +30,25 @@ const NotificationModal = ({ children }) => {
     setShowPopover(!showPopover);
   };
 
-  const [notifications, setNotifications] = useState([]);
-  const [showMore, setShowNore] = useState(false);
-  const fetchNotifications = () => {
+  const fetchNotificationsSeen = () => {
     // setLoading(true);
-    let url = `/notifications`;
+    let url = `/notifications/seen`;
     secured.get(url).then((response) => {
-      let notifi = [];
-      if (response.data.data && response.data.data.length > 3) {
-        notifi = response.data.data.slice(0, 3);
-        setShowNore(true);
-      } else {
-        notifi = response.data.data;
-      }
-
-      setNotifications(notifi);
-      // setLoading(false);
+      setRedDot(0);
     });
   };
 
   const handleNavigation = (item) => {
-    if(userData.type == 'mentee' && item.notificationFrom){
-      navigate(`/mentor-profile/${item.notificationFrom}/fromNotification/${true}`);
+    if (userData.type == "mentee" && item.notificationFrom) {
+      navigate(
+        `/mentor-profile/${item.notificationFrom}/fromNotification/${true}`
+      );
     }
-
   };
 
   useEffect(() => {
-    if (showPopover) fetchNotifications();
-  }, [showPopover]);
+    if (showRedDot) fetchNotificationsSeen();
+  }, [showRedDot]);
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
