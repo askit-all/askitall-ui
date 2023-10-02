@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import "./mentorProfile.css";
-
+import RangeSlider from 'react-bootstrap-range-slider';
 import { css } from "@emotion/react";
 import { BeatLoader } from "react-spinners";
 import { useRef } from "react";
@@ -185,6 +185,7 @@ const NewprofilementprPage = (props) => {
     let payload = {
       name: userDetails.name,
       email: userDetails.email,
+      credit: userDetails.credit,
       type: "mentor",
       userinfo: {
         gender: userDetails.gender,
@@ -244,6 +245,7 @@ const NewprofilementprPage = (props) => {
     let payload = {
       name: userDetails.name,
       email: userDetails.email,
+      credit: userDetails.credit,
       type: "mentor",
       userinfo: {
         gender: userDetails.gender,
@@ -497,8 +499,8 @@ const NewprofilementprPage = (props) => {
                               userDetails
                                 ? userDetails.profileImageUrl
                                   ? userDetails.profileImageUrl
-                                  : "images/img_ellipse2.png"
-                                : "images/img_ellipse2.png"
+                                  : "/images/img_ellipse2.png"
+                                : "/images/img_ellipse2.png"
                             }
                             className="h-[150px] md:h-auto rounded-[50%] w-[150px]"
                             alt="ellipseOne_One"
@@ -816,6 +818,23 @@ const NewprofilementprPage = (props) => {
 
                     <div className="flex flex-row items-center px-[15px] w-auto">
                       <Text
+                        className="font-semibold mb-0.5 text-gray-900 w-[15%]"
+                        variant="body14"
+                      >
+                        Credit
+                      </Text>
+                      <input
+                        type="number"
+                        className="font-normal text-gray-600-01 input-style w-[85%]"
+                        variant="body14"
+                        readOnly={id}
+                        value={userDetails.credit}
+                        onChange={handleInputChange("credit")}
+                      />
+                    </div>
+
+                    <div className="flex flex-row items-center px-[15px] w-auto">
+                      <Text
                         className="font-semibold w-[15%] ml-1 md:ml-[0] text-gray-900"
                         variant="body14"
                       >
@@ -868,7 +887,10 @@ const NewprofilementprPage = (props) => {
                           <></>
                         ) : (
                           <>
-                            <div style={{cursor:'pointer'}} className="flex gap-2">
+                            <div
+                              style={{ cursor: "pointer" }}
+                              className="flex gap-2"
+                            >
                               <span
                                 className="text-3xl"
                                 onClick={handleAddChange}
@@ -986,7 +1008,7 @@ const NewprofilementprPage = (props) => {
                                   type="text"
                                   name="exper"
                                   id="exper"
-                                  className="font-normal input-style text-gray-600-01 w-[85%] "
+                                  className="font-normal input-style text-gray-600-01 w-[50%] "
                                   placeholder="Expertise"
                                   value={exper.expertise}
                                   onChange={(e) =>
@@ -997,7 +1019,7 @@ const NewprofilementprPage = (props) => {
                                     )
                                   }
                                 />
-                                <input
+                                {/* <input
                                   type="number"
                                   min={0}
                                   max={100}
@@ -1012,7 +1034,22 @@ const NewprofilementprPage = (props) => {
                                       "value"
                                     )
                                   }
+                                /> */}
+
+                                <RangeSlider
+                                  value={exper.value}
+                                  onChange={(e) =>
+                                    handleExpertiseInputChange(
+                                      e,
+                                      index,
+                                      "value"
+                                    )
+                                  }
+                                  variant='warning'
+                                  min={1}
+                                  max={10}
                                 />
+
                                 <Img
                                   src="images/img_close.svg"
                                   className="h-[18px] mr-2.5 w-[18px]"
@@ -1044,7 +1081,7 @@ const NewprofilementprPage = (props) => {
                               </div>
                               <ProgressBar
                                 progress={exper.value}
-                                duration={100}
+                                duration={10}
                               />
                             </>
                           ))}

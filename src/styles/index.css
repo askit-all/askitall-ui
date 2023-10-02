@@ -5,6 +5,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inria+Serif:wght@300;700&display=swap");
 
+/* @import 'bootstrap/dist/css/bootstrap.css'; */
+@import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+
 * {
   box-sizing: border-box;
   line-height: normal;
