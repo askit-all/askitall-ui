@@ -22,7 +22,7 @@ const UpcomingBookings = () => {
             day: "2-digit",
           });
 
-          ele["startTime"] = ele.slot?.split("-")[0].trimEnd();
+          ele["startTime"] = ele.slot?.split("-")[1].trimEnd();
         });
 
         let finalBokings = response.data.bookings.filter(

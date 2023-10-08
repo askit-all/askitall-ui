@@ -365,7 +365,7 @@ const NewprofilementprPage = (props) => {
       if (response.data.slots && response.data.slots.length) {
         let finalSlots = response.data.slots.filter((ele) => !ele.status);
         finalSlots.forEach((ele) => {
-          ele["startTime"] = ele.slot?.split("-")[0].trimEnd();
+          ele["startTime"] = ele.slot?.split("-")[1].trimEnd();
         });
 
         finalSlots = finalSlots.filter(
