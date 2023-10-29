@@ -40,7 +40,7 @@ const CancelSlotButton = ({ startTime, booking, slotDate, fetchBookings }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       const timeDifference = getTimeDifferenceInMinutes(startTime);
-      setShowButton(timeDifference > 30);
+      setShowButton(timeDifference > 60);
     }, 1000);
 
     return () => clearInterval(interval);
