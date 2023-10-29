@@ -32,7 +32,7 @@ const SlotButton = ({ startTime, bookingId,slotDate }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       const timeDifference = getTimeDifferenceInMinutes(startTime);
-      setShowButton(timeDifference <= 5 && timeDifference >= 0);
+      setShowButton(timeDifference <= 60 && timeDifference >= 0);
     }, 1000);
 
     return () => clearInterval(interval);

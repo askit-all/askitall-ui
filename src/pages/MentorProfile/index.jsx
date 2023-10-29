@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import "./mentorProfile.css";
-import RangeSlider from 'react-bootstrap-range-slider';
+import RangeSlider from "react-bootstrap-range-slider";
 import { css } from "@emotion/react";
 import { BeatLoader } from "react-spinners";
 import { useRef } from "react";
@@ -365,7 +365,8 @@ const NewprofilementprPage = (props) => {
       if (response.data.slots && response.data.slots.length) {
         let finalSlots = response.data.slots.filter((ele) => !ele.status);
         finalSlots.forEach((ele) => {
-          ele["startTime"] = ele.slot?.split("-")[1].trimEnd();
+          ele["startTime"] = ele.slot?.split(" - ")[1].trimEnd();
+          
         });
 
         finalSlots = finalSlots.filter(
@@ -380,6 +381,7 @@ const NewprofilementprPage = (props) => {
     // Parse the time string into hours and minutes
     const [time, period] = slotStartTime.split(" ");
     const [hours, minutes] = time.split(":");
+    console.log(time);
 
     // Convert to 24-hour format
     let hours24 = parseInt(hours, 10);
@@ -1045,7 +1047,7 @@ const NewprofilementprPage = (props) => {
                                       "value"
                                     )
                                   }
-                                  variant='warning'
+                                  variant="warning"
                                   min={1}
                                   max={10}
                                 />
