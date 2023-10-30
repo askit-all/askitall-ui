@@ -17,6 +17,10 @@ const VideoCall = () => {
   const [agoraToken, setAgoraToken] = useState("");
   const [appID, setAppId] = useState("e27fafd3d0c24c3da5fc2a25d546c40f");
   const [uid, setUserId] = useState("");
+  const [screenShareToken, setScreenShareAgoraToken] = useState("");
+  const [screenShareUid, setScreenShareUID] = useState("");
+
+
   const { bookingId } = useParams();
 
   const userData = JSON.parse(localStorage.getItem("userData"));
@@ -32,6 +36,8 @@ const VideoCall = () => {
           setAgoraToken(tokenData?.token);
           setVideocall(true);
           setUserId(tokenData?.user_id);
+          setScreenShareUID(tokenData?.screenShareUID);
+          setScreenShareAgoraToken(tokenData?.screenShareToken);
 
           if (tokenData?.channel && tokenData?.bookingId) {
             acquireCloudRecording(
@@ -104,6 +110,8 @@ const VideoCall = () => {
               layout: isPinned ? layout.pin : layout.grid,
               enableScreensharing: true,
               disableRtm: true,
+              screenshareUid: screenShareUid,
+              screenshareToken: screenShareToken
             }}
             rtmProps={{ username: username || "user", displayUsername: true }}
             callbacks={{
